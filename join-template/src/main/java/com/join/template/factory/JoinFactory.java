@@ -25,10 +25,10 @@ public interface JoinFactory extends TemplateFactory {
     /**
      * 新增表达式配置
      *
-     * @param expressionConfig
+     * @param exprConfig
      * @return
      */
-    JoinFactory addExprConfig(ExprConfig expressionConfig);
+    JoinFactory addExprConfig(ExprConfig exprConfig);
 
     /**
      * 新增表达式配置
@@ -41,6 +41,15 @@ public interface JoinFactory extends TemplateFactory {
      */
     JoinFactory addExprConfig(String nodeType, String tag, boolean hasEndTag, Process process);
 
+    /**
+     * 新增表达式配置
+     * @param nodeType
+     * @param compareTag
+     * @param compareEndTag
+     * @param endTag
+     * @param process
+     * @return
+     */
     JoinFactory addExprConfig(String nodeType, String compareTag, String compareEndTag, String endTag, Process process);
 
     /**

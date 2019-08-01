@@ -42,6 +42,7 @@ public class JoinFactoryBuilder {
         return joinFactory.addExprConfig(nodeType, compareTag, compareEndTag, endTag, process);
     }
 
+
     public JoinFactory addProcess(String nodeType, Process process) {
         return joinFactory.addProcess(nodeType, process);
     }

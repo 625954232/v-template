@@ -66,19 +66,38 @@ public class JoinFactoryBase implements JoinFactory {
         this.addExprConfig(Constant.EXPR_GET, "get", false, new GetProcess(this));
     }
 
-
+    /**
+     * 新增模版工厂
+     *
+     * @param nodeType
+     * @param templateFactory
+     * @return
+     */
     @Override
     public JoinFactory addFactory(String nodeType, TemplateFactory templateFactory) {
         this.templateFactorys.put(nodeType, templateFactory);
         return this;
     }
 
+    /**
+     * 新增表达式配置
+     * @param exprConfig
+     * @return
+     */
     @Override
     public JoinFactory addExprConfig(ExprConfig exprConfig) {
         this.exprConfigs.put(exprConfig.getNodeType(), exprConfig);
         return this;
     }
 
+    /**
+     * 新增表达式配置
+     * @param nodeType
+     * @param tag
+     * @param hasEndTag
+     * @param process
+     * @return
+     */
     @Override
     public JoinFactory addExprConfig(String nodeType, String tag, boolean hasEndTag, Process process) {
         ExprConfig exprConfig = new ExprConfig();
@@ -93,6 +112,15 @@ public class JoinFactoryBase implements JoinFactory {
         return this;
     }
 
+    /**
+     * 新增表达式配置
+     * @param nodeType
+     * @param compareTag
+     * @param compareEndTag
+     * @param endTag
+     * @param process
+     * @return
+     */
     @Override
     public JoinFactory addExprConfig(String nodeType, String compareTag, String compareEndTag, String endTag, Process process) {
         ExprConfig exprConfig = new ExprConfig();
@@ -105,7 +133,13 @@ public class JoinFactoryBase implements JoinFactory {
         return this;
     }
 
-
+    /**
+     * 新增表达式处理器
+     *
+     * @param nodeType
+     * @param process
+     * @return
+     */
     @Override
     public JoinFactory addProcess(String nodeType, Process process) {
         ExprConfig exprConfig = exprConfigs.get(nodeType);
@@ -114,6 +148,13 @@ public class JoinFactoryBase implements JoinFactory {
         return this;
     }
 
+    /**
+     * 新增表达式解析监听
+     *
+     * @param nodeType
+     * @param parserListener
+     * @return
+     */
     @Override
     public JoinFactory addListener(String nodeType, ParserListener parserListener) {
         ExprConfig exprConfig = exprConfigs.get(nodeType);
@@ -122,6 +163,13 @@ public class JoinFactoryBase implements JoinFactory {
         return null;
     }
 
+    /**
+     * 新增表达式处理监听
+     *
+     * @param nodeType
+     * @param processListener
+     * @return
+     */
     @Override
     public JoinFactory addListener(String nodeType, ProcessListener processListener) {
         ExprConfig exprConfig = exprConfigs.get(nodeType);
@@ -130,6 +178,11 @@ public class JoinFactoryBase implements JoinFactory {
         return this;
     }
 
+    /**
+     * 获取配置
+     *
+     * @return
+     */
     @Override
     public Configuration getConfiguration() {
         return configuration;
@@ -153,7 +206,6 @@ public class JoinFactoryBase implements JoinFactory {
         }
         return null;
     }
-
 
     /**
      * 根据节点类型获取处理器
