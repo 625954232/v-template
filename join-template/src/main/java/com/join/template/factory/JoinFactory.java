@@ -1,12 +1,14 @@
 package com.join.template.factory;
 
 import com.join.template.configuration.Configuration;
-import com.join.template.configuration.ExpressionConfig;
+import com.join.template.configuration.ExprConfig;
 import com.join.template.expression.Expression;
 import com.join.template.factory.template.TemplateFactory;
 import com.join.template.listener.ParserListener;
 import com.join.template.listener.ProcessListener;
 import com.join.template.process.Process;
+
+import java.util.Set;
 
 
 public interface JoinFactory extends TemplateFactory {
@@ -26,18 +28,20 @@ public interface JoinFactory extends TemplateFactory {
      * @param expressionConfig
      * @return
      */
-    JoinFactory addConfig(ExpressionConfig expressionConfig);
+    JoinFactory addExprConfig(ExprConfig expressionConfig);
 
     /**
      * 新增表达式配置
      *
      * @param nodeType
-     * @param compareTag
-     * @param compareEndTag
-     * @param endTag
+     * @param tag
+     * @param hasEndTag
+     * @param process
      * @return
      */
-    JoinFactory addConfig(String nodeType, String compareTag, String compareEndTag, String endTag);
+    JoinFactory addExprConfig(String nodeType, String tag, boolean hasEndTag, Process process);
+
+    JoinFactory addExprConfig(String nodeType, String compareTag, String compareEndTag, String endTag, Process process);
 
     /**
      * 新增表达式处理器
@@ -79,7 +83,7 @@ public interface JoinFactory extends TemplateFactory {
      * @param text
      * @return
      */
-    ExpressionConfig hasExpression(String text);
+    ExprConfig hasExpression(String text);
 
     /**
      * 根据节点类型获取处理器
@@ -95,7 +99,7 @@ public interface JoinFactory extends TemplateFactory {
      * @param nodeType
      * @return
      */
-    ParserListener getParserListeners(String nodeType);
+    Set<ParserListener> getParserListeners(String nodeType);
 
 
     /**
@@ -104,7 +108,7 @@ public interface JoinFactory extends TemplateFactory {
      * @param nodeType
      * @return
      */
-    ProcessListener getProcessListeners(String nodeType);
+    Set<ProcessListener> getProcessListeners(String nodeType);
 
     /**
      * 获取表达式执行器

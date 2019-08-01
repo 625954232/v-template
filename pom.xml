@@ -10,6 +10,5 @@
 
     <modules>
         <module>join-template</module>
-        <module>simple-template</module>
     </modules>
 </project>

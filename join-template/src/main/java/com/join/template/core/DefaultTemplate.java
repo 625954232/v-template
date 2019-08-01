@@ -5,11 +5,11 @@ import com.join.template.constant.Constant;
 import com.join.template.context.Content;
 import com.join.template.context.HashContext;
 import com.join.template.factory.JoinFactory;
+import com.join.template.node.Element;
+import com.join.template.node.Node;
 import com.join.template.parser.Parser;
 import com.join.template.parser.ParserElement;
 import com.join.template.process.Process;
-import com.join.template.node.Element;
-import com.join.template.node.Node;
 import com.join.template.reader.Reader;
 import com.join.template.reader.ReaderElement;
 
@@ -24,7 +24,7 @@ public class DefaultTemplate implements Template {
     protected String templateContent;
     protected Content context;
     protected int lineSize = 0;
-    protected Element root = new Node().setNodeType(Constant.EXPRESSION_ROOT);
+    protected Element root = new Node().setNodeType(Constant.EXPR_ROOT);
     private Reader reader;
     private Parser parser;
 
@@ -60,7 +60,7 @@ public class DefaultTemplate implements Template {
 
     @Override
     public Template process(Writer writer) {
-        Process process = joinFactory.getProcess(Constant.EXPRESSION_ROOT);
+        Process process = joinFactory.getProcess(Constant.EXPR_ROOT);
         process.process(root, context, writer);
         return this;
     }

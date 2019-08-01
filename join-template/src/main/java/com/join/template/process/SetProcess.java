@@ -15,6 +15,7 @@ public class SetProcess extends AbstractProcess {
 
     @Override
     public void process(Element element, Content context, Writer writer) {
+        super.process(element, context, writer);
         if (context == null) {
             return;
         }

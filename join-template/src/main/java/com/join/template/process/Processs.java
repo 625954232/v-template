@@ -17,6 +17,7 @@ public class Processs extends AbstractProcess {
 
     @Override
     public void process(Element element, Content context, Writer writer) {
+        super.process(element, context, writer);
         List<Element> childs = element.getChilds();
         for (int i = 0; i < childs.size(); i++) {
             Element child = childs.get(i);

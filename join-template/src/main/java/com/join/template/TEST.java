@@ -2,11 +2,8 @@ package com.join.template;
 
 import com.join.template.core.JoinFactoryBuilder;
 import com.join.template.core.Template;
-import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
-import com.join.template.util.IOUtil;
 
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +12,7 @@ import java.util.List;
 public class TEST {
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
         JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
         Template template = joinFactoryBuilder.builder().putTemplate("/test1.html");
         Element root = template.getRoot();
@@ -29,6 +27,7 @@ public class TEST {
         template.putValue("list", list);
         String process = template.process();
         System.out.println(process);
+        System.out.println((System.currentTimeMillis() - start));
     }
 
 }

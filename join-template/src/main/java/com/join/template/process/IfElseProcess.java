@@ -14,7 +14,7 @@ public class IfElseProcess extends AbstractProcess {
     }
 
     @Override
-    public void process(Element root, Content context, Writer writer) {
-
+    public void process(Element element, Content context, Writer writer) {
+        super.process(element, context, writer);
     }
 }

@@ -20,6 +20,7 @@ public class ListProcess extends AbstractProcess     {
     @Override
     public void process(Element element, Content context, Writer writer) {
         try {
+            super.process(element, context, writer);
             String var = element.getAttribute(configuration.getAttVar());
             String item = element.getAttribute(configuration.getAttItem());
             String open = element.getAttribute(configuration.getAttOpen());

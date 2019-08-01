@@ -1,13 +1,10 @@
 package com.join.template.configuration;
 
 import com.join.template.constant.Constant;
-import jdk.nashorn.internal.ir.debug.JSONWriter;
-import jdk.nashorn.internal.parser.JSONParser;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
-import java.nio.file.InvalidPathException;
 
 @Data
 public class Configuration {

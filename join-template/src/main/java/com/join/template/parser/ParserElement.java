@@ -1,6 +1,6 @@
 package com.join.template.parser;
 
-import com.join.template.configuration.ExpressionConfig;
+import com.join.template.configuration.ExprConfig;
 import com.join.template.constant.Constant;
 import com.join.template.core.Template;
 import com.join.template.node.Element;
@@ -19,7 +19,7 @@ public class ParserElement extends AbstractParser implements Parser {
     }
 
     @Override
-    protected void parserHead(ExpressionConfig nodeConfig, Element element, String text) {
+    protected void parserHead(ExprConfig nodeConfig, Element element, String text) {
         Node node = (Node) element;
         if (nodeConfig != null) {
             int endIndex = text.indexOf(nodeConfig.getCompareEndTag()) + nodeConfig.getCompareEndTag().length();
@@ -34,7 +34,7 @@ public class ParserElement extends AbstractParser implements Parser {
             node.addAttributes(attr);
             return;
         } else {
-            node.setNodeType(Constant.EXPRESSION_TEXT);
+            node.setNodeType(Constant.EXPR_TEXT);
             node.setBody(text);
             return;
         }
@@ -42,7 +42,7 @@ public class ParserElement extends AbstractParser implements Parser {
 
 
     @Override
-    protected void parserBody(ExpressionConfig expressionConfig, Element element, String text) {
+    protected void parserBody(ExprConfig expressionConfig, Element element, String text) {
         Node node = (Node) element;
         if (expressionConfig == null || StringUtils.isBlank(expressionConfig.getEndTag())) {
             return;

@@ -1,9 +1,9 @@
 package com.join.template.factory;
 
-import com.join.template.core.Template;
 import com.join.template.configuration.Configuration;
-import com.join.template.configuration.ExpressionConfig;
+import com.join.template.configuration.ExprConfig;
 import com.join.template.constant.Constant;
+import com.join.template.core.Template;
 import com.join.template.expression.DefaultExpression;
 import com.join.template.expression.Expression;
 import com.join.template.factory.template.TemplateFactory;
@@ -21,12 +21,13 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Getter
 public class JoinFactoryBase implements JoinFactory {
     private Configuration configuration;
     private Map<String, TemplateFactory> templateFactorys = new HashMap();
-    private Map<String, ExpressionConfig> expressionConfigs = new HashMap();
+    private Map<String, ExprConfig> exprConfigs = new HashMap();
 
 
     public JoinFactoryBase(Configuration configuration) {
@@ -36,30 +37,33 @@ public class JoinFactoryBase implements JoinFactory {
 
     private void init() {
         this.templateFactorys.put(Constant.TYPE_MAP, new TemplateMapFactory(this));
+
         this.templateFactorys.put(Constant.TYPE_SINGLE, new TemplateSingleFactory(this));
 
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_ROOT, null, null,
-                null, new Processs(this), null, null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_TEXT, null, null,
-                null, new TextProcess(this), null, null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_LIST, getExprStart("list"), configuration.getExprEndSupport(),
-                getExprEnd("list"), new ListProcess(this), new ListParserListener(this), null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_IF, getExprStart("if"), configuration.getExprEndSupport(),
-                getExprEnd("if"), new IfProcess(this), null, null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_IF_ROOT, null, null,
-                null, new IfRootProcess(this), null, null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_IF_ELSE, getExprStart("else"), configuration.getExprEndSupport(),
-                null, new IfElseProcess(this), null, null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_IF_ELSE_IF, getExprStart("elseif"), configuration.getExprEndSupport(),
-                null, new ElseIfProcess(this), null, null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_INCLUDE, getExprStart("include"), configuration.getExprEndSupport(),
-                null, new IncludeProcess(this), null, null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_VAR, configuration.getVarTagStart(), configuration.getVarTagEnd(),
-                configuration.getVarTagEnd(), new VarcharProcess(this), null, null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_SET, getExprStart("set"), configuration.getExprEndSupport(),
-                null, new SetProcess(this), new SetParserListener(this), null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_GET, getExprStart("get"), configuration.getExprEndSupport(),
-                null, new GetProcess(this), null, null));
+        this.addExprConfig(Constant.EXPR_ROOT, null, null, null, new Processs(this));
+
+        this.addExprConfig(Constant.EXPR_IF_ROOT, null, null, null, new IfRootProcess(this));
+
+        this.addExprConfig(Constant.EXPR_TEXT, null, null, null, new TextProcess(this));
+
+        this.addExprConfig(Constant.EXPR_VAR, configuration.getVarTagStart(), configuration.getVarTagEnd(), configuration.getVarTagEnd(),
+                new VarcharProcess(this));
+
+        this.addExprConfig(Constant.EXPR_LIST, "list", true, new ListProcess(this));
+        this.addListener(Constant.EXPR_LIST, new ListParserListener(this));
+
+        this.addExprConfig(Constant.EXPR_IF, "if", true, new IfProcess(this));
+
+        this.addExprConfig(Constant.EXPR_IF_ELSE, "else", false, new IfElseProcess(this));
+
+        this.addExprConfig(Constant.EXPR_IF_ELSE_IF, "elseif", false, new ElseIfProcess(this));
+
+        this.addExprConfig(Constant.EXPR_INCLUDE, "include", false, new IncludeProcess(this));
+
+        this.addExprConfig(Constant.EXPR_SET, "set", false, new SetProcess(this));
+        this.addListener(Constant.EXPR_SET, new SetParserListener(this));
+
+        this.addExprConfig(Constant.EXPR_GET, "get", false, new GetProcess(this));
     }
 
 
@@ -70,39 +74,59 @@ public class JoinFactoryBase implements JoinFactory {
     }
 
     @Override
-    public JoinFactory addConfig(ExpressionConfig expressionConfig) {
-        this.expressionConfigs.put(expressionConfig.getNodeType(), expressionConfig);
+    public JoinFactory addExprConfig(ExprConfig exprConfig) {
+        this.exprConfigs.put(exprConfig.getNodeType(), exprConfig);
         return this;
     }
 
     @Override
-    public JoinFactory addConfig(String nodeType, String compareTag, String compareEndTag, String endTag) {
-        ExpressionConfig expressionConfig = new ExpressionConfig(nodeType, compareTag, compareEndTag, endTag);
-        this.expressionConfigs.put(nodeType, expressionConfig);
+    public JoinFactory addExprConfig(String nodeType, String tag, boolean hasEndTag, Process process) {
+        ExprConfig exprConfig = new ExprConfig();
+        exprConfig.setNodeType(nodeType);
+        exprConfig.setCompareTag(configuration.getExprFirstBegin() + tag);
+        exprConfig.setCompareEndTag(configuration.getExprEndSupport());
+        exprConfig.setProcess(process);
+        if (hasEndTag) {
+            exprConfig.setEndTag(configuration.getExprLastBegin() + tag + configuration.getExprEndSupport());
+        }
+        this.exprConfigs.put(nodeType, exprConfig);
         return this;
     }
+
+    @Override
+    public JoinFactory addExprConfig(String nodeType, String compareTag, String compareEndTag, String endTag, Process process) {
+        ExprConfig exprConfig = new ExprConfig();
+        exprConfig.setNodeType(nodeType);
+        exprConfig.setCompareTag(compareTag);
+        exprConfig.setCompareEndTag(compareEndTag);
+        exprConfig.setEndTag(endTag);
+        exprConfig.setProcess(process);
+        this.exprConfigs.put(nodeType, exprConfig);
+        return this;
+    }
+
 
     @Override
     public JoinFactory addProcess(String nodeType, Process process) {
-        ExpressionConfig expressionConfig = expressionConfigs.get(nodeType);
-        Assert.isNull(expressionConfig, "请新增%s对应的表达式配置", nodeType);
-        expressionConfig.setProcess(process);
+        ExprConfig exprConfig = exprConfigs.get(nodeType);
+        Assert.isNull(exprConfig, "请新增%s对应的表达式配置", nodeType);
+        exprConfig.setProcess(process);
         return this;
     }
 
     @Override
     public JoinFactory addListener(String nodeType, ParserListener parserListener) {
-        ExpressionConfig expressionConfig = expressionConfigs.get(nodeType);
-        Assert.isNull(expressionConfig, "请新增%s对应的表达式配置", nodeType);
-        expressionConfig.setParserListener(parserListener);
+        ExprConfig exprConfig = exprConfigs.get(nodeType);
+        Assert.isNull(exprConfig, "请新增%s对应的表达式配置", nodeType);
+        exprConfig.addParserListener(parserListener);
         return null;
     }
 
     @Override
     public JoinFactory addListener(String nodeType, ProcessListener processListener) {
-        ExpressionConfig expressionConfig = expressionConfigs.get(nodeType);
-        Assert.isNull(expressionConfig, "请新增%s对应的表达式配置", nodeType);
-        expressionConfig.setProcessListener(processListener);
+        ExprConfig exprConfig = exprConfigs.get(nodeType);
+        Assert.isNull(exprConfig, "请新增%s对应的表达式配置", nodeType);
+        exprConfig.addProcessListener(processListener);
         return this;
     }
 
@@ -118,8 +142,8 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public ExpressionConfig hasExpression(String text) {
-        for (Map.Entry<String, ExpressionConfig> entry : expressionConfigs.entrySet()) {
+    public ExprConfig hasExpression(String text) {
+        for (Map.Entry<String, ExprConfig> entry : exprConfigs.entrySet()) {
             if (StringUtils.isBlank(entry.getValue().getCompareTag())) {
                 continue;
             }
@@ -138,9 +162,9 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     public Process getProcess(String nodeType) {
-        ExpressionConfig expressionConfig = expressionConfigs.get(nodeType);
-        Assert.isNull(expressionConfig, "请新增%s对应的表达式配置", nodeType);
-        return expressionConfig.getProcess();
+        ExprConfig exprConfig = exprConfigs.get(nodeType);
+        Assert.isNull(exprConfig, "请新增%s对应的表达式配置", nodeType);
+        return exprConfig.getProcess();
     }
 
     /**
@@ -149,10 +173,10 @@ public class JoinFactoryBase implements JoinFactory {
      * @param nodeType
      * @return
      */
-    public ParserListener getParserListeners(String nodeType) {
-        ExpressionConfig expressionConfig = expressionConfigs.get(nodeType);
-        Assert.isNull(expressionConfig, "请新增%s对应的表达式配置", nodeType);
-        return expressionConfig.getParserListener();
+    public Set<ParserListener> getParserListeners(String nodeType) {
+        ExprConfig exprConfig = exprConfigs.get(nodeType);
+        Assert.isNull(exprConfig, "请新增%s对应的表达式配置", nodeType);
+        return exprConfig.getParserListeners();
     }
 
 
@@ -162,10 +186,10 @@ public class JoinFactoryBase implements JoinFactory {
      * @param nodeType
      * @return
      */
-    public ProcessListener getProcessListeners(String nodeType) {
-        ExpressionConfig expressionConfig = expressionConfigs.get(nodeType);
-        Assert.isNull(expressionConfig, "请新增%s对应的表达式配置", nodeType);
-        return expressionConfig.getProcessListener();
+    public Set<ProcessListener> getProcessListeners(String nodeType) {
+        ExprConfig exprConfig = exprConfigs.get(nodeType);
+        Assert.isNull(exprConfig, "请新增%s对应的表达式配置", nodeType);
+        return exprConfig.getProcessListeners();
     }
 
     /**
@@ -218,11 +242,4 @@ public class JoinFactoryBase implements JoinFactory {
         return templateFactory.getTemplate(name);
     }
 
-    private String getExprEnd(String tag) {
-        return configuration.getExprLastBegin() + tag + configuration.getExprEndSupport();
-    }
-
-    private String getExprStart(String tag) {
-        return configuration.getExprFirstBegin() + tag;
-    }
 }

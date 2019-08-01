@@ -16,25 +16,23 @@ public class IfRootProcess extends AbstractProcess {
     }
 
     @Override
-    public void process(Element root, Content context, Writer writer) {
+    public void process(Element element, Content context, Writer writer) {
+        super.process(element, context, writer);
         if (context == null) {
             return;
         }
-
-
         boolean condition = false;
         boolean isOfElse = false;
-
-        for (int i = 0; i < root.getChilds().size(); i++) {
-            Element child = root.getChilds().get(i);
-            if (child.getNodeType() == Constant.EXPRESSION_IF_ELSE) {
+        for (int i = 0; i < element.getChilds().size(); i++) {
+            Element child = element.getChilds().get(i);
+            if (child.getNodeType() == Constant.EXPR_IF_ELSE) {
                 isOfElse = true;
             }
             if (condition == isOfElse || !condition == !isOfElse) {
                 continue;
             }
-            if (child.getNodeType() == Constant.EXPRESSION_IF || child.getNodeType() == Constant.EXPRESSION_IF_ELSE_IF) {
-                String text = root.getAttribute(configuration.getAttrText());
+            if (child.getNodeType() == Constant.EXPR_IF || child.getNodeType() == Constant.EXPR_IF_ELSE_IF) {
+                String text = element.getAttribute(configuration.getAttrText());
                 Expression expression = joinFactory.getExpression();
                 expression.setExpression(text);
                 expression.setContext(context);

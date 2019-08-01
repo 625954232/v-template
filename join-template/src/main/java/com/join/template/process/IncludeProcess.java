@@ -1,7 +1,7 @@
 package com.join.template.process;
 
-import com.join.template.core.Template;
 import com.join.template.context.Content;
+import com.join.template.core.Template;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
 import org.apache.commons.lang.StringUtils;
@@ -16,8 +16,9 @@ public class IncludeProcess extends AbstractProcess {
     }
 
     @Override
-    public void process(Element root, Content context, Writer writer) {
-        String file = root.getAttribute(joinFactory.getConfiguration().getAttFile());
+    public void process(Element element, Content context, Writer writer) {
+        super.process(element, context, writer);
+        String file = element.getAttribute(joinFactory.getConfiguration().getAttFile());
         if (StringUtils.isBlank(file)) {
             return;
         }

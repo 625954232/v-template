@@ -1,7 +1,7 @@
 package com.join.template.core;
 
 import com.join.template.configuration.Configuration;
-import com.join.template.configuration.ExpressionConfig;
+import com.join.template.configuration.ExprConfig;
 import com.join.template.factory.JoinFactory;
 import com.join.template.factory.JoinFactoryBase;
 import com.join.template.factory.template.TemplateFactory;
@@ -26,17 +26,20 @@ public class JoinFactoryBuilder {
         this.joinFactory = new JoinFactoryBase(configuration);
     }
 
-
     public JoinFactory addFactory(String nodeType, TemplateFactory templateFactory) {
         return joinFactory.addFactory(nodeType, templateFactory);
     }
 
-    public JoinFactory addConfig(ExpressionConfig expressionConfig) {
-        return joinFactory.addConfig(expressionConfig);
+    public JoinFactory addExprConfig(ExprConfig expressionConfig) {
+        return joinFactory.addExprConfig(expressionConfig);
     }
 
-    public JoinFactory addConfig(String nodeType, String compareTag, String compareEndTag, String endTag) {
-        return joinFactory.addConfig(nodeType, compareTag, compareEndTag, endTag);
+    public JoinFactory addExprConfig(String nodeType, String tag, boolean hasEndTag, Process process) {
+        return joinFactory.addExprConfig(nodeType, tag, hasEndTag, process);
+    }
+
+    public JoinFactory addExprConfig(String nodeType, String compareTag, String compareEndTag, String endTag, Process process) {
+        return joinFactory.addExprConfig(nodeType, compareTag, compareEndTag, endTag, process);
     }
 
     public JoinFactory addProcess(String nodeType, Process process) {

@@ -4,7 +4,6 @@ import com.join.template.context.Content;
 import com.join.template.expression.Expression;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
-
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
@@ -20,6 +19,7 @@ public class VarcharProcess extends AbstractProcess {
 
     @Override
     public void process(Element element, Content context, Writer writer) {
+        super.process(element, context, writer);
         try {
             if (context == null) {
                 return;
