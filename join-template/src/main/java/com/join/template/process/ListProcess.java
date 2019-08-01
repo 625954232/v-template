@@ -1,5 +1,6 @@
 package com.join.template.process;
 
+import com.join.template.constant.Constant;
 import com.join.template.context.Content;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
@@ -11,7 +12,7 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.List;
 
-public class ListProcess extends AbstractProcess     {
+public class ListProcess extends AbstractProcess {
     public ListProcess(JoinFactory joinFactory) {
         super(joinFactory);
     }
@@ -37,24 +38,26 @@ public class ListProcess extends AbstractProcess     {
             if (value == null) {
                 throw new IllegalArgumentException("循环条件没有默认值（var）：" + element.getHead());
             }
+
             if (value instanceof List) {
-                Collection list = (Collection) value;
-                int i = 0;
-                for (Object o : list) {
+                List list = (List) value;
+                for (int i = 0; i < list.size(); i++) {
                     if (i > 0 && !StringUtils.isBlank(separator)) {
                         writer.write(separator);
                     }
                     if (!StringUtils.isBlank(index)) {
                         context.put(index, i);
                     }
-                    context.put(item, o);
-                    for (Element child : element.getChilds()) {
+                    context.put(item, list.get(i));
+                    for (int j = 0; j < element.getChilds().size(); j++) {
+                        Element child = element.getChilds().get(j);
                         Process process = joinFactory.getProcess(child.getNodeType());
                         process.process(child, context, writer);
                     }
-                    i++;
+
                 }
             }
+
             if (!StringUtils.isBlank(close)) {
                 writer.write(close);
             }
@@ -62,5 +65,20 @@ public class ListProcess extends AbstractProcess     {
             throw new TemplateException("语法转换失败：", e);
         }
     }
+
+//    private void removeSpace(Element child, int index, int size) {
+//        if (index >= 0
+//                && child.getNodeType() == Constant.EXPR_TEXT
+//                && child.getBody().startsWith("\r\n")) {
+//            String string = child.getBody().substring(2, child.getBody().length());
+//            child.setBody(string);
+//        }
+//        if ((index + 1) == size
+//                && child.getNodeType() == Constant.EXPR_TEXT
+//                && child.getBody().endsWith("\r\n")) {
+//            String string = child.getBody().substring(0, child.getBody().length() - 2);
+//            child.setBody(string);
+//        }
+//    }
 
 }
