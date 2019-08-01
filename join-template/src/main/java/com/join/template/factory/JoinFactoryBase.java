@@ -40,20 +40,24 @@ public class JoinFactoryBase implements JoinFactory {
 
         this.addConfig(new ExpressionConfig(Constant.EXPRESSION_ROOT, null, null,
                 null, new Processs(this), null, null));
-        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_HTML, null, null,
-                null, new HtmlProcess(this), null, null));
+        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_TEXT, null, null,
+                null, new TextProcess(this), null, null));
         this.addConfig(new ExpressionConfig(Constant.EXPRESSION_LIST, getExprStart("list"), configuration.getExprEndSupport(),
                 getExprEnd("list"), new ListProcess(this), new ListParserListener(this), null));
         this.addConfig(new ExpressionConfig(Constant.EXPRESSION_IF, getExprStart("if"), configuration.getExprEndSupport(),
                 getExprEnd("if"), new IfProcess(this), null, null));
+        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_IF_ROOT, null, null,
+                null, new IfRootProcess(this), null, null));
         this.addConfig(new ExpressionConfig(Constant.EXPRESSION_IF_ELSE, getExprStart("else"), configuration.getExprEndSupport(),
                 null, new IfElseProcess(this), null, null));
+        this.addConfig(new ExpressionConfig(Constant.EXPRESSION_IF_ELSE_IF, getExprStart("elseif"), configuration.getExprEndSupport(),
+                null, new ElseIfProcess(this), null, null));
         this.addConfig(new ExpressionConfig(Constant.EXPRESSION_INCLUDE, getExprStart("include"), configuration.getExprEndSupport(),
                 null, new IncludeProcess(this), null, null));
         this.addConfig(new ExpressionConfig(Constant.EXPRESSION_VAR, configuration.getVarTagStart(), configuration.getVarTagEnd(),
                 configuration.getVarTagEnd(), new VarcharProcess(this), null, null));
         this.addConfig(new ExpressionConfig(Constant.EXPRESSION_SET, getExprStart("set"), configuration.getExprEndSupport(),
-                null, new SetProcess(this),  new SetParserListener(this), null));
+                null, new SetProcess(this), new SetParserListener(this), null));
         this.addConfig(new ExpressionConfig(Constant.EXPRESSION_GET, getExprStart("get"), configuration.getExprEndSupport(),
                 null, new GetProcess(this), null, null));
     }

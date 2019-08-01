@@ -1,21 +1,12 @@
 package com.join.template.listener.parser;
 
 import com.join.template.configuration.Configuration;
-import com.join.template.context.Context;
+import com.join.template.context.Content;
 import com.join.template.factory.JoinFactory;
 import com.join.template.listener.ParserListener;
 import com.join.template.node.Element;
 import com.join.template.node.Node;
-import com.join.template.parser.Parser;
-import com.join.template.process.AbstractProcess;
-import com.join.template.process.Process;
 import com.join.template.verify.TemplateException;
-import org.apache.commons.lang.StringUtils;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Collection;
-import java.util.List;
 
 public class ListParserListener implements ParserListener {
     private final JoinFactory joinFactory;
@@ -27,7 +18,7 @@ public class ListParserListener implements ParserListener {
     }
 
     @Override
-    public void onParser(Element element, Context context) {
+    public void onParser(Element element, Content context) {
         Node node = (Node) element;
         if (!node.getAttributes().containsKey(configuration.getAttVar())) {
             throw new TemplateException("请求设置循环条件-数据来源别名（" + configuration.getAttVar() + "）：" + node.getHead());

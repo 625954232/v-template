@@ -1,6 +1,6 @@
 package com.join.template.process;
 
-import com.join.template.context.Context;
+import com.join.template.context.Content;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
 import com.join.template.verify.TemplateException;
@@ -18,7 +18,7 @@ public class ListProcess extends AbstractProcess     {
 
 
     @Override
-    public void process(Element element, Context context, Writer writer) {
+    public void process(Element element, Content context, Writer writer) {
         try {
             String var = element.getAttribute(configuration.getAttVar());
             String item = element.getAttribute(configuration.getAttItem());

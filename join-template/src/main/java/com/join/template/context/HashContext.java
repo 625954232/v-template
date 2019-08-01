@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class HashContext implements Context {
+public class HashContext implements Content {
     private Map context = null;
 
     public HashContext() {

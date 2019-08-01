@@ -1,6 +1,6 @@
 package com.join.template.process;
 
-import com.join.template.context.Context;
+import com.join.template.context.Content;
 import com.join.template.expression.Expression;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
@@ -19,7 +19,7 @@ public class VarcharProcess extends AbstractProcess {
     }
 
     @Override
-    public void process(Element element, Context context, Writer writer) {
+    public void process(Element element, Content context, Writer writer) {
         try {
             if (context == null) {
                 return;

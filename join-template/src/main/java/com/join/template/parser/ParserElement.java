@@ -2,14 +2,11 @@ package com.join.template.parser;
 
 import com.join.template.configuration.ExpressionConfig;
 import com.join.template.constant.Constant;
-import com.join.template.context.Context;
 import com.join.template.core.Template;
-import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
 import com.join.template.node.Node;
 import com.join.template.util.Utils;
 import com.join.template.verify.Assert;
-import com.join.template.verify.TemplateException;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
@@ -37,7 +34,7 @@ public class ParserElement extends AbstractParser implements Parser {
             node.addAttributes(attr);
             return;
         } else {
-            node.setNodeType(Constant.EXPRESSION_HTML);
+            node.setNodeType(Constant.EXPRESSION_TEXT);
             node.setBody(text);
             return;
         }
@@ -85,7 +82,6 @@ public class ParserElement extends AbstractParser implements Parser {
                 node.setBody(body);
                 node.setEnd(expressionConfig.getEndTag());
             }
-            System.out.println(node);
         }
 
     }

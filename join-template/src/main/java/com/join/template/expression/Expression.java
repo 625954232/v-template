@@ -1,11 +1,11 @@
 package com.join.template.expression;
 
-import com.join.template.context.Context;
+import com.join.template.context.Content;
 
 public interface Expression {
     void setExpression(String expression);
 
-    void setContext(Context context);
+    void setContext(Content context);
 
     void put(String K, Object V);
 

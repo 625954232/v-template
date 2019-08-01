@@ -2,7 +2,7 @@ package com.join.template.core;
 
 import com.join.template.configuration.Configuration;
 import com.join.template.constant.Constant;
-import com.join.template.context.Context;
+import com.join.template.context.Content;
 import com.join.template.context.HashContext;
 import com.join.template.factory.JoinFactory;
 import com.join.template.parser.Parser;
@@ -22,7 +22,7 @@ public class DefaultTemplate implements Template {
     protected Configuration configuration;
     protected String templateName;
     protected String templateContent;
-    protected Context context;
+    protected Content context;
     protected int lineSize = 0;
     protected Element root = new Node().setNodeType(Constant.EXPRESSION_ROOT);
     private Reader reader;
@@ -41,7 +41,7 @@ public class DefaultTemplate implements Template {
         this.templateName = name;
         this.templateContent = text;
         this.reader.read(root, text, this.parser);
-        lineSize = this.reader.getLineSize();
+        this.lineSize = this.reader.getLineSize();
         return this;
     }
 
@@ -53,7 +53,7 @@ public class DefaultTemplate implements Template {
     }
 
     @Override
-    public Template putContext(Context context) {
+    public Template putContext(Content context) {
         this.context = context;
         return this;
     }
@@ -78,7 +78,7 @@ public class DefaultTemplate implements Template {
     }
 
     @Override
-    public Context getContext() {
+    public Content getContent() {
         return context;
     }
 

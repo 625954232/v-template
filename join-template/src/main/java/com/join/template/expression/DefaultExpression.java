@@ -1,12 +1,12 @@
 package com.join.template.expression;
 
-import com.join.template.context.Context;
+import com.join.template.context.Content;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 
 public class DefaultExpression implements Expression {
 
-    private Context context;
+    private Content context;
     private String expression;
     protected final static JexlEngine jexlEngine = new JexlEngine();
 
@@ -16,7 +16,7 @@ public class DefaultExpression implements Expression {
     }
 
     @Override
-    public void setContext(Context context) {
+    public void setContext(Content context) {
         this.context = context;
     }
 

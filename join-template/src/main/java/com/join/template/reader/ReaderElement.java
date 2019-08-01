@@ -1,7 +1,7 @@
 package com.join.template.reader;
 
 import com.join.template.configuration.Configuration;
-import com.join.template.context.Context;
+import com.join.template.context.Content;
 import com.join.template.core.Template;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 public class ReaderElement implements Reader {
 
-    protected Context context;
+    protected Content context;
     protected Template template;
     protected JoinFactory joinFactory;
     protected Configuration configuration;
@@ -19,7 +19,7 @@ public class ReaderElement implements Reader {
 
     public ReaderElement(Template template) {
         this.template = template;
-        this.context = template.getContext();
+        this.context = template.getContent();
         this.joinFactory = template.getJoinFactory();
         this.configuration = joinFactory.getConfiguration();
     }

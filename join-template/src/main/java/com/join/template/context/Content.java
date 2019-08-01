@@ -5,7 +5,7 @@ package com.join.template.context;
  * inface of Context.
  */
 
-public interface Context {
+public interface Content {
     Object get(String K);
 
     void put(String K, Object V);

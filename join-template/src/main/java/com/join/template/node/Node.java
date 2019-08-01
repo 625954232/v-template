@@ -42,6 +42,11 @@ public class Node implements Element {
         return this;
     }
 
+    public Node setAttributes(Map<String, String> attributes) {
+        this.attributes = attributes;
+        return this;
+    }
+
     @Override
     public Element addAttributes(String name, String value) {
         this.attributes.put(name, value);
