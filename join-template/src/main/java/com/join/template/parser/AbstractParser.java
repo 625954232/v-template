@@ -56,7 +56,6 @@ public abstract class AbstractParser implements Parser {
             ifelement.setHead(head);
             ifelement.setAttributes(attributes);
             element.addChilds(ifelement);
-            element.getAttributes().clear();
             //读取子节点
             reader.read(element, body, this);
         }
