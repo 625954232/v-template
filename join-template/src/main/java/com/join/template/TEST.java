@@ -16,7 +16,7 @@ public class TEST {
         JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
         Template template = joinFactoryBuilder.builder().putTemplate("/test1.html");
         Element root = template.getRoot();
-        template.putValue("iftext", 3);
+        template.putValue("iftext", 4);
         template.putValue("text", "测试文本");
         template.putValue("setdate", new Date());
         template.putValue("setlocadate", LocalDateTime.now());
