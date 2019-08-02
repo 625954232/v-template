@@ -36,7 +36,7 @@ public class ListProcess extends AbstractProcess {
             }
             Object value = context.get(var);
             if (value == null) {
-                throw new IllegalArgumentException("循环条件没有默认值（var）：" + element.getHead());
+                throw new TemplateException("循环条件没有默认值（var）：" + element.getHead());
             }
             if (value instanceof List) {
                 List list = (List) value;

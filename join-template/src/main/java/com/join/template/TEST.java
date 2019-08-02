@@ -15,6 +15,7 @@ public class TEST {
         long start = System.currentTimeMillis();
         JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
         Template template = joinFactoryBuilder.builder().putTemplate("/test1.html");
+        System.out.println((System.currentTimeMillis() - start));
         Element root = template.getRoot();
         template.putValue("iftext", 4);
         template.putValue("text", "测试文本");
