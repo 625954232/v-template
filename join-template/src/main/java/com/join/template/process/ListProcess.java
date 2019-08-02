@@ -38,7 +38,6 @@ public class ListProcess extends AbstractProcess {
             if (value == null) {
                 throw new IllegalArgumentException("循环条件没有默认值（var）：" + element.getHead());
             }
-
             if (value instanceof List) {
                 List list = (List) value;
                 for (int i = 0; i < list.size(); i++) {
@@ -57,7 +56,6 @@ public class ListProcess extends AbstractProcess {
 
                 }
             }
-
             if (!StringUtils.isBlank(close)) {
                 writer.write(close);
             }
@@ -65,20 +63,5 @@ public class ListProcess extends AbstractProcess {
             throw new TemplateException("语法转换失败：", e);
         }
     }
-
-//    private void removeSpace(Element child, int index, int size) {
-//        if (index >= 0
-//                && child.getNodeType() == Constant.EXPR_TEXT
-//                && child.getBody().startsWith("\r\n")) {
-//            String string = child.getBody().substring(2, child.getBody().length());
-//            child.setBody(string);
-//        }
-//        if ((index + 1) == size
-//                && child.getNodeType() == Constant.EXPR_TEXT
-//                && child.getBody().endsWith("\r\n")) {
-//            String string = child.getBody().substring(0, child.getBody().length() - 2);
-//            child.setBody(string);
-//        }
-//    }
 
 }

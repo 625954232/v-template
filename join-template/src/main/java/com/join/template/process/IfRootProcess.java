@@ -47,22 +47,8 @@ public class IfRootProcess extends AbstractProcess {
                 }
             }
         }
-
     }
 
-    //去换行
-    private void removeSpace(Element child) {
-        if (child.getNodeType() == Constant.EXPR_TEXT
-                && child.getBody().startsWith("\r\n")) {
-            String string = child.getBody().substring(2, child.getBody().length());
-            child.setBody(string);
-        }
-        if (child.getNodeType() == Constant.EXPR_TEXT
-                && child.getBody().endsWith("\r\n")) {
-            String string = child.getBody().substring(0, child.getBody().length() - 2);
-            child.setBody(string);
-        }
-    }
 
 
 }

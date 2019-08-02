@@ -1,6 +1,7 @@
 package com.join.template.process;
 
 import com.join.template.configuration.Configuration;
+import com.join.template.constant.Constant;
 import com.join.template.context.Content;
 import com.join.template.factory.JoinFactory;
 import com.join.template.listener.ProcessListener;
@@ -27,4 +28,19 @@ public abstract class AbstractProcess implements Process {
             }
         }
     }
+
+    //去换行
+    protected void removeSpace(Element child) {
+        if (child.getNodeType() == Constant.EXPR_TEXT
+                && child.getBody().startsWith("\r\n")) {
+            String string = child.getBody().substring(2, child.getBody().length());
+            child.setBody(string);
+        }
+        if (child.getNodeType() == Constant.EXPR_TEXT
+                && child.getBody().endsWith("\r\n")) {
+            String string = child.getBody().substring(0, child.getBody().length() - 2);
+            child.setBody(string);
+        }
+    }
+
 }
