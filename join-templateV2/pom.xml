@@ -3,17 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>v.template</groupId>
-        <artifactId>v-template</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+    <groupId>com.join</groupId>
     <artifactId>join-template</artifactId>
     <version>2.0</version>
-
-    <name>join.template</name>
-    <description>SimpleV is a engine framework for rendering template in web applications.</description>
-    <url>https://github.com/xqstrive/SimpleV/</url>
 
 
     <properties>

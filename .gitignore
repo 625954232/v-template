@@ -1,4 +1,3 @@
-/v-template.iml
 /.idea
-/simple-template/*.iml
-/join-template/*.iml
+*.iml
+target

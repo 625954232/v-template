@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>join-template</module>
+        <module>join-templateV1</module>
+        <module>join-templateV2</module>
     </modules>
 </project>
