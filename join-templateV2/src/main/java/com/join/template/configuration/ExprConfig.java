@@ -1,59 +1,29 @@
 package com.join.template.configuration;
 
-import com.join.template.listener.ParserListener;
-import com.join.template.listener.ProcessListener;
+
+import com.join.template.parser.Parser;
 import com.join.template.process.Process;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
+@AllArgsConstructor
 public class ExprConfig {
     /**
-     * 节点类型
+     * 标记
+     */
+    private String tag;
+    /**
+     * 标记
      */
     private String nodeType;
     /**
-     * 用于查询标签开始元素起始位置
+     * 解析器
      */
-    private String compareTag;
-    /**
-     * 用于查询标签开始元素结束位置
-     */
-    private String compareEndTag;
-    /**
-     * 标签结束元素
-     */
-    private String endTag;
+    private Parser parser;
     /**
      * 处理器
      */
     private Process process;
-    /**
-     * 解析监听
-     */
-    private Set<ParserListener> parserListeners = new HashSet<>();
-    /**
-     * 处理监听
-     */
-    private Set<ProcessListener> processListeners = new HashSet<>();
-
-    /**
-     * 新增解析监听
-     *
-     * @param parserListener
-     */
-    public void addParserListener(ParserListener parserListener) {
-        parserListeners.add(parserListener);
-    }
-
-    /**
-     * 新增处理监听
-     *
-     * @param processListener
-     */
-    public void addProcessListener(ProcessListener processListener) {
-        processListeners.add(processListener);
-    }
 }

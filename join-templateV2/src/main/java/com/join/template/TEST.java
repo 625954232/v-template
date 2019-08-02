@@ -12,10 +12,10 @@ import java.util.List;
 public class TEST {
 
     public static void main(String[] args) {
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
         Template template = joinFactoryBuilder.builder().putTemplate("/test1.html");
-        System.out.println((System.currentTimeMillis() - start));
+//        System.out.println((System.currentTimeMillis() - start));
         Element root = template.getRoot();
         template.putValue("iftext", 4);
         template.putValue("text", "测试文本");
@@ -28,7 +28,7 @@ public class TEST {
         template.putValue("list", list);
         String process = template.process();
         System.out.println(process);
-        System.out.println((System.currentTimeMillis() - start));
+//        System.out.println((System.currentTimeMillis() - start));
     }
 
 }

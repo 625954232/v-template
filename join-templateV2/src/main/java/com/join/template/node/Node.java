@@ -7,45 +7,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Getter
+
 public class Node implements Element {
     protected String nodeType;
-    protected String head = "";
-    protected String body = "";
-    protected String end = "";
+    protected String original;
     protected Element parent;
     private Map<String, String> attributes = new HashMap<>();
     private List<Element> childs = new ArrayList<>();
 
-    public Node setNodeType(String nodeType) {
+    @Override
+    public Element setNodeType(String nodeType) {
         this.nodeType = nodeType;
         return this;
     }
 
-    public Node setHead(String beginOriginal) {
-        this.head = beginOriginal;
+    @Override
+    public Element setOriginal(String original) {
+        this.original = original;
         return this;
     }
 
-    public Node setEnd(String endOriginal) {
-        this.end = endOriginal;
-        return this;
-    }
-
-    public Node setParent(Element parent) {
+    @Override
+    public Element setParent(Element parent) {
         this.parent = parent;
         return this;
     }
 
-    public Node setBody(String body) {
-        this.body = body;
-        return this;
-    }
 
-    public Node setAttributes(Map<String, String> attributes) {
+    public Element setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
         return this;
     }
+
 
     @Override
     public Element addAttributes(String name, String value) {
@@ -69,6 +62,26 @@ public class Node implements Element {
     @Override
     public String getAttribute(String name) {
         return attributes.get(name);
+    }
+
+    @Override
+    public String getOriginal() {
+        return original;
+    }
+
+    @Override
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    @Override
+    public Element getParent() {
+        return parent;
+    }
+
+    @Override
+    public List<Element> getChilds() {
+        return childs;
     }
 
 

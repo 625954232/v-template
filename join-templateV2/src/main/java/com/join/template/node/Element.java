@@ -5,19 +5,28 @@ import java.util.Map;
 
 public interface Element {
     /**
-     * 设置内容
+     * 设置节点类型
      *
-     * @param body
+     * @param nodeType
      * @return
      */
-    Element setBody(String body);
+    Element setNodeType(String nodeType);
 
     /**
-     * 获取父节点
+     * 设置原文
      *
+     * @param original
      * @return
      */
-    Element getParent();
+    Element setOriginal(String original);
+
+    /**
+     * 设置父节点
+     *
+     * @param parent
+     * @return
+     */
+    Element setParent(Element parent);
 
     /**
      * 新增属性
@@ -52,25 +61,11 @@ public interface Element {
     String getNodeType();
 
     /**
-     * 获取节点头
+     * 获取原文
      *
      * @return
      */
-    String getHead();
-
-    /**
-     * 获取节点结尾
-     *
-     * @return
-     */
-    String getEnd();
-
-    /**
-     * 获取节点内容
-     *
-     * @return
-     */
-    String getBody();
+    String getOriginal();
 
     /**
      * 获取节点属性
@@ -81,11 +76,17 @@ public interface Element {
     String getAttribute(String name);
 
     /**
+     * 获取父节点
+     *
+     * @return
+     */
+    Element getParent();
+
+    /**
      * 获取子节点
      *
      * @return
      */
     List<Element> getChilds();
-
 
 }

@@ -3,8 +3,6 @@ package com.join.template.core;
 import com.join.template.context.Content;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
-import com.join.template.parser.Parser;
-import com.join.template.reader.Reader;
 
 import java.io.Writer;
 
@@ -85,19 +83,6 @@ public interface Template {
      */
     String getTemplateName();
 
-    /**
-     * 获取解析器
-     *
-     * @return
-     */
-    Parser getParser();
-
-    /**
-     * 获取读取器
-     *
-     * @return
-     */
-    Reader getReader();
 
     /**
      * 获取模版行数

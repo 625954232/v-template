@@ -7,11 +7,8 @@ import com.join.template.context.HashContext;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
 import com.join.template.node.Node;
-import com.join.template.parser.Parser;
-import com.join.template.parser.ParserElement;
 import com.join.template.process.Process;
-import com.join.template.reader.Reader;
-import com.join.template.reader.ReaderElement;
+import com.join.template.token.Tokenizer;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -25,14 +22,12 @@ public class DefaultTemplate implements Template {
     protected Content context;
     protected int lineSize = 0;
     protected Element root = new Node().setNodeType(Constant.EXPR_ROOT);
-    private Reader reader;
-    private Parser parser;
+    protected Tokenizer tokenizer;
 
     public DefaultTemplate(JoinFactory joinFactory) {
         this.joinFactory = joinFactory;
         this.context = new HashContext();
-        this.reader = new ReaderElement(this);
-        this.parser = new ParserElement(this);
+        this.tokenizer = new Tokenizer(joinFactory);
     }
 
 
@@ -40,8 +35,7 @@ public class DefaultTemplate implements Template {
     public Template init(String name, String text) {
         this.templateName = name;
         this.templateContent = text;
-        this.reader.read(root, text, this.parser);
-        this.lineSize = this.reader.getLineSize();
+        this.tokenizer.split(text);
         return this;
     }
 
@@ -60,8 +54,8 @@ public class DefaultTemplate implements Template {
 
     @Override
     public Template process(Writer writer) {
-        Process process = joinFactory.getProcess(Constant.EXPR_ROOT);
-        process.process(root, context, writer);
+//        Process process = joinFactory.getProcess(Constant.EXPR_ROOT);
+//        process.process(root, context, writer);
         return this;
     }
 
@@ -95,16 +89,6 @@ public class DefaultTemplate implements Template {
     @Override
     public String getTemplateName() {
         return templateName;
-    }
-
-    @Override
-    public Parser getParser() {
-        return parser;
-    }
-
-    @Override
-    public Reader getReader() {
-        return reader;
     }
 
     @Override
