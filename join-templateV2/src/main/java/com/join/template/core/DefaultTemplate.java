@@ -1,14 +1,15 @@
 package com.join.template.core;
 
 import com.join.template.configuration.Configuration;
+import com.join.template.configuration.ExprConfig;
 import com.join.template.constant.Constant;
 import com.join.template.context.Content;
 import com.join.template.context.HashContext;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
 import com.join.template.node.Node;
-import com.join.template.process.Process;
-import com.join.template.token.Tokenizer;
+import com.join.template.token.AbstractTokenizer;
+import com.join.template.token.TreeTokenizer;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -20,14 +21,12 @@ public class DefaultTemplate implements Template {
     protected String templateName;
     protected String templateContent;
     protected Content context;
-    protected int lineSize = 0;
-    protected Element root = new Node().setNodeType(Constant.EXPR_ROOT);
-    protected Tokenizer tokenizer;
+    protected AbstractTokenizer tokenizer;
 
     public DefaultTemplate(JoinFactory joinFactory) {
         this.joinFactory = joinFactory;
         this.context = new HashContext();
-        this.tokenizer = new Tokenizer(joinFactory);
+        this.tokenizer = new TreeTokenizer(joinFactory);
     }
 
 
@@ -35,7 +34,7 @@ public class DefaultTemplate implements Template {
     public Template init(String name, String text) {
         this.templateName = name;
         this.templateContent = text;
-        this.tokenizer.split(text);
+        this.tokenizer.read(text);
         return this;
     }
 
@@ -54,8 +53,8 @@ public class DefaultTemplate implements Template {
 
     @Override
     public Template process(Writer writer) {
-//        Process process = joinFactory.getProcess(Constant.EXPR_ROOT);
-//        process.process(root, context, writer);
+        ExprConfig exprConfig = joinFactory.getExprConfigByType(Constant.EXPR_ROOT);
+        exprConfig.getProcess().process(this.getRoot(), context, writer);
         return this;
     }
 
@@ -78,7 +77,7 @@ public class DefaultTemplate implements Template {
 
     @Override
     public Element getRoot() {
-        return root;
+        return this.tokenizer.getRoot();
     }
 
     @Override
@@ -93,6 +92,6 @@ public class DefaultTemplate implements Template {
 
     @Override
     public int getLineSize() {
-        return lineSize;
+        return this.tokenizer.getLineSize();
     }
 }

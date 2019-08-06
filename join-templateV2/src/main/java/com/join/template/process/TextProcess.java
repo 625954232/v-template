@@ -16,11 +16,11 @@ public class TextProcess extends AbstractProcess {
 
     @Override
     public void process(Element element, Content context, Writer writer) {
-//        super.process(element, context, writer);
-//        try {
-//            writer.write(element.getBody());
-//        } catch (IOException e) {
-//            throw new IllegalArgumentException("语法转换失败：", e);
-//        }
+        super.process(element, context, writer);
+        try {
+            writer.write(element.getOriginal());
+        } catch (IOException e) {
+            throw new IllegalArgumentException("语法转换失败：", e);
+        }
     }
 }

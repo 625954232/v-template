@@ -15,6 +15,15 @@ public class Node implements Element {
     private Map<String, String> attributes = new HashMap<>();
     private List<Element> childs = new ArrayList<>();
 
+    public Node() {
+    }
+
+    public Node(String nodeType, String original, Element parent) {
+        this.nodeType = nodeType;
+        this.original = original;
+        this.parent = parent;
+    }
+
     @Override
     public Element setNodeType(String nodeType) {
         this.nodeType = nodeType;
@@ -37,6 +46,10 @@ public class Node implements Element {
     public Element setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
         return this;
+    }
+
+    public void setChilds(List<Element> childs) {
+        this.childs = childs;
     }
 
 

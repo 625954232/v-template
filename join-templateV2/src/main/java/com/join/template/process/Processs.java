@@ -1,5 +1,6 @@
 package com.join.template.process;
 
+import com.join.template.configuration.ExprConfig;
 import com.join.template.context.Content;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
@@ -21,7 +22,8 @@ public class Processs extends AbstractProcess {
         List<Element> childs = element.getChilds();
         for (int i = 0; i < childs.size(); i++) {
             Element child = childs.get(i);
-//            joinFactory.getProcess(child.getNodeType()).process(child, context, writer);
+            ExprConfig exprConfig = joinFactory.getExprConfigByType(child.getNodeType());
+            exprConfig.getProcess().process(child, context, writer);
         }
     }
 }

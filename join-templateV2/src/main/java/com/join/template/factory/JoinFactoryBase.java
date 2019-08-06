@@ -9,14 +9,12 @@ import com.join.template.expression.Expression;
 import com.join.template.factory.template.TemplateFactory;
 import com.join.template.factory.template.TemplateMapFactory;
 import com.join.template.factory.template.TemplateSingleFactory;
-import com.join.template.matcher.DefaultTokenMatcher;
 import com.join.template.parser.DefaultParser;
 import com.join.template.parser.Parser;
 import com.join.template.process.*;
 import com.join.template.process.Process;
 import com.join.template.reader.DefaultReader;
 import com.join.template.reader.Reader;
-import com.join.template.token.TokenMatcher;
 import com.join.template.verify.Assert;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class JoinFactoryBase implements JoinFactory {
     private Map<String, TemplateFactory> templateFactorys = new HashMap();
     private Map<String, ExprConfig> exprConfigTypes = new HashMap();
     private Map<String, ExprConfig> exprConfigTags = new HashMap();
-    private List<TokenMatcher> tokenMatchers = new ArrayList<>();
+
 
     public JoinFactoryBase(Configuration configuration) {
         this.configuration = configuration;
@@ -40,10 +38,6 @@ public class JoinFactoryBase implements JoinFactory {
     private void init() {
         this.addFactory(Constant.TYPE_MAP, new TemplateMapFactory(this));
         this.addFactory(Constant.TYPE_SINGLE, new TemplateSingleFactory(this));
-
-        this.addTokenMatcher(configuration.getVarTagStart(), configuration.getVarTagEnd());
-        this.addTokenMatcher(configuration.getExprLastBegin(), configuration.getExprEndSupport());
-        this.addTokenMatcher(configuration.getExprFirstBegin(), configuration.getExprEndSupport());
 
         this.addExprConfig(Constant.EXPR_ROOT, null, new DefaultParser(this), new Processs(this));
         this.addExprConfig(Constant.EXPR_IF_ROOT, null, new DefaultParser(this), new IfRootProcess(this));
@@ -68,19 +62,6 @@ public class JoinFactoryBase implements JoinFactory {
     @Override
     public JoinFactory addFactory(String nodeType, TemplateFactory templateFactory) {
         this.templateFactorys.put(nodeType, templateFactory);
-        return this;
-    }
-
-    /**
-     * 新增短语匹配器
-     *
-     * @param matchBeginTag 匹配开始符
-     * @param matchEndTag   匹配结束符
-     * @return
-     */
-    @Override
-    public JoinFactory addTokenMatcher(String matchBeginTag, String matchEndTag) {
-        this.tokenMatchers.add(new DefaultTokenMatcher(matchBeginTag, matchEndTag));
         return this;
     }
 
@@ -142,15 +123,6 @@ public class JoinFactoryBase implements JoinFactory {
         return new DefaultReader(this);
     }
 
-    /**
-     * 获取匹配器
-     *
-     * @return
-     */
-    @Override
-    public List<TokenMatcher> getTokenMatchers() {
-        return tokenMatchers;
-    }
 
     /**
      * 缓存模版内容

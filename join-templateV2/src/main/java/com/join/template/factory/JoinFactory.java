@@ -7,7 +7,6 @@ import com.join.template.factory.template.TemplateFactory;
 import com.join.template.parser.Parser;
 import com.join.template.process.Process;
 import com.join.template.reader.Reader;
-import com.join.template.token.TokenMatcher;
 
 import java.util.List;
 
@@ -23,14 +22,6 @@ public interface JoinFactory extends TemplateFactory {
      */
     JoinFactory addFactory(String nodeType, TemplateFactory templateFactory);
 
-    /**
-     * 新增短语匹配器
-     *
-     * @param matchBeginTag 匹配开始符
-     * @param matchEndTag   匹配结束符
-     * @return
-     */
-    JoinFactory addTokenMatcher(String matchBeginTag, String matchEndTag);
 
     /**
      * 新增表达式配置
@@ -79,13 +70,6 @@ public interface JoinFactory extends TemplateFactory {
      * @return
      */
     Reader getReader();
-
-    /**
-     * 获取匹配器
-     *
-     * @return
-     */
-    List<TokenMatcher> getTokenMatchers();
 
 
 }
