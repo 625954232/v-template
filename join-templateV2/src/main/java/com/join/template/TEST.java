@@ -28,7 +28,13 @@ public class TEST {
         template.putValue("list", list);
         String process = template.process();
         System.out.println(process);
-        System.out.println((System.currentTimeMillis() - start));
+        long end = System.currentTimeMillis();
+        for (int i = 0; i < 10; i++) {
+            template.process();
+            System.out.println((System.currentTimeMillis() - end));
+            end = System.currentTimeMillis();
+        }
+
     }
 
 }

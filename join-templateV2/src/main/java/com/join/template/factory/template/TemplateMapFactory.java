@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class TemplateMapFactory implements TemplateFactory {
     private JoinFactory joinFactory;
-    private int mapNum = 0;
+
     private Map<String, Template> templateMap = new HashMap<>();
 
     public TemplateMapFactory(JoinFactory joinFactory) {
@@ -40,7 +40,6 @@ public class TemplateMapFactory implements TemplateFactory {
         Template template = new DefaultTemplate(joinFactory);
         template.init(name, content);
         templateMap.put(name, template);
-        ++mapNum;
         return template;
     }
 
@@ -64,7 +63,6 @@ public class TemplateMapFactory implements TemplateFactory {
         Template template = new DefaultTemplate(joinFactory);
         template.init(resource.getName(), text);
         templateMap.put(fileName, template);
-        ++mapNum;
         return template;
     }
 
@@ -76,13 +74,14 @@ public class TemplateMapFactory implements TemplateFactory {
 
     //超过设置的模版缓存数就随机删除
     private void removeUnnecessary() {
-        if (mapNum > 0 && mapNum == joinFactory.getConfiguration().getTemplateCacheSize()) {
-            int contain = templateMap.size();
-            int ran = (int) (Math.random() * (contain + 1));
+        int size = templateMap.size();
+        if (size == joinFactory.getConfiguration().getTemplateCacheSize()) {
+            int ran = (int) (Math.random() * (size + 1));
             int i = 0;
             for (String e : templateMap.keySet()) {
                 if (i >= ran) {
                     templateMap.remove(e);
+                    return;
                 }
             }
         }
