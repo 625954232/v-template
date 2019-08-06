@@ -1,5 +1,6 @@
 package com.join.template.node;
 
+import com.join.template.configuration.ExprConfig;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class Node implements Element {
     protected Element parent;
     private Map<String, String> attributes = new HashMap<>();
     private List<Element> childs = new ArrayList<>();
+    protected ExprConfig exprConfig;
 
     public Node() {
     }
@@ -65,11 +67,15 @@ public class Node implements Element {
         return this;
     }
 
-
     @Override
     public Element addChilds(Element child) {
         this.childs.add(child);
         return this;
+    }
+
+    @Override
+    public void setExprConfig(ExprConfig exprConfig) {
+        this.exprConfig = exprConfig;
     }
 
     @Override
@@ -97,5 +103,12 @@ public class Node implements Element {
         return childs;
     }
 
+    @Override
+    public ExprConfig getExprConfig() {
+        return exprConfig;
+    }
 
+    public Map<String, String> getAttributes() {
+        return attributes;
+    }
 }

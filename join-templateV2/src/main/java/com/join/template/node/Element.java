@@ -1,5 +1,7 @@
 package com.join.template.node;
 
+import com.join.template.configuration.ExprConfig;
+
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +69,8 @@ public interface Element {
      */
     String getOriginal();
 
+    void setExprConfig(ExprConfig exprConfig);
+
     /**
      * 获取节点属性
      *
@@ -89,4 +93,5 @@ public interface Element {
      */
     List<Element> getChilds();
 
+    ExprConfig getExprConfig();
 }

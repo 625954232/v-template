@@ -76,7 +76,7 @@ public class TemplateMapFactory implements TemplateFactory {
 
     //超过设置的模版缓存数就随机删除
     private void removeUnnecessary() {
-        if (mapNum == joinFactory.getConfiguration().getTemplateCacheSize()) {
+        if (mapNum > 0 && mapNum == joinFactory.getConfiguration().getTemplateCacheSize()) {
             int contain = templateMap.size();
             int ran = (int) (Math.random() * (contain + 1));
             int i = 0;

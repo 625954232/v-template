@@ -12,8 +12,6 @@ public interface Constant {
     String EXPR_INCLUDE = "INCLUDE";
     //表达式类型/节点类型-列表
     String EXPR_LIST = "LIST";
-    //表达式类型/节点类型-判断
-    String EXPR_IF_ROOT = "IF_ROOT";
     //表达式类型/节点类型-判断总节点
     String EXPR_IF = "IF";
     //表达式类型/节点类型-判断其他

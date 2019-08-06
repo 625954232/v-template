@@ -1,5 +1,6 @@
 package com.join.template.process;
 
+import com.join.template.configuration.ExprConfig;
 import com.join.template.constant.Constant;
 import com.join.template.context.Content;
 import com.join.template.expression.Expression;
@@ -37,8 +38,8 @@ public class IfProcess extends AbstractProcess {
             } else {
                 if (condition) {
                     removeSpace(child);
-//                    Process process = joinFactory.getProcess(child.getNodeType());
-//                    process.process(child, context, writer);
+                    ExprConfig exprConfig = joinFactory.getExprConfigByType(child.getNodeType());
+                    exprConfig.getProcess().process(child, content, writer);
                 }
             }
         }

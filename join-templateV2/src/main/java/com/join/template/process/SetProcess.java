@@ -19,6 +19,9 @@ public class SetProcess extends AbstractProcess {
         if (context == null) {
             return;
         }
+        String var = element.getAttribute(configuration.getAttVar());
+        String name = element.getAttribute(configuration.getAttName());
+        context.put(name, var);
     }
 
 

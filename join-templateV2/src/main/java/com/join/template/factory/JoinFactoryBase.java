@@ -9,6 +9,9 @@ import com.join.template.expression.Expression;
 import com.join.template.factory.template.TemplateFactory;
 import com.join.template.factory.template.TemplateMapFactory;
 import com.join.template.factory.template.TemplateSingleFactory;
+import com.join.template.listener.ParserListener;
+import com.join.template.listener.ProcessListener;
+import com.join.template.listener.parser.ListParserListener;
 import com.join.template.parser.DefaultParser;
 import com.join.template.parser.Parser;
 import com.join.template.process.*;
@@ -17,7 +20,7 @@ import com.join.template.reader.DefaultReader;
 import com.join.template.reader.Reader;
 import com.join.template.verify.Assert;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,10 +43,10 @@ public class JoinFactoryBase implements JoinFactory {
         this.addFactory(Constant.TYPE_SINGLE, new TemplateSingleFactory(this));
 
         this.addExprConfig(Constant.EXPR_ROOT, null, new DefaultParser(this), new Processs(this));
-        this.addExprConfig(Constant.EXPR_IF_ROOT, null, new DefaultParser(this), new IfRootProcess(this));
         this.addExprConfig(Constant.EXPR_TEXT, null, new DefaultParser(this), new TextProcess(this));
         this.addExprConfig(Constant.EXPR_VAR, null, new DefaultParser(this), new VarcharProcess(this));
-        this.addExprConfig(Constant.EXPR_LIST, "list", new DefaultParser(this), new ListProcess(this));
+        this.addExprConfig(Constant.EXPR_LIST, "list", new DefaultParser(this), new ListProcess(this),
+                Arrays.asList(new ListParserListener(this)), null);
         this.addExprConfig(Constant.EXPR_IF, "if", new DefaultParser(this), new IfProcess(this));
         this.addExprConfig(Constant.EXPR_IF_ELSE, "else", new DefaultParser(this), new IfElseProcess(this));
         this.addExprConfig(Constant.EXPR_IF_ELSE_IF, "elseif", new DefaultParser(this), new ElseIfProcess(this));
@@ -68,8 +71,8 @@ public class JoinFactoryBase implements JoinFactory {
     /**
      * 新增表达式配置
      *
-     * @param tag
      * @param nodeType
+     * @param tag
      * @param parser
      * @param process
      * @return
@@ -77,6 +80,24 @@ public class JoinFactoryBase implements JoinFactory {
     @Override
     public JoinFactory addExprConfig(String nodeType, String tag, Parser parser, Process process) {
         ExprConfig exprConfig = new ExprConfig(tag, nodeType, parser, process);
+        this.exprConfigTags.put(tag, exprConfig);
+        this.exprConfigTypes.put(nodeType, exprConfig);
+        return this;
+    }
+
+    /***
+     * 新增表达式配置
+     * @param nodeType
+     * @param tag
+     * @param parser
+     * @param process
+     * @param parserListeners
+     * @param processListeners
+     * @return
+     */
+    @Override
+    public JoinFactory addExprConfig(String nodeType, String tag, Parser parser, Process process, List<ParserListener> parserListeners, List<ProcessListener> processListeners) {
+        ExprConfig exprConfig = new ExprConfig(tag, nodeType, parser, process, parserListeners, processListeners);
         this.exprConfigTags.put(tag, exprConfig);
         this.exprConfigTypes.put(nodeType, exprConfig);
         return this;

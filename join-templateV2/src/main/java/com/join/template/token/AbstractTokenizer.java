@@ -44,9 +44,10 @@ public abstract class AbstractTokenizer implements Tokenizer {
                 this.match(configuration.getExprFirstBegin(), configuration.getExprEndSupport());
             } else {
                 this.index++;
-                if (text.charAt(index) == '\r' && text.charAt(index + 1) == '\n') {
-                    lineSize++;
-                }
+                if (index < length)
+                    if (text.charAt(index) == '\r' && text.charAt(index + 1) == '\n') {
+                        lineSize++;
+                    }
             }
         }
     }

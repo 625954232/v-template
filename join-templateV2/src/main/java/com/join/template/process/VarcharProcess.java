@@ -4,6 +4,7 @@ import com.join.template.context.Content;
 import com.join.template.expression.Expression;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
+import com.join.template.verify.Assert;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class VarcharProcess extends AbstractProcess {
             expression.setExpression(var);
             expression.setContext(context);
             Object evaluate = expression.evaluate();
+            Assert.isNull(evaluate, "%s（%s）值不可为空", element.getOriginal(), var);
             writer.write(evaluate.toString());
         } catch (IOException e) {
             throw new IllegalArgumentException("语法转换失败：", e);
