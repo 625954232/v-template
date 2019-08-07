@@ -21,9 +21,8 @@ public class TemplateSingleFactory implements TemplateFactory {
 
 
     @Override
-    public Template putTemplate(String name, String content) {
-        Template tb = new DefaultTemplate(joinFactory);
-        tb.init(name, content);
+    public Template putTemplate(String name, String text) {
+        Template tb = new DefaultTemplate(joinFactory, name, text);
         return tb;
     }
 
@@ -34,8 +33,7 @@ public class TemplateSingleFactory implements TemplateFactory {
 
         String name = resource.getName();
         String text = IOUtil.toString(resource);
-        Template template = new DefaultTemplate(joinFactory);
-        template.init(name, text);
+        Template template = new DefaultTemplate(joinFactory, name, text);
         return template;
     }
 

@@ -18,24 +18,18 @@ import java.util.List;
 public class DefaultTemplate implements Template {
     protected JoinFactory joinFactory;
     protected Configuration configuration;
-    protected String templateName;
-    protected String templateContent;
     protected Content context;
     protected Tokenizer tokenizer;
+    protected String name;
+    protected String text;
 
-    public DefaultTemplate(JoinFactory joinFactory) {
+    public DefaultTemplate(JoinFactory joinFactory, String name, String text) {
         this.joinFactory = joinFactory;
         this.context = new HashContext();
         this.tokenizer = new TreeTokenizer(joinFactory);
-    }
-
-
-    @Override
-    public Template init(String name, String text) {
-        this.templateName = name;
-        this.templateContent = text;
-        this.tokenizer.read(text);
-        return this;
+        this.name = name;
+        this.text = text;
+        this.tokenizer.read(this.text);
     }
 
 
@@ -54,7 +48,7 @@ public class DefaultTemplate implements Template {
     @Override
     public Template process(Writer writer) {
         ExprConfig exprConfig = joinFactory.getExprConfigByType(Constant.EXPR_ROOT);
-        exprConfig.getProcess().process(this.getRoot(), context, writer);
+        exprConfig.getProcess().process(this.getRootElement(), context, writer);
         return this;
     }
 
@@ -63,6 +57,16 @@ public class DefaultTemplate implements Template {
         StringWriter writer = new StringWriter();
         this.process(writer);
         return writer.toString();
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public String getText() {
+        return this.text;
     }
 
     @Override
@@ -76,24 +80,15 @@ public class DefaultTemplate implements Template {
     }
 
     @Override
-    public List<Element> getAllElements() {
+    public List<Element> getAllElement() {
         return tokenizer.getAllElement();
     }
 
     @Override
-    public Element getRoot() {
+    public Element getRootElement() {
         return this.tokenizer.getRootElement();
     }
 
-    @Override
-    public String getTemplateContent() {
-        return templateContent;
-    }
-
-    @Override
-    public String getTemplateName() {
-        return templateName;
-    }
 
     @Override
     public int getLineSize() {

@@ -7,11 +7,11 @@ public interface TemplateFactory {
     /**
      * 缓存模板
      *
-     * @param name    模板名称
-     * @param content 模板内容
+     * @param name 模板名称
+     * @param text 模板内容
      * @return
      */
-    Template putTemplate(String name, String content);
+    Template putTemplate(String name, String text);
 
     /**
      * 缓存模板

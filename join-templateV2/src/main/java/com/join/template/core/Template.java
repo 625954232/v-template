@@ -8,14 +8,6 @@ import java.io.Writer;
 import java.util.List;
 
 public interface Template {
-    /**
-     * 模版初始化
-     *
-     * @param name 模版名称
-     * @param text 模版内容
-     * @return
-     */
-    Template init(String name, String text);
 
     /**
      * 写入模版所需的参数
@@ -56,14 +48,19 @@ public interface Template {
      */
     Content getContent();
 
-    List<Element> getAllElements();
+    /**
+     * 获取全部节点
+     *
+     * @return
+     */
+    List<Element> getAllElement();
 
     /**
      * 获取父节点
      *
      * @return
      */
-    Element getRoot();
+    Element getRootElement();
 
     /**
      * 处理模版返回字符串
@@ -77,14 +74,14 @@ public interface Template {
      *
      * @return
      */
-    String getTemplateContent();
+    String getText();
 
     /**
      * 获取模版名称     *
      *
      * @return
      */
-    String getTemplateName();
+    String getName();
 
 
     /**

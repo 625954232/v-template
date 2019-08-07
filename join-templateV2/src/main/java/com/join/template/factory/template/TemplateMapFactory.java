@@ -28,17 +28,16 @@ public class TemplateMapFactory implements TemplateFactory {
      * 加载字符串模版
      *
      * @param name
-     * @param content
+     * @param text
      * @return
      */
     @Override
-    public Template putTemplate(String name, String content) {
+    public Template putTemplate(String name, String text) {
         if (templateMap.containsKey(name))
             return templateMap.get(name);
         removeUnnecessary();
         //初始化模版
-        Template template = new DefaultTemplate(joinFactory);
-        template.init(name, content);
+        Template template = new DefaultTemplate(joinFactory, name, text);
         templateMap.put(name, template);
         return template;
     }
@@ -60,8 +59,7 @@ public class TemplateMapFactory implements TemplateFactory {
         removeUnnecessary();
         //初始化模版
         String text = IOUtil.toString(resource);
-        Template template = new DefaultTemplate(joinFactory);
-        template.init(resource.getName(), text);
+        Template template = new DefaultTemplate(joinFactory, resource.getName(), text);
         templateMap.put(fileName, template);
         return template;
     }
