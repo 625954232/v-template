@@ -12,7 +12,7 @@ public interface Element {
      * @param nodeType
      * @return
      */
-    Element setNodeType(String nodeType);
+    Element setNodeType(Integer nodeType);
 
     /**
      * 设置原文
@@ -60,7 +60,7 @@ public interface Element {
      *
      * @return
      */
-    String getNodeType();
+    Integer getNodeType();
 
     /**
      * 获取原文

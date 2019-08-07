@@ -29,7 +29,7 @@ import java.util.Map;
 public class JoinFactoryBase implements JoinFactory {
     private Configuration configuration;
     private Map<String, TemplateFactory> templateFactorys = new HashMap();
-    private Map<String, ExprConfig> exprConfigTypes = new HashMap();
+    private Map<Integer, ExprConfig> exprConfigTypes = new HashMap();
     private Map<String, ExprConfig> exprConfigTags = new HashMap();
 
 
@@ -78,7 +78,7 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public JoinFactory addExprConfig(String nodeType, String tag, Parser parser, Process process) {
+    public JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process) {
         ExprConfig exprConfig = new ExprConfig(tag, nodeType, parser, process);
         this.exprConfigTags.put(tag, exprConfig);
         this.exprConfigTypes.put(nodeType, exprConfig);
@@ -96,7 +96,7 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public JoinFactory addExprConfig(String nodeType, String tag, Parser parser, Process process, List<ParserListener> parserListeners, List<ProcessListener> processListeners) {
+    public JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, List<ParserListener> parserListeners, List<ProcessListener> processListeners) {
         ExprConfig exprConfig = new ExprConfig(tag, nodeType, parser, process, parserListeners, processListeners);
         this.exprConfigTags.put(tag, exprConfig);
         this.exprConfigTypes.put(nodeType, exprConfig);
@@ -120,7 +120,7 @@ public class JoinFactoryBase implements JoinFactory {
     }
 
     @Override
-    public ExprConfig getExprConfigByType(String nodeType) {
+    public ExprConfig getExprConfigByType(Integer nodeType) {
         return exprConfigTypes.get(nodeType);
     }
 

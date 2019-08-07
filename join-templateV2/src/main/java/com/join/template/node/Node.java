@@ -1,7 +1,6 @@
 package com.join.template.node;
 
 import com.join.template.configuration.ExprConfig;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +9,7 @@ import java.util.Map;
 
 
 public class Node implements Element {
-    protected String nodeType;
+    protected Integer nodeType;
     protected String original;
     protected Element parent;
     private Map<String, String> attributes = new HashMap<>();
@@ -20,14 +19,14 @@ public class Node implements Element {
     public Node() {
     }
 
-    public Node(String nodeType, String original, Element parent) {
+    public Node(Integer nodeType, String original, Element parent) {
         this.nodeType = nodeType;
         this.original = original;
         this.parent = parent;
     }
 
     @Override
-    public Element setNodeType(String nodeType) {
+    public Element setNodeType(Integer nodeType) {
         this.nodeType = nodeType;
         return this;
     }
@@ -89,7 +88,7 @@ public class Node implements Element {
     }
 
     @Override
-    public String getNodeType() {
+    public Integer getNodeType() {
         return nodeType;
     }
 

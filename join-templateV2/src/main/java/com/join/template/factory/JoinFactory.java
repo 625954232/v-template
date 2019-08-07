@@ -33,7 +33,7 @@ public interface JoinFactory extends TemplateFactory {
      * @param process
      * @return
      */
-    JoinFactory addExprConfig(String nodeType, String tag, Parser parser, Process process);
+    JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process);
 
     /**
      * 新增表达式配置
@@ -46,7 +46,7 @@ public interface JoinFactory extends TemplateFactory {
      * @param processListeners
      * @return
      */
-    JoinFactory addExprConfig(String nodeType, String tag, Parser parser, Process process, List<ParserListener> parserListeners, List<ProcessListener> processListeners);
+    JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, List<ParserListener> parserListeners, List<ProcessListener> processListeners);
 
     /**
      * 获取配置
@@ -69,7 +69,7 @@ public interface JoinFactory extends TemplateFactory {
      * @param nodeType
      * @return
      */
-    ExprConfig getExprConfigByType(String nodeType);
+    ExprConfig getExprConfigByType(Integer nodeType);
 
     /**
      * 获取表达式执行器

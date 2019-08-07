@@ -21,7 +21,7 @@ public class ExprConfig {
     /**
      * 标记
      */
-    private String nodeType;
+    private Integer nodeType;
     /**
      * 解析器
      */
@@ -41,14 +41,14 @@ public class ExprConfig {
      */
     private List<ProcessListener> processListeners = new ArrayList<>();
 
-    public ExprConfig(String tag, String nodeType, Parser parser, Process process) {
+    public ExprConfig(String tag, Integer nodeType, Parser parser, Process process) {
         this.tag = tag;
         this.nodeType = nodeType;
         this.parser = parser;
         this.process = process;
     }
 
-    public ExprConfig(String tag, String nodeType, Parser parser, Process process, List<ParserListener> parserListeners, List<ProcessListener> processListeners) {
+    public ExprConfig(String tag, Integer nodeType, Parser parser, Process process, List<ParserListener> parserListeners, List<ProcessListener> processListeners) {
         this.tag = tag;
         this.nodeType = nodeType;
         this.parser = parser;

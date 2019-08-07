@@ -7,23 +7,23 @@ public interface Constant {
     String TYPE_MAP = "MAP";
 
     //表达式类型/节点类型-值
-    String EXPR_VAR = "VAR";
+    int EXPR_VAR = 1;
     //表达式类型/节点类型-引入模版
-    String EXPR_INCLUDE = "INCLUDE";
+    int EXPR_INCLUDE = 2;
     //表达式类型/节点类型-列表
-    String EXPR_LIST = "LIST";
+    int EXPR_LIST = 3;
     //表达式类型/节点类型-判断总节点
-    String EXPR_IF = "IF";
+    int EXPR_IF = 4;
     //表达式类型/节点类型-判断其他
-    String EXPR_IF_ELSE = "ELSE";
+    int EXPR_IF_ELSE = 5;
     //表达式类型/节点类型-其他判断
-    String EXPR_IF_ELSE_IF = "ELSE_IF";
+    int EXPR_IF_ELSE_IF = 6;
     //表达式类型/节点类型-顶层节点
-    String EXPR_ROOT = "ROOT";
+    int EXPR_ROOT = 7;
     //表达式类型/节点类型-文本
-    String EXPR_TEXT = "TEXT";
+    int EXPR_TEXT = 8;
     //表达式类型/节点类型-写入值
-    String EXPR_SET = "SET";
+    int EXPR_SET = 9;
     //表达式类型/节点类型-读取值
-    String EXPR_GET = "GET";
+    int EXPR_GET = 10;
 }

@@ -27,8 +27,6 @@ public class TEST {
         list.add("我很帅");
         list.add("我非常帅");
         template.putValue("list", list);
-        String process = template.process();
-        System.out.println(process);
         long end = System.currentTimeMillis();
         for (int i = 0; i < 10; i++) {
             template.process();
