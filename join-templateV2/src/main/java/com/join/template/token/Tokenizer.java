@@ -14,12 +14,27 @@ public interface Tokenizer {
      */
     void read(String text);
 
+
+    /**
+     * 重置
+     */
+    void reset();
+
+
     /**
      * 获取最顶层节点
      *
      * @return
      */
-    Element getRoot();
+    Element getRootElement();
+
+    /**
+     * 获取全部节点
+     *
+     * @return
+     */
+    List<Element> getAllElement();
+
 
     /**
      * 获取行数
@@ -27,11 +42,4 @@ public interface Tokenizer {
      * @return
      */
     int getLineSize();
-
-    /**
-     * 重置
-     */
-    void reset();
-
-    List<Element> getAllElements();
 }

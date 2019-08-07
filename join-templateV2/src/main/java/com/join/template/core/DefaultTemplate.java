@@ -7,8 +7,6 @@ import com.join.template.context.Content;
 import com.join.template.context.HashContext;
 import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
-import com.join.template.node.Node;
-import com.join.template.token.AbstractTokenizer;
 import com.join.template.token.Tokenizer;
 import com.join.template.token.TreeTokenizer;
 
@@ -79,12 +77,12 @@ public class DefaultTemplate implements Template {
 
     @Override
     public List<Element> getAllElements() {
-        return tokenizer.getAllElements();
+        return tokenizer.getAllElement();
     }
 
     @Override
     public Element getRoot() {
-        return this.tokenizer.getRoot();
+        return this.tokenizer.getRootElement();
     }
 
     @Override

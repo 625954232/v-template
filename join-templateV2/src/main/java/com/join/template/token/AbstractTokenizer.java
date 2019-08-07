@@ -48,11 +48,10 @@ public abstract class AbstractTokenizer implements Tokenizer {
             } else if (text.startsWith(configuration.getExprFirstBegin(), index)) {
                 this.match(configuration.getExprFirstBegin(), configuration.getExprEndSupport());
             } else {
+                if (text.charAt(index) == '\n') {
+                    lineSize++;
+                }
                 this.index++;
-                if (index < length)
-                    if (text.charAt(index) == '\r' && text.charAt(index + 1) == '\n') {
-                        lineSize++;
-                    }
             }
         }
     }
@@ -96,7 +95,7 @@ public abstract class AbstractTokenizer implements Tokenizer {
     }
 
     @Override
-    public Element getRoot() {
+    public Element getRootElement() {
         return root;
     }
 
@@ -106,7 +105,7 @@ public abstract class AbstractTokenizer implements Tokenizer {
     }
 
     @Override
-    public List<Element> getAllElements() {
+    public List<Element> getAllElement() {
         return elementss;
     }
 }
