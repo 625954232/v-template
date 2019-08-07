@@ -5,6 +5,7 @@ import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
 
 import java.io.Writer;
+import java.util.List;
 
 public interface Template {
     /**
@@ -54,6 +55,8 @@ public interface Template {
      * @return
      */
     Content getContent();
+
+    List<Element> getAllElements();
 
     /**
      * 获取父节点

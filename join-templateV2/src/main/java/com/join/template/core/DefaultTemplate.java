@@ -9,10 +9,12 @@ import com.join.template.factory.JoinFactory;
 import com.join.template.node.Element;
 import com.join.template.node.Node;
 import com.join.template.token.AbstractTokenizer;
+import com.join.template.token.Tokenizer;
 import com.join.template.token.TreeTokenizer;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.List;
 
 
 public class DefaultTemplate implements Template {
@@ -21,7 +23,7 @@ public class DefaultTemplate implements Template {
     protected String templateName;
     protected String templateContent;
     protected Content context;
-    protected AbstractTokenizer tokenizer;
+    protected Tokenizer tokenizer;
 
     public DefaultTemplate(JoinFactory joinFactory) {
         this.joinFactory = joinFactory;
@@ -73,6 +75,11 @@ public class DefaultTemplate implements Template {
     @Override
     public Content getContent() {
         return context;
+    }
+
+    @Override
+    public List<Element> getAllElements() {
+        return tokenizer.getAllElements();
     }
 
     @Override

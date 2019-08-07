@@ -2,6 +2,8 @@ package com.join.template.token;
 
 import com.join.template.node.Element;
 
+import java.util.List;
+
 public interface Tokenizer {
 
 
@@ -30,4 +32,6 @@ public interface Tokenizer {
      * 重置
      */
     void reset();
+
+    List<Element> getAllElements();
 }

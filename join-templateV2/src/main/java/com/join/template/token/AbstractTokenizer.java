@@ -7,6 +7,9 @@ import com.join.template.node.Element;
 import com.join.template.node.Node;
 import com.join.template.reader.Reader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public abstract class AbstractTokenizer implements Tokenizer {
     protected Configuration configuration;
@@ -15,6 +18,7 @@ public abstract class AbstractTokenizer implements Tokenizer {
     protected Element root = null;
     protected Element current = null;
     protected Element parent = null;
+    protected List<Element> elementss = null;
     private int lineSize;
     private int length = 0;
     private int index = 0;
@@ -23,6 +27,7 @@ public abstract class AbstractTokenizer implements Tokenizer {
 
 
     public AbstractTokenizer(JoinFactory joinFactory) {
+        this.elementss = new ArrayList<>();
         this.configuration = joinFactory.getConfiguration();
         this.reader = joinFactory.getReader();
         this.root = new Node();
@@ -63,11 +68,13 @@ public abstract class AbstractTokenizer implements Tokenizer {
             String token = this.text.substring(this.start, this.index);
             Element element = new Node(Constant.EXPR_TEXT, token, this.parent);
             this.arrange(element);
+            this.elementss.add(element);
         }
         int index = this.text.indexOf(matchEndTag, this.index);
         String token = this.text.substring(this.index + matchBeginTag.length(), index);
         Element element = this.reader.reader(matchBeginTag, matchEndTag, token);
         this.arrange(element);
+        this.elementss.add(element);
         this.start = this.index = index + matchEndTag.length();
     }
 
@@ -96,5 +103,10 @@ public abstract class AbstractTokenizer implements Tokenizer {
     @Override
     public int getLineSize() {
         return lineSize;
+    }
+
+    @Override
+    public List<Element> getAllElements() {
+        return elementss;
     }
 }

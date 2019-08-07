@@ -47,18 +47,15 @@ public class TreeTokenizer extends AbstractTokenizer implements Tokenizer {
         element.setParent(this.parent);
         if (element.getNodeType() == Constant.EXPR_LIST || element.getNodeType() == Constant.EXPR_IF) {
             if (element.getOriginal().startsWith(this.configuration.getExprFirstBegin())) {
+                this.parent = element;
                 this.current = element;
-                Element parent = element.getParent();
-                Element parentLast = this.parent.getParent();
-                if (parentLast != null && parent.getOriginal().startsWith(this.configuration.getExprFirstBegin()))
-                    this.parent = parentLast;
                 if (element.getNodeType() == Constant.EXPR_IF)
                     ifBeginSize++;
                 if (element.getNodeType() == Constant.EXPR_LIST)
                     listBeginSize++;
             } else if (element.getOriginal().startsWith(this.configuration.getExprLastBegin())) {
-                if (this.current != null)
-                    this.parent.addChilds(this.current);
+                this.parent = this.current.getParent();
+                this.parent.addChilds(this.current);
                 this.current = this.parent;
                 if (element.getNodeType() == Constant.EXPR_IF)
                     ifEndSize++;
