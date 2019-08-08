@@ -10,14 +10,13 @@ import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.factory.template.TemplateMapFactory;
 import com.join.template.core.factory.template.TemplateSingleFactory;
 import com.join.template.core.listener.ParserListener;
-
 import com.join.template.core.listener.ProcessListener;
+import com.join.template.core.verify.Assert;
 import com.join.template.text.expression.DefaultExpression;
 import com.join.template.text.parser.DefaultParser;
 import com.join.template.text.parser.ListParserListener;
 import com.join.template.text.process.*;
 import com.join.template.text.reader.DefaultReader;
-import com.join.template.core.verify.Assert;
 
 import java.util.Arrays;
 import java.util.HashMap;

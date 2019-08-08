@@ -1,10 +1,10 @@
 package com.join.template.core.configuration;
 
 
-import com.join.template.core.listener.ParserListener;
-import com.join.template.core.listener.ProcessListener;
 import com.join.template.core.Parser;
 import com.join.template.core.Process;
+import com.join.template.core.listener.ParserListener;
+import com.join.template.core.listener.ProcessListener;
 import lombok.Data;
 
 import java.util.ArrayList;

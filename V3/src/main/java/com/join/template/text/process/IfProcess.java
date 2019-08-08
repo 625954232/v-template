@@ -1,12 +1,11 @@
 package com.join.template.text.process;
 
+import com.join.template.core.Element;
 import com.join.template.core.Expression;
 import com.join.template.core.configuration.ExprConfig;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.Element;
-
 
 import java.io.Writer;
 

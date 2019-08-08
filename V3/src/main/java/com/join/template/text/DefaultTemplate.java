@@ -1,5 +1,6 @@
 package com.join.template.text;
 
+import com.join.template.core.Element;
 import com.join.template.core.Template;
 import com.join.template.core.Tokenizer;
 import com.join.template.core.configuration.Configuration;
@@ -8,9 +9,7 @@ import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
 import com.join.template.core.context.HashContext;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.Element;
 import com.join.template.text.token.TreeTokenizer;
-
 
 import java.io.StringWriter;
 import java.io.Writer;

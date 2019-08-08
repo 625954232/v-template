@@ -1,12 +1,12 @@
 package com.join.template.text.token;
 
+import com.join.template.core.Element;
+import com.join.template.core.Reader;
+import com.join.template.core.Tokenizer;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.Element;
-import com.join.template.core.Tokenizer;
 import com.join.template.text.node.Node;
-import com.join.template.core.Reader;
 
 import java.util.ArrayList;
 import java.util.List;

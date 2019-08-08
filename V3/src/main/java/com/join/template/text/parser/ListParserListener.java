@@ -1,12 +1,11 @@
 package com.join.template.text.parser;
 
+import com.join.template.core.Element;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.Element;
 import com.join.template.core.listener.ParserListener;
-
-import com.join.template.text.node.Node;
 import com.join.template.core.verify.TemplateException;
+import com.join.template.text.node.Node;
 
 public class ListParserListener implements ParserListener {
     private final JoinFactory joinFactory;

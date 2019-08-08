@@ -5,11 +5,10 @@ import com.join.template.core.Parser;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.configuration.ExprConfig;
 import com.join.template.core.constant.Constant;
-
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.listener.ParserListener;
-import com.join.template.text.node.Node;
 import com.join.template.core.util.Utils;
+import com.join.template.text.node.Node;
 
 import java.util.List;
 import java.util.Map;

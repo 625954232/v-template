@@ -1,11 +1,11 @@
 package com.join.template.text.reader;
 
+import com.join.template.core.Element;
+import com.join.template.core.Parser;
 import com.join.template.core.Reader;
 import com.join.template.core.configuration.ExprConfig;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.Element;
-import com.join.template.core.Parser;
 import com.join.template.core.verify.TemplateException;
 
 public class DefaultReader implements Reader {
