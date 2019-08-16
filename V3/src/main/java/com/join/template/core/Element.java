@@ -116,5 +116,10 @@ public interface Element {
      */
     Map<String, String> getAttributes();
 
+    /**
+     * 是不是结束节点
+     *
+     * @return
+     */
     Boolean isEndElement();
 }

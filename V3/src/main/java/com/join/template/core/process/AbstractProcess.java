@@ -21,7 +21,7 @@ public abstract class AbstractProcess implements Process {
         this.joinFactory = TemplateUtil.getJoinFactory();
     }
 
-    //去换行
+    //去节点开始换行
     protected void removeStartSpace(Element child) {
         if (child.getNodeType() == Constant.EXPR_TEXT
                 && child.getOriginal().startsWith("\r\n")) {
@@ -30,7 +30,7 @@ public abstract class AbstractProcess implements Process {
         }
     }
 
-    //去换行
+    //去节点结束换行
     protected void removeEndSpace(Element child) {
         if (child.getNodeType() == Constant.EXPR_TEXT
                 && child.getOriginal().endsWith("\r\n")) {
