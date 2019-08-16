@@ -55,6 +55,7 @@ public abstract class AbstractWord implements Word {
                 this.index++;
             }
         }
+        this.match(null, null);
     }
 
     /**
@@ -69,6 +70,9 @@ public abstract class AbstractWord implements Word {
             Element element = new Node(Constant.EXPR_TEXT, token, this.parent);
             this.arrange(element);
             elementss.add(element);
+        }
+        if (matchBeginTag == null || matchEndTag == null) {
+            return;
         }
         int index = this.text.indexOf(matchEndTag, this.index);
         String token = this.text.substring(this.index + matchBeginTag.length(), index);

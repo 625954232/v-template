@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
         JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
-        Template template = joinFactoryBuilder.builder().getTemplate("/test1-1.html");
+        Template template = joinFactoryBuilder.builder().getTemplate("/test1.html");
         System.out.println((System.currentTimeMillis() - start));
         List<Element> elements = template.getAllElement();
         Element root = template.getRootElement();
