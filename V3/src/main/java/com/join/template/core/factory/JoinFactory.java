@@ -53,7 +53,12 @@ public interface JoinFactory extends TemplateFactory {
      */
     JoinFactory addListener(Integer nodeType, ProcessListener processListener);
 
-    JoinFactoryBase genGrammar();
+    /**
+     * 加载语法解释
+     *
+     * @return
+     */
+    JoinFactory loadGrammar();
 
     /**
      * 获取配置
@@ -92,5 +97,28 @@ public interface JoinFactory extends TemplateFactory {
      */
     Reader getReader();
 
+    /**
+     * 获取语法解释
+     *
+     * @return
+     */
     Map<Integer, String> getGrammars();
+
+    /**
+     * 获取语法解释
+     *
+     * @param nodeType
+     * @param grammarAttr
+     * @return
+     */
+    String getGrammar(Integer nodeType, Map<String, String> grammarAttr);
+
+    /**
+     * 获取语法解释
+     *
+     * @param exprConfig
+     * @param grammarAttr
+     * @return
+     */
+    String getGrammar(ExprConfig exprConfig, Map<String, String> grammarAttr);
 }

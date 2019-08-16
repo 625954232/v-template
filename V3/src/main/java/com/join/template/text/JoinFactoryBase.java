@@ -85,6 +85,13 @@ public class JoinFactoryBase implements JoinFactory {
         return this;
     }
 
+    /**
+     * 新增解析监听
+     *
+     * @param nodeType
+     * @param parserListener
+     * @return
+     */
     @Override
     public JoinFactory addListener(Integer nodeType, ParserListener parserListener) {
         if (!exprConfigTypes.containsKey(nodeType)) {
@@ -95,6 +102,13 @@ public class JoinFactoryBase implements JoinFactory {
         return this;
     }
 
+    /**
+     * 新增处理监听
+     *
+     * @param nodeType
+     * @param processListener
+     * @return
+     */
     @Override
     public JoinFactory addListener(Integer nodeType, ProcessListener processListener) {
         if (!exprConfigTypes.containsKey(nodeType)) {
@@ -105,27 +119,24 @@ public class JoinFactoryBase implements JoinFactory {
         return this;
     }
 
-
+    /**
+     * 加载语法解释
+     *
+     * @return
+     */
     @Override
-    public JoinFactoryBase genGrammar() {
+    public JoinFactory loadGrammar() {
         grammars.clear();
         for (Map.Entry<Integer, ExprConfig> configEntry : exprConfigTypes.entrySet()) {
-            ExprConfig config = configEntry.getValue();
-            Grammar grammar = configEntry.getValue().getGrammar();
-            StringBuilder builder = new StringBuilder();
-            if (StringUtils.isBlank(config.getTag())) {
-                continue;
-            }
-            builder.append(configuration.getExprFirstBegin());
-            builder.append(config.getTag());
+            ExprConfig exprConfig = configEntry.getValue();
+            Grammar grammar = exprConfig.getGrammar();
             if (grammar != null) {
-                Map<String, String> grammarAttr = grammar.getGrammarAttr();
-                for (Map.Entry<String, String> grammarEntry : grammarAttr.entrySet()) {
-                    builder.append(" ").append(grammarEntry.getKey()).append("=\"").append(grammarEntry.getValue()).append("\"");
-                }
+                String str = getGrammar(exprConfig, grammar.getGrammarAttr());
+                grammars.put(configEntry.getKey(), str);
+            } else {
+                String str = getGrammar(exprConfig, null);
+                grammars.put(configEntry.getKey(), str);
             }
-            builder.append(configuration.getExprEndSupport());
-            grammars.put(configEntry.getKey(), builder.toString());
         }
         return this;
     }
@@ -231,5 +242,49 @@ public class JoinFactoryBase implements JoinFactory {
     @Override
     public Map<Integer, String> getGrammars() {
         return grammars;
+    }
+
+    /**
+     * 获取语法解释
+     *
+     * @param nodeType
+     * @param grammarAttr
+     * @return
+     */
+    @Override
+    public String getGrammar(Integer nodeType, Map<String, String> grammarAttr) {
+        ExprConfig exprConfig = exprConfigTypes.get(nodeType);
+        String grammar = getGrammar(exprConfig, grammarAttr);
+        return grammar;
+    }
+
+    /**
+     * 获取语法解释
+     *
+     * @param exprConfig
+     * @param grammarAttr
+     * @return
+     */
+    @Override
+    public String getGrammar(ExprConfig exprConfig, Map<String, String> grammarAttr) {
+        StringBuilder builder = new StringBuilder();
+        if (StringUtils.isBlank(exprConfig.getTag())) {
+            return null;
+        }
+        builder.append(configuration.getExprFirstBegin());
+        builder.append(exprConfig.getTag());
+        if (grammarAttr != null) {
+            for (Map.Entry<String, String> grammarEntry : grammarAttr.entrySet()) {
+                builder.append(" ").append(grammarEntry.getKey()).append("=\"").append(grammarEntry.getValue()).append("\"");
+            }
+        }
+        builder.append(configuration.getExprEndSupport());
+        if (Constant.EXPR_IF == exprConfig.getNodeType() || Constant.EXPR_LIST == exprConfig.getNodeType()) {
+            builder.append("请在这输入你需要生成的内容");
+            builder.append(configuration.getExprLastBegin());
+            builder.append(exprConfig.getTag());
+            builder.append(configuration.getExprEndSupport());
+        }
+        return builder.toString();
     }
 }
