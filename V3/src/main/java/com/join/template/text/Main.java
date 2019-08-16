@@ -44,7 +44,7 @@ public class Main {
         long end = System.currentTimeMillis();
         String process = template.process();
         System.out.println("模版生成耗时：" + (System.currentTimeMillis() - end));
-
+        System.out.println("模版生成结果：" + process);
 
     }
 
