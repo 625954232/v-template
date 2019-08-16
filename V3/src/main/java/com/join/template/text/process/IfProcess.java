@@ -33,7 +33,8 @@ public class IfProcess extends AbstractProcess implements Process {
                 condition = evaluate(child, content);
             } else {
                 if (condition) {
-                    removeSpace(child);
+                    removeStartSpace(child);
+                    removeEndSpace(child);
                     ExpressionHandle exprConfig = joinFactory.getExpressionHandle(child.getNodeType());
                     exprConfig.getProcess().process(child, content, writer);
                 }

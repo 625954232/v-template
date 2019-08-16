@@ -45,6 +45,15 @@ public class ListProcess extends AbstractProcess implements Process {
                     context.put(item, list.get(i));
                     for (int j = 0; j < element.getChilds().size(); j++) {
                         Element child = element.getChilds().get(j);
+                        if (!StringUtils.isBlank(separator)) {
+                            removeStartSpace(child);
+                            removeEndSpace(child);
+                        } else {
+                            removeStartSpace(child);
+                        }
+                        if (j == element.getChilds().size() - 1 && i == list.size() - 1) {
+                            removeEndSpace(child);
+                        }
                         ExpressionHandle exprConfig = joinFactory.getExpressionHandle(child.getNodeType());
                         exprConfig.getProcess().process(child, context, writer);
                     }
