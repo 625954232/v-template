@@ -4,6 +4,7 @@ package com.join.template.core.factory.template;
 import com.join.template.core.Template;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.util.IOUtil;
+import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.Assert;
 import com.join.template.text.DefaultTemplate;
 
@@ -15,14 +16,14 @@ import java.io.File;
 public class TemplateSingleFactory implements TemplateFactory {
     private final JoinFactory joinFactory;
 
-    public TemplateSingleFactory(JoinFactory joinFactory) {
-        this.joinFactory = joinFactory;
+    public TemplateSingleFactory() {
+        this.joinFactory = TemplateUtil.getJoinFactory();
     }
 
 
     @Override
     public Template putTemplate(String name, String text) {
-        Template tb = new DefaultTemplate(joinFactory, name, text);
+        Template tb = new DefaultTemplate(name, text);
         return tb;
     }
 
@@ -33,7 +34,7 @@ public class TemplateSingleFactory implements TemplateFactory {
 
         String name = resource.getName();
         String text = IOUtil.toString(resource);
-        Template template = new DefaultTemplate(joinFactory, name, text);
+        Template template = new DefaultTemplate(name, text);
         return template;
     }
 

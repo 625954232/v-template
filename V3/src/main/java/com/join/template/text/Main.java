@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
-        JoinFactory builder = joinFactoryBuilder.loadGrammar().builder();
+        JoinFactory builder = joinFactoryBuilder.builder();
         Map<Integer, String> grammars = builder.getGrammars();
         Template template = builder.putTemplate("/test1.html");
         System.out.println(template);

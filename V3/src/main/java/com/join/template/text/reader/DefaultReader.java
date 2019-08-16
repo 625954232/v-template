@@ -6,14 +6,15 @@ import com.join.template.core.Reader;
 import com.join.template.core.entity.ExprConfig;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.TemplateException;
 
 public class DefaultReader implements Reader {
     protected JoinFactory joinFactory;
 
 
-    public DefaultReader(JoinFactory joinFactory) {
-        this.joinFactory = joinFactory;
+    public DefaultReader() {
+        this.joinFactory = TemplateUtil.getJoinFactory();
     }
 
 

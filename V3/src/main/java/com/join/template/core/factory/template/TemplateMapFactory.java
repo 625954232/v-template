@@ -4,6 +4,7 @@ package com.join.template.core.factory.template;
 import com.join.template.core.Template;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.util.IOUtil;
+import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.Assert;
 import com.join.template.text.DefaultTemplate;
 
@@ -19,8 +20,8 @@ public class TemplateMapFactory implements TemplateFactory {
 
     private Map<String, Template> templateMap = new HashMap<>();
 
-    public TemplateMapFactory(JoinFactory joinFactory) {
-        this.joinFactory = joinFactory;
+    public TemplateMapFactory() {
+        this.joinFactory = TemplateUtil.getJoinFactory();
     }
 
 
@@ -37,7 +38,7 @@ public class TemplateMapFactory implements TemplateFactory {
             return templateMap.get(name);
         removeUnnecessary();
         //初始化模版
-        Template template = new DefaultTemplate(joinFactory, name, text);
+        Template template = new DefaultTemplate(name, text);
         templateMap.put(name, template);
         return template;
     }
@@ -59,7 +60,7 @@ public class TemplateMapFactory implements TemplateFactory {
         removeUnnecessary();
         //初始化模版
         String text = IOUtil.toString(resource);
-        Template template = new DefaultTemplate(joinFactory, resource.getName(), text);
+        Template template = new DefaultTemplate(resource.getName(), text);
         templateMap.put(fileName, template);
         return template;
     }

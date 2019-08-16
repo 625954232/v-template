@@ -6,21 +6,21 @@ import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.util.TemplateUtil;
 
 import java.io.Writer;
 
 public abstract class AbstractProcess implements Process {
-    protected Configuration configuration;
-    protected JoinFactory joinFactory;
+    protected final Configuration configuration;
+    protected final JoinFactory joinFactory;
 
-    public AbstractProcess(JoinFactory joinFactory) {
-        this.joinFactory = joinFactory;
-        this.configuration = joinFactory.getConfiguration();
+    public AbstractProcess() {
+        this.configuration = TemplateUtil.getConfiguration();
+        this.joinFactory = TemplateUtil.getJoinFactory();
     }
 
     @Override
     public void process(Element element, Content context, Writer writer) {
-
     }
 
     //去换行

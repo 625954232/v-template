@@ -10,10 +10,6 @@ import java.io.Writer;
 public class TextProcess extends AbstractProcess {
 
 
-    public TextProcess(JoinFactory configuration) {
-        super(configuration);
-    }
-
     @Override
     public void process(Element element, Content context, Writer writer) {
         super.process(element, context, writer);

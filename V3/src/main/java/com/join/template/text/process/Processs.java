@@ -12,11 +12,6 @@ import java.util.List;
 public class Processs extends AbstractProcess {
 
 
-    public Processs(JoinFactory configuration) {
-        super(configuration);
-    }
-
-
     @Override
     public void process(Element element, Content context, Writer writer) {
         super.process(element, context, writer);

@@ -7,12 +7,13 @@ import com.join.template.core.entity.ExprConfig;
 import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
-import com.join.template.text.JoinFactoryBase;
 
 import java.util.Map;
 
 
 public interface JoinFactory extends TemplateFactory {
+
+    void init();
 
     /**
      * 新增模版工厂
@@ -33,7 +34,7 @@ public interface JoinFactory extends TemplateFactory {
      * @param grammar
      * @return
      */
-    JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, Grammar grammar);
+    JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar);
 
     /**
      * 新增解析监听

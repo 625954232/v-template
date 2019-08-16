@@ -11,9 +11,11 @@ import com.join.template.core.factory.template.TemplateMapFactory;
 import com.join.template.core.factory.template.TemplateSingleFactory;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
+import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.Assert;
 import com.join.template.core.verify.TemplateException;
 import com.join.template.text.expression.DefaultExpression;
+import com.join.template.text.grammar.*;
 import com.join.template.text.parser.DefaultParser;
 import com.join.template.text.parser.ListParserListener;
 import com.join.template.text.process.*;
@@ -31,26 +33,25 @@ public class JoinFactoryBase implements JoinFactory {
     private Map<String, ExprConfig> exprConfigTags = new HashMap();
     private Map<Integer, String> grammars = new HashMap();
 
-    public JoinFactoryBase(Configuration configuration) {
-        this.configuration = configuration;
-        init();
+    public JoinFactoryBase() {
+        this.configuration = TemplateUtil.getConfiguration();
     }
 
-    private void init() {
-        this.addFactory(Constant.TYPE_MAP, new TemplateMapFactory(this));
-        this.addFactory(Constant.TYPE_SINGLE, new TemplateSingleFactory(this));
+    @Override
+    public void init() {
+        this.addFactory(Constant.TYPE_MAP, new TemplateMapFactory());
+        this.addFactory(Constant.TYPE_SINGLE, new TemplateSingleFactory());
 
-        this.addExprConfig(Constant.EXPR_ROOT, null, new DefaultParser(this), new Processs(this), null);
-        this.addExprConfig(Constant.EXPR_TEXT, null, new DefaultParser(this), new TextProcess(this), null);
-        this.addExprConfig(Constant.EXPR_VAR, null, new DefaultParser(this), new VarcharProcess(this), null);
-        this.addExprConfig(Constant.EXPR_LIST, "list", new DefaultParser(this), new ListProcess(this), new ListProcess(this));
-        this.addListener(Constant.EXPR_LIST, new ListParserListener(this));
-        this.addExprConfig(Constant.EXPR_IF, "if", new DefaultParser(this), new IfProcess(this), new IfProcess(this));
-        this.addExprConfig(Constant.EXPR_IF_ELSE, "else", new DefaultParser(this), new IfElseProcess(this), null);
-        this.addExprConfig(Constant.EXPR_IF_ELSE_IF, "elseif", new DefaultParser(this), new ElseIfProcess(this), new ElseIfProcess(this));
-        this.addExprConfig(Constant.EXPR_INCLUDE, "include", new DefaultParser(this), new IncludeProcess(this), new IncludeProcess(this));
-        this.addExprConfig(Constant.EXPR_SET, "set", new DefaultParser(this), new SetProcess(this), new SetProcess(this));
-        this.addExprConfig(Constant.EXPR_GET, "get", new DefaultParser(this), new GetProcess(this), new GetProcess(this));
+        this.addExprConfig(Constant.EXPR_ROOT, null, new DefaultParser(), new Processs(), null);
+        this.addExprConfig(Constant.EXPR_TEXT, null, new DefaultParser(), new TextProcess(), null);
+        this.addExprConfig(Constant.EXPR_VAR, null, new DefaultParser(), new VarcharProcess(), null);
+        this.addExprConfig(Constant.EXPR_LIST, "list", new DefaultParser(), new ListProcess(), new ListGrammarExpl());
+        this.addExprConfig(Constant.EXPR_IF, "if", new DefaultParser(), new IfProcess(), new IfGrammarExpl());
+        this.addExprConfig(Constant.EXPR_IF_ELSE, "else", new DefaultParser(), new IfElseProcess(), null);
+        this.addExprConfig(Constant.EXPR_IF_ELSE_IF, "elseif", new DefaultParser(), new ElseIfProcess(), new ElseIfGrammarExpl());
+        this.addExprConfig(Constant.EXPR_INCLUDE, "include", new DefaultParser(), new IncludeProcess(), new IncludeGrammarExpl());
+        this.addExprConfig(Constant.EXPR_SET, "set", new DefaultParser(), new SetProcess(), new SetGrammarExpl());
+        this.addExprConfig(Constant.EXPR_GET, "get", new DefaultParser(), new GetProcess(), new GetGrammarExpl());
     }
 
 
@@ -78,7 +79,7 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, Grammar grammar) {
+    public JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar) {
         ExprConfig exprConfig = new ExprConfig(tag, nodeType, parser, process, grammar);
         this.exprConfigTags.put(tag, exprConfig);
         this.exprConfigTypes.put(nodeType, exprConfig);
@@ -129,7 +130,7 @@ public class JoinFactoryBase implements JoinFactory {
         grammars.clear();
         for (Map.Entry<Integer, ExprConfig> configEntry : exprConfigTypes.entrySet()) {
             ExprConfig exprConfig = configEntry.getValue();
-            Grammar grammar = exprConfig.getGrammar();
+            GrammarExpl grammar = exprConfig.getGrammar();
             if (grammar != null) {
                 String str = getGrammar(exprConfig, grammar.getGrammarAttr());
                 grammars.put(configEntry.getKey(), str);
@@ -190,7 +191,7 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public Reader getReader() {
-        return new DefaultReader(this);
+        return new DefaultReader();
     }
 
 

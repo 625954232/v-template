@@ -7,6 +7,7 @@ import com.join.template.core.entity.ExprConfig;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.listener.ParserListener;
+import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.util.Utils;
 import com.join.template.text.node.Node;
 
@@ -18,9 +19,9 @@ public class DefaultParser implements Parser {
     private Configuration configuration;
     private JoinFactory joinFactory;
 
-    public DefaultParser(JoinFactory joinFactory) {
-        this.joinFactory = joinFactory;
-        this.configuration = joinFactory.getConfiguration();
+    public DefaultParser() {
+        this.joinFactory = TemplateUtil.getJoinFactory();
+        this.configuration = TemplateUtil.getConfiguration();
     }
 
 

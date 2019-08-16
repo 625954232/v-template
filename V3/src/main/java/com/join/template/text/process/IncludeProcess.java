@@ -1,7 +1,7 @@
 package com.join.template.text.process;
 
 import com.join.template.core.Element;
-import com.join.template.core.Grammar;
+import com.join.template.core.GrammarExpl;
 import com.join.template.core.Template;
 import com.join.template.core.context.Content;
 import com.join.template.core.factory.JoinFactory;
@@ -11,12 +11,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IncludeProcess extends AbstractProcess implements Grammar {
+public class IncludeProcess extends AbstractProcess {
 
-
-    public IncludeProcess(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
 
     @Override
     public void process(Element element, Content context, Writer writer) {
@@ -30,10 +26,5 @@ public class IncludeProcess extends AbstractProcess implements Grammar {
         template.process(writer);
     }
 
-    @Override
-    public Map<String, String> getGrammarAttr() {
-        Map<String, String> fields = new HashMap<>();
-        fields.put(configuration.getAttFile(), "模板名称");
-        return fields;
-    }
+
 }

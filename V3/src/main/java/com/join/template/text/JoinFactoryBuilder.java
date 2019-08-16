@@ -1,6 +1,6 @@
 package com.join.template.text;
 
-import com.join.template.core.Grammar;
+import com.join.template.core.GrammarExpl;
 import com.join.template.core.Parser;
 import com.join.template.core.Process;
 import com.join.template.core.configuration.Configuration;
@@ -8,6 +8,7 @@ import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
+import com.join.template.core.util.TemplateUtil;
 
 
 public class JoinFactoryBuilder {
@@ -20,10 +21,13 @@ public class JoinFactoryBuilder {
 
     public JoinFactoryBuilder(JoinFactory joinFactory) {
         this.joinFactory = joinFactory;
+        TemplateUtil.setJoinFactory(joinFactory);
     }
 
     public JoinFactoryBuilder(Configuration configuration) {
-        this.joinFactory = new JoinFactoryBase(configuration);
+        TemplateUtil.setConfiguration(configuration);
+        this.joinFactory = new JoinFactoryBase();
+        TemplateUtil.setJoinFactory(joinFactory);
     }
 
 
@@ -32,7 +36,7 @@ public class JoinFactoryBuilder {
         return this;
     }
 
-    public JoinFactoryBuilder addExprConfig(Integer nodeType, String tag, Parser parser, Process process, Grammar grammar) {
+    public JoinFactoryBuilder addExprConfig(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar) {
         joinFactory.addExprConfig(nodeType, tag, parser, process, grammar);
         return this;
     }
@@ -47,11 +51,6 @@ public class JoinFactoryBuilder {
         return this;
     }
 
-    public JoinFactoryBuilder loadGrammar() {
-        joinFactory.loadGrammar();
-        return this;
-    }
-
     public JoinFactoryBuilder putTemplate(String name, String text) {
         joinFactory.putTemplate(name, text);
         return this;
@@ -63,6 +62,9 @@ public class JoinFactoryBuilder {
     }
 
     public JoinFactory builder() {
+        joinFactory.init();
+        joinFactory.loadGrammar();
+        TemplateUtil.setJoinFactory(joinFactory);
         return joinFactory;
     }
 }

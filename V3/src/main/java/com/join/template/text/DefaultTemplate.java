@@ -9,6 +9,7 @@ import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
 import com.join.template.core.context.HashContext;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.util.TemplateUtil;
 import com.join.template.text.token.TreeTokenizer;
 
 import java.io.StringWriter;
@@ -24,8 +25,8 @@ public class DefaultTemplate implements Template {
     protected String name;
     protected String text;
 
-    public DefaultTemplate(JoinFactory joinFactory, String name, String text) {
-        this.joinFactory = joinFactory;
+    public DefaultTemplate(String name, String text) {
+        this.joinFactory = TemplateUtil.getJoinFactory();
         this.context = new HashContext();
         this.tokenizer = new TreeTokenizer(joinFactory);
         this.name = name;
