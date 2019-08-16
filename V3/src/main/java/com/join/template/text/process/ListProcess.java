@@ -1,8 +1,9 @@
 package com.join.template.text.process;
 
 import com.join.template.core.Element;
-import com.join.template.core.Process;
-import com.join.template.core.entity.ExpressionHandle;
+import com.join.template.core.ExpressionHandle;
+import com.join.template.core.process.AbstractProcess;
+import com.join.template.core.process.Process;
 import com.join.template.core.context.Content;
 import com.join.template.core.verify.TemplateException;
 import org.apache.commons.lang.StringUtils;

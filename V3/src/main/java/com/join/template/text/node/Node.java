@@ -1,7 +1,7 @@
 package com.join.template.text.node;
 
 import com.join.template.core.Element;
-import com.join.template.core.entity.ExpressionHandle;
+import com.join.template.text.expression.DefaultExpressionHandle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,9 +13,10 @@ public class Node implements Element {
     protected Integer nodeType;
     protected String original;
     protected Element parent;
+    protected Boolean isEndElement = false;
     private Map<String, String> attributes = new HashMap<>();
     private List<Element> childs = new ArrayList<>();
-    protected ExpressionHandle expressionHandle;
+    protected DefaultExpressionHandle expressionHandle;
 
     public Node() {
     }
@@ -45,16 +46,6 @@ public class Node implements Element {
     }
 
 
-    public Element setAttributes(Map<String, String> attributes) {
-        this.attributes = attributes;
-        return this;
-    }
-
-    public void setChilds(List<Element> childs) {
-        this.childs = childs;
-    }
-
-
     @Override
     public Element addAttributes(String name, String value) {
         this.attributes.put(name, value);
@@ -68,13 +59,19 @@ public class Node implements Element {
     }
 
     @Override
+    public Node setEndElement(Boolean endElement) {
+        this.isEndElement = endElement;
+        return this;
+    }
+
+    @Override
     public Element addChilds(Element child) {
         this.childs.add(child);
         return this;
     }
 
     @Override
-    public void setExprConfig(ExpressionHandle exprConfig) {
+    public void setExpressionHandle(DefaultExpressionHandle exprConfig) {
         this.expressionHandle = exprConfig;
     }
 
@@ -104,13 +101,17 @@ public class Node implements Element {
     }
 
     @Override
-    public ExpressionHandle getExpressionHandle() {
+    public DefaultExpressionHandle getExpressionHandle() {
         return expressionHandle;
     }
 
+    @Override
     public Map<String, String> getAttributes() {
         return attributes;
     }
 
-
+    @Override
+    public Boolean isEndElement() {
+        return isEndElement;
+    }
 }

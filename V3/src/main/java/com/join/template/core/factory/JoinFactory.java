@@ -1,9 +1,8 @@
 package com.join.template.core.factory;
 
 import com.join.template.core.*;
-import com.join.template.core.Process;
+import com.join.template.core.process.Process;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.core.entity.ExpressionHandle;
 import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
@@ -28,17 +27,6 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      */
     JoinFactory addFactory(String nodeType, TemplateFactory templateFactory);
 
-    /**
-     * 新增表达式配置
-     *
-     * @param nodeType
-     * @param tag
-     * @param parser
-     * @param process
-     * @param grammar
-     * @return
-     */
-    JoinFactory addExpressionHandle(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar);
 
     /**
      * 新增表达式配置
@@ -132,9 +120,9 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
     /**
      * 获取语法解释
      *
-     * @param exprConfig
+     * @param expressionHandle
      * @param grammarAttr
      * @return
      */
-    String getGrammar(ExpressionHandle exprConfig, Map<String, String> grammarAttr);
+    String getGrammar(ExpressionHandle expressionHandle, Map<String, String> grammarAttr);
 }

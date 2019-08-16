@@ -1,13 +1,9 @@
 package com.join.template.text.process;
 
 import com.join.template.core.Element;
-import com.join.template.core.GrammarExpl;
-import com.join.template.core.Process;
-import com.join.template.core.Template;
-import com.join.template.core.configuration.Configuration;
+import com.join.template.core.process.AbstractProcess;
+import com.join.template.core.process.Process;
 import com.join.template.core.context.Content;
-import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.Assert;
 import com.join.template.core.verify.TemplateException;
 import org.apache.commons.lang.StringUtils;
@@ -18,8 +14,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GetProcess extends AbstractProcess implements Process {
 

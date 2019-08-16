@@ -5,7 +5,11 @@ import java.util.Map;
 
 public interface GrammarExpl {
 
-    void verifyGrammarAttr(String original, Map<String, String> attr);
+    default void verifyGrammarAttr(Element element) {
+        verifyGrammarAttr(element.getOriginal(), element.isEndElement(), element.getAttributes());
+    }
+
+    void verifyGrammarAttr(String original, Boolean endElement, Map<String, String> attr);
 
     Map<String, String> getGrammarAttr();
 

@@ -1,8 +1,5 @@
 package com.join.template.text;
 
-import com.join.template.core.GrammarExpl;
-import com.join.template.core.Parser;
-import com.join.template.core.Process;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.factory.template.TemplateFactory;
@@ -31,11 +28,6 @@ public class JoinFactoryBuilder {
 
     public JoinFactoryBuilder addFactory(String nodeType, TemplateFactory templateFactory) {
         joinFactory.addFactory(nodeType, templateFactory);
-        return this;
-    }
-
-    public JoinFactoryBuilder addExprConfig(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar) {
-        joinFactory.addExpressionHandle(nodeType, tag, parser, process, grammar);
         return this;
     }
 

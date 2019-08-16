@@ -1,9 +1,9 @@
 package com.join.template.text;
 
 import com.join.template.core.*;
-import com.join.template.core.Process;
+import com.join.template.core.process.Process;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.core.entity.ExpressionHandle;
+import com.join.template.text.expression.DefaultExpressionHandle;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.factory.template.TemplateFactory;
@@ -26,7 +26,7 @@ import java.util.Map;
 public class JoinFactoryBase implements JoinFactory {
     private Configuration configuration;
     private Map<String, TemplateFactory> templateFactorys = new HashMap();
-    private Map<Object, ExpressionHandle> exprConfigs = new HashMap();
+    private Map<Object, ExpressionHandle> expressionHandles = new HashMap();
     private Map<Integer, String> grammars = new HashMap();
 
     public JoinFactoryBase(Configuration configuration) {
@@ -65,22 +65,6 @@ public class JoinFactoryBase implements JoinFactory {
         return this;
     }
 
-    /***
-     * 新增表达式配置
-     * @param nodeType
-     * @param tag
-     * @param process
-     * @param grammar
-     * @return
-     */
-    @Override
-    public JoinFactory addExpressionHandle(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar) {
-        ExpressionHandle exprConfig = new ExpressionHandle(tag, nodeType, parser, process, grammar);
-        this.exprConfigs.put(tag, exprConfig);
-        this.exprConfigs.put(nodeType, exprConfig);
-        return this;
-    }
-
 
     /***
      * 新增表达式配置
@@ -92,9 +76,9 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public JoinFactory addExpressionHandle(Integer nodeType, String tag, Process process, GrammarExpl grammar) {
-        ExpressionHandle exprConfig = new ExpressionHandle(tag, nodeType, process, grammar);
-        this.exprConfigs.put(tag, exprConfig);
-        this.exprConfigs.put(nodeType, exprConfig);
+        ExpressionHandle expressionHandle = new DefaultExpressionHandle(tag, nodeType, process, grammar);
+        this.expressionHandles.put(tag, expressionHandle);
+        this.expressionHandles.put(nodeType, expressionHandle);
         return this;
     }
 
@@ -107,11 +91,11 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public JoinFactory addListener(Integer nodeType, ParserListener parserListener) {
-        if (!exprConfigs.containsKey(nodeType)) {
+        if (!expressionHandles.containsKey(nodeType)) {
             throw new TemplateException("请配置表达式");
         }
-        ExpressionHandle exprConfig = exprConfigs.get(nodeType);
-        exprConfig.getParserListeners().add(parserListener);
+        ExpressionHandle expressionHandle = expressionHandles.get(nodeType);
+        expressionHandle.getParserListeners().add(parserListener);
         return this;
     }
 
@@ -124,11 +108,11 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public JoinFactory addListener(Integer nodeType, ProcessListener processListener) {
-        if (!exprConfigs.containsKey(nodeType)) {
+        if (!expressionHandles.containsKey(nodeType)) {
             throw new TemplateException("请配置表达式");
         }
-        ExpressionHandle exprConfig = exprConfigs.get(nodeType);
-        exprConfig.getProcessListeners().add(processListener);
+        ExpressionHandle expressionHandle = expressionHandles.get(nodeType);
+        expressionHandle.getProcessListeners().add(processListener);
         return this;
     }
 
@@ -140,17 +124,17 @@ public class JoinFactoryBase implements JoinFactory {
     @Override
     public JoinFactory loadGrammar() {
         grammars.clear();
-        for (Map.Entry<Object, ExpressionHandle> configEntry : exprConfigs.entrySet()) {
-            ExpressionHandle exprConfig = configEntry.getValue();
-            GrammarExpl grammar = exprConfig.getGrammarExpl();
+        for (Map.Entry<Object, ExpressionHandle> configEntry : expressionHandles.entrySet()) {
+            ExpressionHandle expressionHandle = configEntry.getValue();
+            GrammarExpl grammar = expressionHandle.getGrammarExpl();
             if (!(configEntry.getKey() instanceof Integer)) {
                 continue;
             }
             if (grammar != null) {
-                String str = getGrammar(exprConfig, grammar.getGrammarAttr());
+                String str = getGrammar(expressionHandle, grammar.getGrammarAttr());
                 grammars.put((Integer) configEntry.getKey(), str);
             } else {
-                String str = getGrammar(exprConfig, null);
+                String str = getGrammar(expressionHandle, null);
                 grammars.put((Integer) configEntry.getKey(), str);
             }
         }
@@ -204,7 +188,7 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public ExpressionHandle getExpressionHandle(String tag) {
-        return exprConfigs.get(tag);
+        return expressionHandles.get(tag);
     }
 
     /**
@@ -215,7 +199,7 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public ExpressionHandle getExpressionHandle(Integer nodeType) {
-        return exprConfigs.get(nodeType);
+        return expressionHandles.get(nodeType);
     }
 
     /**
@@ -271,36 +255,40 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public String getGrammar(Integer nodeType, Map<String, String> grammarAttr) {
-        ExpressionHandle exprConfig = exprConfigs.get(nodeType);
-        String grammar = getGrammar(exprConfig, grammarAttr);
+        ExpressionHandle expressionHandle = expressionHandles.get(nodeType);
+        String grammar = getGrammar(expressionHandle, grammarAttr);
         return grammar;
     }
 
     /**
      * 获取语法解释
      *
-     * @param exprConfig
+     * @param expressionHandle
      * @param grammarAttr
      * @return
      */
     @Override
-    public String getGrammar(ExpressionHandle exprConfig, Map<String, String> grammarAttr) {
+    public String getGrammar(ExpressionHandle expressionHandle, Map<String, String> grammarAttr) {
         StringBuilder builder = new StringBuilder();
-        if (StringUtils.isBlank(exprConfig.getTag())) {
+        if (StringUtils.isBlank(expressionHandle.getTag())) {
             return null;
         }
         builder.append(configuration.getExprFirstBegin());
-        builder.append(exprConfig.getTag());
+        builder.append(expressionHandle.getTag());
         if (grammarAttr != null) {
             for (Map.Entry<String, String> grammarEntry : grammarAttr.entrySet()) {
                 builder.append(" ").append(grammarEntry.getKey()).append("=\"").append(grammarEntry.getValue()).append("\"");
             }
         }
         builder.append(configuration.getExprEndSupport());
-        if (Constant.EXPR_IF == exprConfig.getNodeType() || Constant.EXPR_LIST == exprConfig.getNodeType()) {
+        GrammarExpl grammarExpl = expressionHandle.getGrammarExpl();
+        if (grammarExpl != null) {
+            grammarExpl.verifyGrammarAttr(builder.toString(), false, grammarAttr);
+        }
+        if (Constant.EXPR_IF == expressionHandle.getNodeType() || Constant.EXPR_LIST == expressionHandle.getNodeType()) {
             builder.append("请在这输入你需要生成的内容");
             builder.append(configuration.getExprLastBegin());
-            builder.append(exprConfig.getTag());
+            builder.append(expressionHandle.getTag());
             builder.append(configuration.getExprEndSupport());
         }
         return builder.toString();

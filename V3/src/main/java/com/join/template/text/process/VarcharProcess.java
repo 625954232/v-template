@@ -2,9 +2,9 @@ package com.join.template.text.process;
 
 import com.join.template.core.Element;
 import com.join.template.core.Expression;
-import com.join.template.core.Process;
+import com.join.template.core.process.AbstractProcess;
+import com.join.template.core.process.Process;
 import com.join.template.core.context.Content;
-import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.verify.Assert;
 import org.apache.commons.lang.StringUtils;
 

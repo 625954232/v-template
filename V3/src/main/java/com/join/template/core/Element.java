@@ -1,6 +1,7 @@
 package com.join.template.core;
 
-import com.join.template.core.entity.ExpressionHandle;
+import com.join.template.text.expression.DefaultExpressionHandle;
+import com.join.template.text.node.Node;
 
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,8 @@ public interface Element {
      */
     Element addAttributes(Map<String, String> attributes);
 
+    Node setEndElement(Boolean endElement);
+
     /**
      * 新增子节点
      *
@@ -54,6 +57,13 @@ public interface Element {
      * @return
      */
     Element addChilds(Element child);
+
+    /**
+     * 设置表达式处理器
+     *
+     * @param expressionHandle
+     */
+    void setExpressionHandle(DefaultExpressionHandle expressionHandle);
 
     /**
      * 获取节点类型
@@ -69,7 +79,6 @@ public interface Element {
      */
     String getOriginal();
 
-    void setExprConfig(ExpressionHandle exprConfig);
 
     /**
      * 获取节点属性
@@ -93,5 +102,19 @@ public interface Element {
      */
     List<Element> getChilds();
 
-    ExpressionHandle getExpressionHandle();
+    /**
+     * 获取表达式处理器
+     *
+     * @return
+     */
+    DefaultExpressionHandle getExpressionHandle();
+
+    /**
+     * 获取全部属性
+     *
+     * @return
+     */
+    Map<String, String> getAttributes();
+
+    Boolean isEndElement();
 }

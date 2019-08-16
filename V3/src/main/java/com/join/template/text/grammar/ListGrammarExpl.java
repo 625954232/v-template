@@ -12,9 +12,9 @@ import java.util.Map;
 public class ListGrammarExpl implements GrammarExpl {
 
     @Override
-    public void verifyGrammarAttr(String original, Map<String, String> attr) {
+    public void verifyGrammarAttr(String original, Boolean endElement, Map<String, String> attr) {
         Configuration configuration = TemplateUtil.getConfiguration();
-        if (!original.startsWith(configuration.getExprFirstBegin())) {
+        if (!original.startsWith(configuration.getExprFirstBegin()) || endElement) {
             return;
         }
         if (!attr.containsKey(configuration.getAttVar())) {

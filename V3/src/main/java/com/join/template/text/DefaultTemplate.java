@@ -1,10 +1,11 @@
 package com.join.template.text;
 
 import com.join.template.core.Element;
+import com.join.template.core.ExpressionHandle;
 import com.join.template.core.Template;
 import com.join.template.core.Word;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.core.entity.ExpressionHandle;
+import com.join.template.text.expression.DefaultExpressionHandle;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
 import com.join.template.core.context.HashContext;
@@ -49,8 +50,8 @@ public class DefaultTemplate implements Template {
 
     @Override
     public Template process(Writer writer) {
-        ExpressionHandle exprConfig = joinFactory.getExpressionHandle(Constant.EXPR_ROOT);
-        exprConfig.getProcess().process(this.getRootElement(), context, writer);
+        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_ROOT);
+        expressionHandle.getProcess().process(this.getRootElement(), context, writer);
         return this;
     }
 

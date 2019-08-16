@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class IncludeGrammarExpl implements GrammarExpl {
     @Override
-    public void verifyGrammarAttr(String original, Map<String, String> attr) {
+    public void verifyGrammarAttr(String original, Boolean endElement, Map<String, String> attr) {
         Configuration configuration = TemplateUtil.getConfiguration();
         if (!attr.containsKey(configuration.getAttFile())) {
             throw new TemplateException("请设置模板名称（" + configuration.getAttFile() + "）：" + original);
