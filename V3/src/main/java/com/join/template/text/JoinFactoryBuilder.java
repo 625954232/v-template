@@ -21,13 +21,11 @@ public class JoinFactoryBuilder {
 
     public JoinFactoryBuilder(JoinFactory joinFactory) {
         this.joinFactory = joinFactory;
-        TemplateUtil.setJoinFactory(joinFactory);
     }
 
     public JoinFactoryBuilder(Configuration configuration) {
         TemplateUtil.setConfiguration(configuration);
-        this.joinFactory = new JoinFactoryBase();
-        TemplateUtil.setJoinFactory(joinFactory);
+        this.joinFactory = new JoinFactoryBase(configuration);
     }
 
 

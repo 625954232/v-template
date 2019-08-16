@@ -3,6 +3,7 @@ package com.join.template.core.util;
 
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.verify.TemplateException;
 
 public class TemplateUtil {
     protected final static ThreadLocal<Configuration> configurationLocal = new ThreadLocal<>();
@@ -14,6 +15,9 @@ public class TemplateUtil {
 
     public static Configuration getConfiguration() {
         Configuration configuration = TemplateUtil.configurationLocal.get();
+        if (configuration == null) {
+            throw new TemplateException("请先创建配置");
+        }
         return configuration;
     }
 
@@ -23,6 +27,9 @@ public class TemplateUtil {
 
     public static JoinFactory getJoinFactory() {
         JoinFactory joinFactory = TemplateUtil.joinFactoryLocal.get();
+        if (joinFactory == null) {
+            throw new TemplateException("请先创建模板总工厂");
+        }
         return joinFactory;
     }
 }

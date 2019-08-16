@@ -28,7 +28,7 @@ public class DefaultTemplate implements Template {
     public DefaultTemplate(String name, String text) {
         this.joinFactory = TemplateUtil.getJoinFactory();
         this.context = new HashContext();
-        this.tokenizer = new TreeTokenizer(joinFactory);
+        this.tokenizer = new TreeTokenizer();
         this.name = name;
         this.text = text;
         this.tokenizer.read(this.text);

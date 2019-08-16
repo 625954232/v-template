@@ -15,12 +15,6 @@ import java.io.File;
  * 单一模版
  */
 public class TemplateSingleFactory implements TemplateFactory<Template> {
-    private final JoinFactory joinFactory;
-
-    public TemplateSingleFactory() {
-        this.joinFactory = TemplateUtil.getJoinFactory();
-    }
-
 
     @Override
     public Template putTemplate(String name, String text) {
@@ -30,6 +24,7 @@ public class TemplateSingleFactory implements TemplateFactory<Template> {
 
     @Override
     public Template putTemplate(String fileName) {
+        JoinFactory joinFactory = TemplateUtil.getJoinFactory();
         File resource = joinFactory.getConfiguration().getResource(fileName);
         Assert.ifTrue(!resource.exists(), fileName + "该模版不存在");
 

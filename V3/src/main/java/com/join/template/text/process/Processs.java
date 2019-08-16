@@ -1,6 +1,7 @@
 package com.join.template.text.process;
 
 import com.join.template.core.Element;
+import com.join.template.core.Process;
 import com.join.template.core.entity.ExprConfig;
 import com.join.template.core.context.Content;
 import com.join.template.core.factory.JoinFactory;
@@ -9,7 +10,7 @@ import java.io.Writer;
 import java.util.List;
 
 
-public class Processs extends AbstractProcess {
+public class Processs extends AbstractProcess implements Process {
 
 
     @Override

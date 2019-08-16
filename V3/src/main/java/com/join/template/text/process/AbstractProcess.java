@@ -11,16 +11,15 @@ import com.join.template.core.util.TemplateUtil;
 import java.io.Writer;
 
 public abstract class AbstractProcess implements Process {
-    protected final Configuration configuration;
-    protected final JoinFactory joinFactory;
 
-    public AbstractProcess() {
-        this.configuration = TemplateUtil.getConfiguration();
-        this.joinFactory = TemplateUtil.getJoinFactory();
-    }
+
+    protected Configuration configuration;
+    protected JoinFactory joinFactory;
 
     @Override
     public void process(Element element, Content context, Writer writer) {
+        this.configuration = TemplateUtil.getConfiguration();
+        this.joinFactory = TemplateUtil.getJoinFactory();
     }
 
     //去换行

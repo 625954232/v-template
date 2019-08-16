@@ -16,17 +16,10 @@ import java.util.Map;
 
 public class DefaultParser implements Parser {
 
-    private Configuration configuration;
-    private JoinFactory joinFactory;
-
-    public DefaultParser() {
-        this.joinFactory = TemplateUtil.getJoinFactory();
-        this.configuration = TemplateUtil.getConfiguration();
-    }
-
 
     @Override
     public Element parser(String matchBeginTag, String matchEndTag, String text, ExprConfig exprConfig) {
+        Configuration configuration = TemplateUtil.getConfiguration();
         List<ParserListener> parserListeners = exprConfig.getParserListeners();
         Map<String, String> attr = Utils.findAttr(text);
         Node node = new Node();

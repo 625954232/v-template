@@ -10,16 +10,10 @@ import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.TemplateException;
 
 public class DefaultReader implements Reader {
-    protected JoinFactory joinFactory;
-
-
-    public DefaultReader() {
-        this.joinFactory = TemplateUtil.getJoinFactory();
-    }
-
 
     @Override
     public Element reader(String matchBeginTag, String matchEndTag, String text) {
+        JoinFactory joinFactory = TemplateUtil.getJoinFactory();
         String[] splits = text.split(" ");
         if (splits.length <= 0) {
             return null;

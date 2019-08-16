@@ -6,6 +6,7 @@ import com.join.template.core.Tokenizer;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.util.TemplateUtil;
 import com.join.template.text.node.Node;
 
 import java.util.ArrayList;
@@ -27,7 +28,8 @@ public abstract class AbstractTokenizer implements Tokenizer {
     protected String text;
 
 
-    public AbstractTokenizer(JoinFactory joinFactory) {
+    public AbstractTokenizer() {
+        JoinFactory joinFactory = TemplateUtil.getJoinFactory();
         this.elementss = new ArrayList<>();
         this.configuration = joinFactory.getConfiguration();
         this.reader = joinFactory.getReader();

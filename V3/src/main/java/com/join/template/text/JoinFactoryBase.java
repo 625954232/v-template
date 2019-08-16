@@ -32,8 +32,8 @@ public class JoinFactoryBase implements JoinFactory {
     private Map<String, ExprConfig> exprConfigTags = new HashMap();
     private Map<Integer, String> grammars = new HashMap();
 
-    public JoinFactoryBase() {
-        this.configuration = TemplateUtil.getConfiguration();
+    public JoinFactoryBase(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     @Override

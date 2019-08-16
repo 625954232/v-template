@@ -13,10 +13,6 @@ public class TreeTokenizer extends AbstractTokenizer implements Tokenizer {
     private int listBeginSize = 0;
     private int listEndSize = 0;
 
-    public TreeTokenizer(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void read(String text) {
         super.read(text);
