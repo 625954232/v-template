@@ -1,21 +1,20 @@
 package com.join.template.text.token;
 
 import com.join.template.core.Element;
-import com.join.template.core.Tokenizer;
+import com.join.template.core.Word;
 import com.join.template.core.constant.Constant;
-import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.verify.TemplateException;
 
 
-public class TreeTokenizer extends AbstractTokenizer implements Tokenizer {
+public class TreeWord extends AbstractWord implements Word {
     private int ifBeginSize = 0;
     private int ifEndSize = 0;
     private int listBeginSize = 0;
     private int listEndSize = 0;
 
     @Override
-    public void read(String text) {
-        super.read(text);
+    public void word(String text) {
+        super.word(text);
         if (ifBeginSize < ifEndSize) {
             throw new TemplateException("未找到if的开始标签");
         }

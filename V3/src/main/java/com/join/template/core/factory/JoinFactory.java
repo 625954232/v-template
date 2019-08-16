@@ -3,7 +3,7 @@ package com.join.template.core.factory;
 import com.join.template.core.*;
 import com.join.template.core.Process;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.core.entity.ExprConfig;
+import com.join.template.core.entity.ExpressionHandle;
 import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
@@ -12,8 +12,12 @@ import java.util.Map;
 
 
 public interface JoinFactory extends TemplateFactory<JoinFactory> {
-
-    void init();
+    /**
+     * 初始化
+     *
+     * @return
+     */
+    JoinFactory init();
 
     /**
      * 新增模版工厂
@@ -34,7 +38,18 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @param grammar
      * @return
      */
-    JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar);
+    JoinFactory addExpressionHandle(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar);
+
+    /**
+     * 新增表达式配置
+     *
+     * @param nodeType
+     * @param tag
+     * @param process
+     * @param grammar
+     * @return
+     */
+    JoinFactory addExpressionHandle(Integer nodeType, String tag, Process process, GrammarExpl grammar);
 
     /**
      * 新增解析监听
@@ -74,7 +89,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @param tag
      * @return
      */
-    ExprConfig getExprConfigByTag(String tag);
+    ExpressionHandle getExpressionHandle(String tag);
 
     /**
      * 根据节点类型获取表达式配置
@@ -82,7 +97,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @param nodeType
      * @return
      */
-    ExprConfig getExprConfigByType(Integer nodeType);
+    ExpressionHandle getExpressionHandle(Integer nodeType);
 
     /**
      * 获取表达式执行器
@@ -121,5 +136,5 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @param grammarAttr
      * @return
      */
-    String getGrammar(ExprConfig exprConfig, Map<String, String> grammarAttr);
+    String getGrammar(ExpressionHandle exprConfig, Map<String, String> grammarAttr);
 }

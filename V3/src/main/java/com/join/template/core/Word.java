@@ -2,7 +2,7 @@ package com.join.template.core;
 
 import java.util.List;
 
-public interface Tokenizer {
+public interface Word {
 
 
     /**
@@ -10,7 +10,7 @@ public interface Tokenizer {
      *
      * @param text
      */
-    void read(String text);
+    void word(String text);
 
 
     /**

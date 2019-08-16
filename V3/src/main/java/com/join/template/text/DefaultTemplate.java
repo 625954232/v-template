@@ -2,15 +2,15 @@ package com.join.template.text;
 
 import com.join.template.core.Element;
 import com.join.template.core.Template;
-import com.join.template.core.Tokenizer;
+import com.join.template.core.Word;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.core.entity.ExprConfig;
+import com.join.template.core.entity.ExpressionHandle;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
 import com.join.template.core.context.HashContext;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.util.TemplateUtil;
-import com.join.template.text.token.TreeTokenizer;
+import com.join.template.text.token.TreeWord;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -21,17 +21,17 @@ public class DefaultTemplate implements Template {
     protected JoinFactory joinFactory;
     protected Configuration configuration;
     protected Content context;
-    protected Tokenizer tokenizer;
+    protected Word tokenizer;
     protected String name;
     protected String text;
 
     public DefaultTemplate(String name, String text) {
         this.joinFactory = TemplateUtil.getJoinFactory();
         this.context = new HashContext();
-        this.tokenizer = new TreeTokenizer();
+        this.tokenizer = new TreeWord();
         this.name = name;
         this.text = text;
-        this.tokenizer.read(this.text);
+        this.tokenizer.word(this.text);
     }
 
 
@@ -49,7 +49,7 @@ public class DefaultTemplate implements Template {
 
     @Override
     public Template process(Writer writer) {
-        ExprConfig exprConfig = joinFactory.getExprConfigByType(Constant.EXPR_ROOT);
+        ExpressionHandle exprConfig = joinFactory.getExpressionHandle(Constant.EXPR_ROOT);
         exprConfig.getProcess().process(this.getRootElement(), context, writer);
         return this;
     }

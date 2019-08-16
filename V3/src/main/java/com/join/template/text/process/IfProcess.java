@@ -2,18 +2,12 @@ package com.join.template.text.process;
 
 import com.join.template.core.Element;
 import com.join.template.core.Expression;
-import com.join.template.core.GrammarExpl;
 import com.join.template.core.Process;
-import com.join.template.core.configuration.Configuration;
-import com.join.template.core.entity.ExprConfig;
+import com.join.template.core.entity.ExpressionHandle;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
-import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.util.TemplateUtil;
 
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
 
 public class IfProcess extends AbstractProcess implements Process {
 
@@ -40,7 +34,7 @@ public class IfProcess extends AbstractProcess implements Process {
             } else {
                 if (condition) {
                     removeSpace(child);
-                    ExprConfig exprConfig = joinFactory.getExprConfigByType(child.getNodeType());
+                    ExpressionHandle exprConfig = joinFactory.getExpressionHandle(child.getNodeType());
                     exprConfig.getProcess().process(child, content, writer);
                 }
             }

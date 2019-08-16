@@ -2,7 +2,7 @@ package com.join.template.text.token;
 
 import com.join.template.core.Element;
 import com.join.template.core.Reader;
-import com.join.template.core.Tokenizer;
+import com.join.template.core.Word;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class AbstractTokenizer implements Tokenizer {
+public abstract class AbstractWord implements Word {
     protected Configuration configuration;
     protected Reader reader;
 
@@ -28,7 +28,7 @@ public abstract class AbstractTokenizer implements Tokenizer {
     protected String text;
 
 
-    public AbstractTokenizer() {
+    public AbstractWord() {
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
         this.elementss = new ArrayList<>();
         this.configuration = joinFactory.getConfiguration();
@@ -40,7 +40,7 @@ public abstract class AbstractTokenizer implements Tokenizer {
     }
 
     @Override
-    public void read(String text) {
+    public void word(String text) {
         this.text = text;
         this.length = text.length();
         while (index < length) {

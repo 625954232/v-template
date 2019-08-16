@@ -1,19 +1,15 @@
 package com.join.template.text.process;
 
 import com.join.template.core.Element;
-import com.join.template.core.GrammarExpl;
 import com.join.template.core.Process;
-import com.join.template.core.entity.ExprConfig;
+import com.join.template.core.entity.ExpressionHandle;
 import com.join.template.core.context.Content;
-import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.verify.TemplateException;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ListProcess extends AbstractProcess implements Process {
 
@@ -49,7 +45,7 @@ public class ListProcess extends AbstractProcess implements Process {
                     context.put(item, list.get(i));
                     for (int j = 0; j < element.getChilds().size(); j++) {
                         Element child = element.getChilds().get(j);
-                        ExprConfig exprConfig = joinFactory.getExprConfigByType(child.getNodeType());
+                        ExpressionHandle exprConfig = joinFactory.getExpressionHandle(child.getNodeType());
                         exprConfig.getProcess().process(child, context, writer);
                     }
                 }

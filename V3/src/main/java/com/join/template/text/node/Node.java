@@ -1,7 +1,7 @@
 package com.join.template.text.node;
 
 import com.join.template.core.Element;
-import com.join.template.core.entity.ExprConfig;
+import com.join.template.core.entity.ExpressionHandle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class Node implements Element {
     protected Element parent;
     private Map<String, String> attributes = new HashMap<>();
     private List<Element> childs = new ArrayList<>();
-    protected ExprConfig exprConfig;
+    protected ExpressionHandle exprConfig;
 
     public Node() {
     }
@@ -74,7 +74,7 @@ public class Node implements Element {
     }
 
     @Override
-    public void setExprConfig(ExprConfig exprConfig) {
+    public void setExprConfig(ExpressionHandle exprConfig) {
         this.exprConfig = exprConfig;
     }
 
@@ -104,7 +104,7 @@ public class Node implements Element {
     }
 
     @Override
-    public ExprConfig getExprConfig() {
+    public ExpressionHandle getExprConfig() {
         return exprConfig;
     }
 

@@ -3,11 +3,9 @@ package com.join.template.text.reader;
 import com.join.template.core.Element;
 import com.join.template.core.Parser;
 import com.join.template.core.Reader;
-import com.join.template.core.entity.ExprConfig;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.util.TemplateUtil;
-import com.join.template.core.verify.TemplateException;
 
 public class DefaultReader implements Reader {
 
@@ -19,14 +17,10 @@ public class DefaultReader implements Reader {
             return null;
         }
         String token = splits[0];
-        ExprConfig exprConfig = joinFactory.getExprConfigByTag(token);
-        if (exprConfig == null) {
-            exprConfig = joinFactory.getExprConfigByType(Constant.EXPR_TEXT);
-        }
-        Parser parser = exprConfig.getParser();
+        Parser parser = joinFactory.getExpressionHandle(token);
         if (parser == null) {
-            throw new TemplateException("请配置对应（%s）的语句解析器", text);
+            parser = joinFactory.getExpressionHandle(Constant.EXPR_TEXT);
         }
-        return parser.parser(matchBeginTag, matchEndTag, text, exprConfig);
+        return parser.parser(matchBeginTag, matchEndTag, text);
     }
 }

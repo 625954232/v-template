@@ -1,6 +1,6 @@
 package com.join.template.core;
 
-import com.join.template.core.entity.ExprConfig;
+import com.join.template.core.entity.ExpressionHandle;
 
 import java.util.List;
 import java.util.Map;
@@ -69,7 +69,7 @@ public interface Element {
      */
     String getOriginal();
 
-    void setExprConfig(ExprConfig exprConfig);
+    void setExprConfig(ExpressionHandle exprConfig);
 
     /**
      * 获取节点属性
@@ -93,5 +93,5 @@ public interface Element {
      */
     List<Element> getChilds();
 
-    ExprConfig getExprConfig();
+    ExpressionHandle getExprConfig();
 }

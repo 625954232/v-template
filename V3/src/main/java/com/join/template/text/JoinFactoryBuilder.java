@@ -35,7 +35,7 @@ public class JoinFactoryBuilder {
     }
 
     public JoinFactoryBuilder addExprConfig(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar) {
-        joinFactory.addExprConfig(nodeType, tag, parser, process, grammar);
+        joinFactory.addExpressionHandle(nodeType, tag, parser, process, grammar);
         return this;
     }
 

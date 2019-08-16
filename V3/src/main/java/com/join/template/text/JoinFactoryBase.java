@@ -3,7 +3,7 @@ package com.join.template.text;
 import com.join.template.core.*;
 import com.join.template.core.Process;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.core.entity.ExprConfig;
+import com.join.template.core.entity.ExpressionHandle;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.factory.template.TemplateFactory;
@@ -11,12 +11,10 @@ import com.join.template.core.factory.template.TemplateMapFactory;
 import com.join.template.core.factory.template.TemplateSingleFactory;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
-import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.Assert;
 import com.join.template.core.verify.TemplateException;
 import com.join.template.text.expression.DefaultExpression;
 import com.join.template.text.grammar.*;
-import com.join.template.text.parser.DefaultParser;
 import com.join.template.text.process.*;
 import com.join.template.text.reader.DefaultReader;
 import org.apache.commons.lang.StringUtils;
@@ -28,8 +26,7 @@ import java.util.Map;
 public class JoinFactoryBase implements JoinFactory {
     private Configuration configuration;
     private Map<String, TemplateFactory> templateFactorys = new HashMap();
-    private Map<Integer, ExprConfig> exprConfigTypes = new HashMap();
-    private Map<String, ExprConfig> exprConfigTags = new HashMap();
+    private Map<Object, ExpressionHandle> exprConfigs = new HashMap();
     private Map<Integer, String> grammars = new HashMap();
 
     public JoinFactoryBase(Configuration configuration) {
@@ -37,20 +34,21 @@ public class JoinFactoryBase implements JoinFactory {
     }
 
     @Override
-    public void init() {
+    public JoinFactory init() {
         this.addFactory(Constant.TYPE_MAP, new TemplateMapFactory());
         this.addFactory(Constant.TYPE_SINGLE, new TemplateSingleFactory());
 
-        this.addExprConfig(Constant.EXPR_ROOT, null, new DefaultParser(), new Processs(), null);
-        this.addExprConfig(Constant.EXPR_TEXT, null, new DefaultParser(), new TextProcess(), null);
-        this.addExprConfig(Constant.EXPR_VAR, null, new DefaultParser(), new VarcharProcess(), null);
-        this.addExprConfig(Constant.EXPR_LIST, "list", new DefaultParser(), new ListProcess(), new ListGrammarExpl());
-        this.addExprConfig(Constant.EXPR_IF, "if", new DefaultParser(), new IfProcess(), new IfGrammarExpl());
-        this.addExprConfig(Constant.EXPR_IF_ELSE, "else", new DefaultParser(), new IfElseProcess(), null);
-        this.addExprConfig(Constant.EXPR_IF_ELSE_IF, "elseif", new DefaultParser(), new ElseIfProcess(), new ElseIfGrammarExpl());
-        this.addExprConfig(Constant.EXPR_INCLUDE, "include", new DefaultParser(), new IncludeProcess(), new IncludeGrammarExpl());
-        this.addExprConfig(Constant.EXPR_SET, "set", new DefaultParser(), new SetProcess(), new SetGrammarExpl());
-        this.addExprConfig(Constant.EXPR_GET, "get", new DefaultParser(), new GetProcess(), new GetGrammarExpl());
+        this.addExpressionHandle(Constant.EXPR_ROOT, null, new Processs(), null);
+        this.addExpressionHandle(Constant.EXPR_TEXT, null, new TextProcess(), null);
+        this.addExpressionHandle(Constant.EXPR_VAR, null, new VarcharProcess(), null);
+        this.addExpressionHandle(Constant.EXPR_LIST, "list", new ListProcess(), new ListGrammarExpl());
+        this.addExpressionHandle(Constant.EXPR_IF, "if", new IfProcess(), new IfGrammarExpl());
+        this.addExpressionHandle(Constant.EXPR_IF_ELSE, "else", new IfElseProcess(), null);
+        this.addExpressionHandle(Constant.EXPR_IF_ELSE_IF, "elseif", new ElseIfProcess(), new ElseIfGrammarExpl());
+        this.addExpressionHandle(Constant.EXPR_INCLUDE, "include", new IncludeProcess(), new IncludeGrammarExpl());
+        this.addExpressionHandle(Constant.EXPR_SET, "set", new SetProcess(), new SetGrammarExpl());
+        this.addExpressionHandle(Constant.EXPR_GET, "get", new GetProcess(), new GetGrammarExpl());
+        return this;
     }
 
 
@@ -67,21 +65,36 @@ public class JoinFactoryBase implements JoinFactory {
         return this;
     }
 
-
     /***
      * 新增表达式配置
      * @param nodeType
      * @param tag
-     * @param parser
      * @param process
      * @param grammar
      * @return
      */
     @Override
-    public JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar) {
-        ExprConfig exprConfig = new ExprConfig(tag, nodeType, parser, process, grammar);
-        this.exprConfigTags.put(tag, exprConfig);
-        this.exprConfigTypes.put(nodeType, exprConfig);
+    public JoinFactory addExpressionHandle(Integer nodeType, String tag, Parser parser, Process process, GrammarExpl grammar) {
+        ExpressionHandle exprConfig = new ExpressionHandle(tag, nodeType, parser, process, grammar);
+        this.exprConfigs.put(tag, exprConfig);
+        this.exprConfigs.put(nodeType, exprConfig);
+        return this;
+    }
+
+
+    /***
+     * 新增表达式配置
+     * @param nodeType
+     * @param tag
+     * @param process
+     * @param grammar
+     * @return
+     */
+    @Override
+    public JoinFactory addExpressionHandle(Integer nodeType, String tag, Process process, GrammarExpl grammar) {
+        ExpressionHandle exprConfig = new ExpressionHandle(tag, nodeType, process, grammar);
+        this.exprConfigs.put(tag, exprConfig);
+        this.exprConfigs.put(nodeType, exprConfig);
         return this;
     }
 
@@ -94,10 +107,10 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public JoinFactory addListener(Integer nodeType, ParserListener parserListener) {
-        if (!exprConfigTypes.containsKey(nodeType)) {
+        if (!exprConfigs.containsKey(nodeType)) {
             throw new TemplateException("请配置表达式");
         }
-        ExprConfig exprConfig = exprConfigTypes.get(nodeType);
+        ExpressionHandle exprConfig = exprConfigs.get(nodeType);
         exprConfig.getParserListeners().add(parserListener);
         return this;
     }
@@ -111,10 +124,10 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public JoinFactory addListener(Integer nodeType, ProcessListener processListener) {
-        if (!exprConfigTypes.containsKey(nodeType)) {
+        if (!exprConfigs.containsKey(nodeType)) {
             throw new TemplateException("请配置表达式");
         }
-        ExprConfig exprConfig = exprConfigTypes.get(nodeType);
+        ExpressionHandle exprConfig = exprConfigs.get(nodeType);
         exprConfig.getProcessListeners().add(processListener);
         return this;
     }
@@ -127,15 +140,18 @@ public class JoinFactoryBase implements JoinFactory {
     @Override
     public JoinFactory loadGrammar() {
         grammars.clear();
-        for (Map.Entry<Integer, ExprConfig> configEntry : exprConfigTypes.entrySet()) {
-            ExprConfig exprConfig = configEntry.getValue();
-            GrammarExpl grammar = exprConfig.getGrammar();
+        for (Map.Entry<Object, ExpressionHandle> configEntry : exprConfigs.entrySet()) {
+            ExpressionHandle exprConfig = configEntry.getValue();
+            GrammarExpl grammar = exprConfig.getGrammarExpl();
+            if (!(configEntry.getKey() instanceof Integer)) {
+                continue;
+            }
             if (grammar != null) {
                 String str = getGrammar(exprConfig, grammar.getGrammarAttr());
-                grammars.put(configEntry.getKey(), str);
+                grammars.put((Integer) configEntry.getKey(), str);
             } else {
                 String str = getGrammar(exprConfig, null);
-                grammars.put(configEntry.getKey(), str);
+                grammars.put((Integer) configEntry.getKey(), str);
             }
         }
         return this;
@@ -187,8 +203,8 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public ExprConfig getExprConfigByTag(String tag) {
-        return exprConfigTags.get(tag);
+    public ExpressionHandle getExpressionHandle(String tag) {
+        return exprConfigs.get(tag);
     }
 
     /**
@@ -198,8 +214,8 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public ExprConfig getExprConfigByType(Integer nodeType) {
-        return exprConfigTypes.get(nodeType);
+    public ExpressionHandle getExpressionHandle(Integer nodeType) {
+        return exprConfigs.get(nodeType);
     }
 
     /**
@@ -255,7 +271,7 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public String getGrammar(Integer nodeType, Map<String, String> grammarAttr) {
-        ExprConfig exprConfig = exprConfigTypes.get(nodeType);
+        ExpressionHandle exprConfig = exprConfigs.get(nodeType);
         String grammar = getGrammar(exprConfig, grammarAttr);
         return grammar;
     }
@@ -268,7 +284,7 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public String getGrammar(ExprConfig exprConfig, Map<String, String> grammarAttr) {
+    public String getGrammar(ExpressionHandle exprConfig, Map<String, String> grammarAttr) {
         StringBuilder builder = new StringBuilder();
         if (StringUtils.isBlank(exprConfig.getTag())) {
             return null;

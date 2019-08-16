@@ -4,14 +4,25 @@ package com.join.template.text.grammar;
 import com.join.template.core.GrammarExpl;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.util.TemplateUtil;
+import com.join.template.core.verify.TemplateException;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ListGrammarExpl implements GrammarExpl {
-    @Override
-    public void verifyGrammarAttr(Map<String, String> attr) {
 
+    @Override
+    public void verifyGrammarAttr(String original, Map<String, String> attr) {
+        Configuration configuration = TemplateUtil.getConfiguration();
+        if (!original.startsWith(configuration.getExprFirstBegin())) {
+            return;
+        }
+        if (!attr.containsKey(configuration.getAttVar())) {
+            throw new TemplateException("请求设置循环条件-数据来源别名（" + configuration.getAttVar() + "）：" + original);
+        }
+        if (!attr.containsKey(configuration.getAttItem())) {
+            throw new TemplateException("请求设置循环条件-单项定义别名（" + configuration.getAttItem() + "）：" + original);
+        }
     }
 
     @Override
