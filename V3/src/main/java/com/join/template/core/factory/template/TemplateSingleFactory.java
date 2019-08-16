@@ -7,13 +7,14 @@ import com.join.template.core.util.IOUtil;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.Assert;
 import com.join.template.text.DefaultTemplate;
+import com.join.template.text.JoinFactoryBase;
 
 import java.io.File;
 
 /**
  * 单一模版
  */
-public class TemplateSingleFactory implements TemplateFactory {
+public class TemplateSingleFactory implements TemplateFactory<Template> {
     private final JoinFactory joinFactory;
 
     public TemplateSingleFactory() {

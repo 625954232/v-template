@@ -11,7 +11,7 @@ import com.join.template.core.listener.ProcessListener;
 import java.util.Map;
 
 
-public interface JoinFactory extends TemplateFactory {
+public interface JoinFactory extends TemplateFactory<JoinFactory> {
 
     void init();
 

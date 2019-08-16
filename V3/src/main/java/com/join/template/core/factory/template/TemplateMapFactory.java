@@ -7,6 +7,7 @@ import com.join.template.core.util.IOUtil;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.Assert;
 import com.join.template.text.DefaultTemplate;
+import com.join.template.text.JoinFactoryBase;
 
 import java.io.File;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import java.util.Map;
 /**
  * 模版缓存
  */
-public class TemplateMapFactory implements TemplateFactory {
+public class TemplateMapFactory implements TemplateFactory<Template> {
     private JoinFactory joinFactory;
 
     private Map<String, Template> templateMap = new HashMap<>();
@@ -67,7 +68,7 @@ public class TemplateMapFactory implements TemplateFactory {
 
     @Override
     public Template getTemplate(String name) {
-        return templateMap.get(name);
+        return templateMap.containsKey(name) ? templateMap.get(name) : putTemplate(name);
     }
 
 

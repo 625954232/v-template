@@ -21,7 +21,7 @@ public class IncludeProcess extends AbstractProcess {
         if (StringUtils.isBlank(file)) {
             return;
         }
-        Template template = joinFactory.putTemplate(file);
+        Template template = joinFactory.getTemplate(file);
         template.putContext(context);
         template.process(writer);
     }

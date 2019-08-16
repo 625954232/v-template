@@ -17,7 +17,6 @@ import com.join.template.core.verify.TemplateException;
 import com.join.template.text.expression.DefaultExpression;
 import com.join.template.text.grammar.*;
 import com.join.template.text.parser.DefaultParser;
-import com.join.template.text.parser.ListParserListener;
 import com.join.template.text.process.*;
 import com.join.template.text.reader.DefaultReader;
 import org.apache.commons.lang.StringUtils;
@@ -143,6 +142,35 @@ public class JoinFactoryBase implements JoinFactory {
     }
 
     /**
+     * 缓存模版内容
+     *
+     * @param name    模板名称
+     * @param content 模板内容
+     * @return
+     */
+    @Override
+    public JoinFactory putTemplate(String name, String content) {
+        TemplateFactory templateFactory = templateFactorys.get(configuration.getType());
+        Assert.isNull(templateFactory, "没该" + configuration.getType() + "类型模版工厂");
+        templateFactory.putTemplate(name, content);
+        return this;
+    }
+
+    /**
+     * 根据模版文件地址缓存模版内容
+     *
+     * @param fileName 文件路径
+     * @return
+     */
+    @Override
+    public JoinFactory putTemplate(String fileName) {
+        TemplateFactory templateFactory = templateFactorys.get(configuration.getType());
+        Assert.isNull(templateFactory, "没该" + configuration.getType() + "类型模版工厂");
+        templateFactory.putTemplate(fileName);
+        return this;
+    }
+
+    /**
      * 获取配置
      *
      * @return
@@ -194,33 +222,6 @@ public class JoinFactoryBase implements JoinFactory {
         return new DefaultReader();
     }
 
-
-    /**
-     * 缓存模版内容
-     *
-     * @param name    模板名称
-     * @param content 模板内容
-     * @return
-     */
-    @Override
-    public Template putTemplate(String name, String content) {
-        TemplateFactory templateFactory = templateFactorys.get(configuration.getType());
-        Assert.isNull(templateFactory, "没该" + configuration.getType() + "类型模版工厂");
-        return templateFactory.putTemplate(name, content);
-    }
-
-    /**
-     * 根据模版文件地址缓存模版内容
-     *
-     * @param fileName 文件路径
-     * @return
-     */
-    @Override
-    public Template putTemplate(String fileName) {
-        TemplateFactory templateFactory = templateFactorys.get(configuration.getType());
-        Assert.isNull(templateFactory, "没该" + configuration.getType() + "类型模版工厂");
-        return templateFactory.putTemplate(fileName);
-    }
 
     /**
      * 根绝模板名称获取模版

@@ -11,8 +11,9 @@ public class Main {
         JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
         JoinFactory builder = joinFactoryBuilder.builder();
         Map<Integer, String> grammars = builder.getGrammars();
-        Template template = builder.putTemplate("/test1.html");
+        Template template = builder.getTemplate("/test1-1.html");
         System.out.println(template);
+
     }
 
 }

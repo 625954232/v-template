@@ -1,8 +1,9 @@
 package com.join.template.core.factory.template;
 
 import com.join.template.core.Template;
+import com.join.template.text.JoinFactoryBase;
 
-public interface TemplateFactory {
+public interface TemplateFactory<This> {
 
     /**
      * 缓存模板
@@ -11,7 +12,7 @@ public interface TemplateFactory {
      * @param text 模板内容
      * @return
      */
-    Template putTemplate(String name, String text);
+    This putTemplate(String name, String text);
 
     /**
      * 缓存模板
@@ -19,7 +20,7 @@ public interface TemplateFactory {
      * @param fileName 文件路径
      * @return
      */
-    Template putTemplate(String fileName);
+    This putTemplate(String fileName);
 
     /**
      * 获取模板
