@@ -1,16 +1,15 @@
 package com.join.template.core.factory;
 
-import com.join.template.core.Expression;
-import com.join.template.core.Parser;
+import com.join.template.core.*;
 import com.join.template.core.Process;
-import com.join.template.core.Reader;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.core.configuration.ExprConfig;
+import com.join.template.core.entity.ExprConfig;
 import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
+import com.join.template.text.JoinFactoryBase;
 
-import java.util.List;
+import java.util.Map;
 
 
 public interface JoinFactory extends TemplateFactory {
@@ -31,22 +30,30 @@ public interface JoinFactory extends TemplateFactory {
      * @param tag
      * @param parser
      * @param process
+     * @param grammar
      * @return
      */
-    JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process);
+    JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, Grammar grammar);
 
     /**
-     * 新增表达式配置
+     * 新增解析监听
      *
      * @param nodeType
-     * @param tag
-     * @param parser
-     * @param process
-     * @param parserListeners
-     * @param processListeners
+     * @param parserListener
      * @return
      */
-    JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, List<ParserListener> parserListeners, List<ProcessListener> processListeners);
+    JoinFactory addListener(Integer nodeType, ParserListener parserListener);
+
+    /**
+     * 新增处理监听
+     *
+     * @param nodeType
+     * @param processListener
+     * @return
+     */
+    JoinFactory addListener(Integer nodeType, ProcessListener processListener);
+
+    JoinFactoryBase genGrammar();
 
     /**
      * 获取配置
@@ -85,5 +92,5 @@ public interface JoinFactory extends TemplateFactory {
      */
     Reader getReader();
 
-
+    Map<Integer, String> getGrammars();
 }

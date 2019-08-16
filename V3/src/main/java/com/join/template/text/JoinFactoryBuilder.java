@@ -1,5 +1,6 @@
 package com.join.template.text;
 
+import com.join.template.core.Grammar;
 import com.join.template.core.Parser;
 import com.join.template.core.Process;
 import com.join.template.core.Template;
@@ -8,8 +9,6 @@ import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
-
-import java.util.List;
 
 
 public class JoinFactoryBuilder {
@@ -29,71 +28,42 @@ public class JoinFactoryBuilder {
         this.joinFactory = new JoinFactoryBase(configuration);
     }
 
-    /**
-     * 新增模版工厂
-     *
-     * @param nodeType        节点类型
-     * @param templateFactory 模版工厂
-     * @return
-     */
-    public JoinFactory addFactory(String nodeType, TemplateFactory templateFactory) {
-        return joinFactory.addFactory(nodeType, templateFactory);
+
+    public JoinFactoryBuilder addFactory(String nodeType, TemplateFactory templateFactory) {
+        joinFactory.addFactory(nodeType, templateFactory);
+        return this;
     }
 
-    /**
-     * 新增表达式配置
-     *
-     * @param nodeType
-     * @param tag
-     * @param parser
-     * @param process
-     * @return
-     */
-    public JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process) {
-        return joinFactory.addExprConfig(nodeType, tag, parser, process);
+    public JoinFactoryBuilder addExprConfig(Integer nodeType, String tag, Parser parser, Process process, Grammar grammar) {
+        joinFactory.addExprConfig(nodeType, tag, parser, process, grammar);
+        return this;
     }
 
-    /**
-     * 新增表达式配置
-     *
-     * @param nodeType
-     * @param tag
-     * @param parser
-     * @param process
-     * @param parserListeners
-     * @param processListeners
-     * @return
-     */
-    public JoinFactory addExprConfig(Integer nodeType, String tag, Parser parser, Process process, List<ParserListener> parserListeners, List<ProcessListener> processListeners) {
-        return joinFactory.addExprConfig(nodeType, tag, parser, process, parserListeners, processListeners);
+    public JoinFactoryBuilder addListener(Integer nodeType, ParserListener parserListener) {
+        joinFactory.addListener(nodeType, parserListener);
+        return this;
     }
 
-    /**
-     * 缓存模板
-     *
-     * @param name    模板名称
-     * @param content 模板内容
-     * @return
-     */
-    public Template putTemplate(String name, String content) {
-        return joinFactory.putTemplate(name, content);
+    public JoinFactoryBuilder addListener(Integer nodeType, ProcessListener processListener) {
+        joinFactory.addListener(nodeType, processListener);
+        return this;
     }
 
-    /**
-     * 缓存模板
-     *
-     * @param fileName 文件路径
-     * @return
-     */
-    public Template putTemplate(String fileName) {
-        return joinFactory.putTemplate(fileName);
+    public JoinFactoryBuilder genGrammar() {
+        joinFactory.genGrammar();
+        return this;
     }
 
-    /**
-     * 返回模版总工厂
-     *
-     * @return
-     */
+    public JoinFactoryBuilder putTemplate(String name, String text) {
+        joinFactory.putTemplate(name, text);
+        return this;
+    }
+
+    public JoinFactoryBuilder putTemplate(String fileName) {
+        joinFactory.putTemplate(fileName);
+        return this;
+    }
+
     public JoinFactory builder() {
         return joinFactory;
     }

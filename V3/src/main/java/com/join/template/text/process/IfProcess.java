@@ -2,14 +2,17 @@ package com.join.template.text.process;
 
 import com.join.template.core.Element;
 import com.join.template.core.Expression;
-import com.join.template.core.configuration.ExprConfig;
+import com.join.template.core.Grammar;
+import com.join.template.core.entity.ExprConfig;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
 import com.join.template.core.factory.JoinFactory;
 
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
-public class IfProcess extends AbstractProcess {
+public class IfProcess extends AbstractProcess implements Grammar {
 
 
     public IfProcess(JoinFactory configuration) {
@@ -52,5 +55,12 @@ public class IfProcess extends AbstractProcess {
         expression.setContext(content);
         Object evaluate = expression.evaluate();
         return evaluate instanceof Boolean ? (boolean) evaluate : false;
+    }
+
+    @Override
+    public Map<String, String> getGrammarAttr() {
+        Map<String, String> fields = new HashMap<>();
+        fields.put(configuration.getAttrText(), "判断条件");
+        return fields;
     }
 }

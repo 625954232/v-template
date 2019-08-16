@@ -1,6 +1,7 @@
-package com.join.template.core.configuration;
+package com.join.template.core.entity;
 
 
+import com.join.template.core.Grammar;
 import com.join.template.core.Parser;
 import com.join.template.core.Process;
 import com.join.template.core.listener.ParserListener;
@@ -31,6 +32,11 @@ public class ExprConfig {
     private Process process;
 
     /**
+     * 语法示例
+     */
+    private Grammar grammar;
+
+    /**
      * 解析监听
      */
     private List<ParserListener> parserListeners = new ArrayList<>();
@@ -40,19 +46,13 @@ public class ExprConfig {
      */
     private List<ProcessListener> processListeners = new ArrayList<>();
 
-    public ExprConfig(String tag, Integer nodeType, Parser parser, Process process) {
+    public ExprConfig(String tag, Integer nodeType, Parser parser, Process process, Grammar grammar) {
         this.tag = tag;
         this.nodeType = nodeType;
         this.parser = parser;
         this.process = process;
+        this.grammar = grammar;
     }
 
-    public ExprConfig(String tag, Integer nodeType, Parser parser, Process process, List<ParserListener> parserListeners, List<ProcessListener> processListeners) {
-        this.tag = tag;
-        this.nodeType = nodeType;
-        this.parser = parser;
-        this.process = process;
-        this.parserListeners = parserListeners;
-        this.processListeners = processListeners;
-    }
+
 }

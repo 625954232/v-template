@@ -1,7 +1,7 @@
 package com.join.template.text.node;
 
 import com.join.template.core.Element;
-import com.join.template.core.configuration.ExprConfig;
+import com.join.template.core.entity.ExprConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;

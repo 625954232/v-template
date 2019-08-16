@@ -1,7 +1,8 @@
 package com.join.template.text.process;
 
 import com.join.template.core.Element;
-import com.join.template.core.configuration.ExprConfig;
+import com.join.template.core.Grammar;
+import com.join.template.core.entity.ExprConfig;
 import com.join.template.core.context.Content;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.verify.TemplateException;
@@ -9,9 +10,11 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ListProcess extends AbstractProcess {
+public class ListProcess extends AbstractProcess implements Grammar {
     public ListProcess(JoinFactory joinFactory) {
         super(joinFactory);
     }
@@ -62,4 +65,15 @@ public class ListProcess extends AbstractProcess {
         }
     }
 
+    @Override
+    public Map<String, String> getGrammarAttr() {
+        Map<String, String> fields = new HashMap<>();
+        fields.put(configuration.getAttVar(), "参数名称");
+        fields.put(configuration.getAttItem(), "单项别名");
+        fields.put(configuration.getAttOpen(), "语句开始符");
+        fields.put(configuration.getAttClose(), "语句结束符");
+        fields.put(configuration.getAttSseparator(), "分隔符");
+        fields.put(configuration.getAttIndex(), "索引");
+        return fields;
+    }
 }

@@ -1,6 +1,6 @@
 package com.join.template.core;
 
-import com.join.template.core.configuration.ExprConfig;
+import com.join.template.core.entity.ExprConfig;
 
 import java.util.List;
 import java.util.Map;

@@ -1,6 +1,7 @@
 package com.join.template.text.process;
 
 import com.join.template.core.Element;
+import com.join.template.core.Grammar;
 import com.join.template.core.context.Content;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.verify.Assert;
@@ -13,8 +14,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-public class GetProcess extends AbstractProcess {
+public class GetProcess extends AbstractProcess implements Grammar {
 
 
     public GetProcess(JoinFactory configuration) {
@@ -55,4 +58,11 @@ public class GetProcess extends AbstractProcess {
     }
 
 
+    @Override
+    public Map<String, String> getGrammarAttr() {
+        Map<String, String> fields = new HashMap<>();
+        fields.put(configuration.getAttFile(), "值别名");
+        fields.put(configuration.getAttrFormat(), "时间类型格式化表达式");
+        return fields;
+    }
 }
