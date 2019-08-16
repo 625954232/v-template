@@ -114,4 +114,16 @@ public class Node implements Element {
     public Boolean isEndElement() {
         return isEndElement;
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "nodeType=" + nodeType +
+                ", original='" + original + '\'' +
+                ", parent=" + parent +
+                ", isEndElement=" + isEndElement +
+                ", attributes=" + attributes +
+                ", expressionHandle=" + expressionHandle +
+                '}';
+    }
 }
