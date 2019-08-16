@@ -12,10 +12,10 @@ import java.util.Map;
 public class IfGrammarExpl implements GrammarExpl {
     @Override
     public void verifyGrammarAttr(String original, Map<String, String> attr) {
-        Configuration configuration = TemplateUtil.getConfiguration();
-        if (!attr.containsKey(configuration.getAttrText())) {
-            throw new TemplateException("请设置判断条件（" + configuration.getAttrText() + "）：" + original);
-        }
+//        Configuration configuration = TemplateUtil.getConfiguration();
+//        if (!attr.containsKey(configuration.getAttrText())) {
+//            throw new TemplateException("请设置判断条件（" + configuration.getAttrText() + "）：" + original);
+//        }
     }
 
     @Override

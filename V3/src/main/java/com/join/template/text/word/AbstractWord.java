@@ -1,4 +1,4 @@
-package com.join.template.text.token;
+package com.join.template.text.word;
 
 import com.join.template.core.Element;
 import com.join.template.core.Reader;
@@ -16,12 +16,11 @@ import java.util.List;
 public abstract class AbstractWord implements Word {
     protected Configuration configuration;
     protected Reader reader;
-
+    protected List<Element> elementss = new ArrayList<>();
     protected Element root = null;
     protected Element current = null;
     protected Element parent = null;
-    protected List<Element> elementss = null;
-    private int lineSize;
+    protected int lineSize;
     private int length = 0;
     private int index = 0;
     private int start = 0;
@@ -30,7 +29,6 @@ public abstract class AbstractWord implements Word {
 
     public AbstractWord() {
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
-        this.elementss = new ArrayList<>();
         this.configuration = joinFactory.getConfiguration();
         this.reader = joinFactory.getReader();
         this.root = new Node();
@@ -70,13 +68,13 @@ public abstract class AbstractWord implements Word {
             String token = this.text.substring(this.start, this.index);
             Element element = new Node(Constant.EXPR_TEXT, token, this.parent);
             this.arrange(element);
-            this.elementss.add(element);
+            elementss.add(element);
         }
         int index = this.text.indexOf(matchEndTag, this.index);
         String token = this.text.substring(this.index + matchBeginTag.length(), index);
         Element element = this.reader.reader(matchBeginTag, matchEndTag, token);
         this.arrange(element);
-        this.elementss.add(element);
+        elementss.add(element);
         this.start = this.index = index + matchEndTag.length();
     }
 
@@ -111,4 +109,5 @@ public abstract class AbstractWord implements Word {
     public List<Element> getAllElement() {
         return elementss;
     }
+
 }

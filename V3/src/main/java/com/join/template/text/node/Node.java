@@ -15,7 +15,7 @@ public class Node implements Element {
     protected Element parent;
     private Map<String, String> attributes = new HashMap<>();
     private List<Element> childs = new ArrayList<>();
-    protected ExpressionHandle exprConfig;
+    protected ExpressionHandle expressionHandle;
 
     public Node() {
     }
@@ -75,7 +75,7 @@ public class Node implements Element {
 
     @Override
     public void setExprConfig(ExpressionHandle exprConfig) {
-        this.exprConfig = exprConfig;
+        this.expressionHandle = exprConfig;
     }
 
     @Override
@@ -104,11 +104,13 @@ public class Node implements Element {
     }
 
     @Override
-    public ExpressionHandle getExprConfig() {
-        return exprConfig;
+    public ExpressionHandle getExpressionHandle() {
+        return expressionHandle;
     }
 
     public Map<String, String> getAttributes() {
         return attributes;
     }
+
+
 }

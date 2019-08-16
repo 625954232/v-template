@@ -10,7 +10,7 @@ import com.join.template.core.context.Content;
 import com.join.template.core.context.HashContext;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.util.TemplateUtil;
-import com.join.template.text.token.TreeWord;
+import com.join.template.text.word.TreeWord;
 
 import java.io.StringWriter;
 import java.io.Writer;

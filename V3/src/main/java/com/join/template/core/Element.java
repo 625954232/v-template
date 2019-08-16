@@ -93,5 +93,5 @@ public interface Element {
      */
     List<Element> getChilds();
 
-    ExpressionHandle getExprConfig();
+    ExpressionHandle getExpressionHandle();
 }
