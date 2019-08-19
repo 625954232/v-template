@@ -3,6 +3,8 @@ package com.join.template.text;
 import com.join.template.core.*;
 import com.join.template.core.expression.Expression;
 import com.join.template.core.expression.ExpressionHandle;
+import com.join.template.core.grammar.EntityGrammar;
+import com.join.template.core.grammar.EntityGrammarInfo;
 import com.join.template.core.grammar.GrammarExpl;
 import com.join.template.core.interpreter.ExprInterpreter;
 import com.join.template.core.interpreter.Interpreter;
@@ -220,6 +222,16 @@ public class JoinFactoryBase implements JoinFactory {
     @Override
     public Interpreter getInterpreter() {
         return new ExprInterpreter();
+    }
+
+    /**
+     * 获取实体类语法生成器
+     *
+     * @return
+     */
+    @Override
+    public EntityGrammar getEntityGrammarr() {
+        return new EntityGrammarInfo();
     }
 
     /**

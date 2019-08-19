@@ -1,8 +1,17 @@
 package com.join.template.text;
 
+import com.alibaba.fastjson.JSON;
+import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.grammar.EntityGrammar;
 import com.join.template.core.grammar.EntityGrammarInfo;
+import com.join.template.core.grammar.FieldName;
+import com.join.template.core.interpreter.Interpreter;
+import com.join.template.core.listener.GrammarGenListener;
+import com.join.template.core.util.IOUtil;
 
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -41,5 +50,27 @@ public class Main {
 //
 //    }
 
+    public static void main(String[] args) {
+        JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
+        JoinFactory joinFactory = joinFactoryBuilder.builder();
+        URL resource = Main.class.getResource("/test.json");
+        String string = IOUtil.toString(resource);
+        Map<String, List<Map>> maps = JSON.parseObject(string, Map.class);
+        for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
+            EntityGrammar entityGrammarr = joinFactory.getEntityGrammarr();
+            entityGrammarr.setGrammarGenListener(new GrammarGenListener() {
+                @Override
+                public void onCreate(Map map, FieldName entityField, EntityGrammarInfo entityGrammarInfo) {
 
+                }
+            });
+            FieldName fieldName = new FieldName();
+            fieldName.setNameFieldName("filedKey");
+            fieldName.setDescribeFieldName("filedValue");
+            fieldName.setTypeFieldName("string");
+            EntityGrammar grammar = entityGrammarr.generateGrammar(entry.getKey(), entry.getValue(), fieldName);
+            grammar.setName(entry.getKey());
+            System.out.println(grammar);
+        }
+    }
 }

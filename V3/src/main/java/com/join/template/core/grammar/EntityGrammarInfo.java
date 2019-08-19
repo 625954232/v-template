@@ -22,17 +22,18 @@ public class EntityGrammarInfo implements EntityGrammar {
     private Integer grammarType;
     private String parentName;
     private EntityType parentType;
-    private List<EntityGrammarInfo> childs = new ArrayList<>();
+    private List<EntityGrammar> childs = new ArrayList<>();
 
     private GrammarGenListener grammarGenListener;
 
     @Override
-    public void setGrammarGenListener(GrammarGenListener grammarGenListener) {
+    public EntityGrammar setGrammarGenListener(GrammarGenListener grammarGenListener) {
         this.grammarGenListener = grammarGenListener;
+        return this;
     }
 
     @Override
-    public EntityGrammarInfo generateGrammar(String name, Class clazz) {
+    public EntityGrammar generateGrammar(String name, Class clazz) {
         EntityGrammarInfo entityGrammarInfo = new EntityGrammarInfo();
         entityGrammarInfo.name = name;
         entityGrammarInfo.type = EntityType.Object;
@@ -41,12 +42,12 @@ public class EntityGrammarInfo implements EntityGrammar {
     }
 
     @Override
-    public EntityGrammarInfo generateGrammar(String name, List<Map> map, FieldName fieldName) {
+    public EntityGrammar generateGrammar(String name, List<Map> map, FieldName fieldName) {
         EntityGrammarInfo entityGrammarInfo = new EntityGrammarInfo();
         entityGrammarInfo.name = name;
         entityGrammarInfo.type = EntityType.Object;
         generateGrammar(entityGrammarInfo, map, fieldName);
-        return null;
+        return entityGrammarInfo;
     }
 
     private void generateGrammar(EntityGrammarInfo rootClass, Class clazz) {
@@ -82,30 +83,33 @@ public class EntityGrammarInfo implements EntityGrammar {
             if (fieldName == null) {
                 throw new TemplateException("缺少名称的对应字段名称");
             }
-            Object fieldDescribe = map.get(field.getDescribeFieldName());
-            if (fieldDescribe == null) {
-                throw new TemplateException("缺少描述的对应字段名称");
-            }
             Object fieldType = map.get(field.getTypeFieldName());
-            if (fieldType == null) {
-                throw new TemplateException("缺少类型的对应字段名称");
-            }
+            Object fieldDescribe = map.get(field.getDescribeFieldName());
             EntityGrammarInfo entityGrammarInfo = new EntityGrammarInfo();
             entityGrammarInfo.name = fieldName.toString();
-            entityGrammarInfo.type = EntityType.valueOf(fieldType.toString());
-            entityGrammarInfo.describe = fieldDescribe.toString();
+            if (fieldType != null) {
+                entityGrammarInfo.type = EntityType.of(fieldType.toString());
+            } else {
+                entityGrammarInfo.type = EntityType.of(field.getTypeFieldName());
+            }
+            if (fieldDescribe != null) {
+                entityGrammarInfo.describe = fieldDescribe.toString();
+            } else {
+                entityGrammarInfo.describe = fieldName.toString();
+            }
             entityGrammarInfo.parentName = rootClass.name;
             entityGrammarInfo.parentType = rootClass.type;
-            entityGrammarInfo.grammarType = Constant.EXPR_VAR;
+            if (EntityType.Array == entityGrammarInfo.type) {
+                entityGrammarInfo.grammarType = Constant.EXPR_LIST;
+            } else if (EntityType.Entity == entityGrammarInfo.type) {
+                entityGrammarInfo.grammarType = Constant.EXPR_VAR;
+            } else {
+                entityGrammarInfo.grammarType = Constant.EXPR_VAR;
+            }
             if (grammarGenListener != null) {
                 grammarGenListener.onCreate(map, field, entityGrammarInfo);
             }
-            if (EntityType.Array == entityGrammarInfo.type) {
-                entityGrammarInfo.grammarType = Constant.EXPR_LIST;
-            }
-            if (EntityType.Entity == entityGrammarInfo.type) {
-                entityGrammarInfo.grammarType = Constant.EXPR_VAR;
-            }
+
             if (EntityType.Array == entityGrammarInfo.type || EntityType.Entity == entityGrammarInfo.type) {
                 Object obj = map.get(field.getChildFieldName());
                 if (obj == null) {
@@ -121,4 +125,55 @@ public class EntityGrammarInfo implements EntityGrammar {
             rootClass.childs.add(entityGrammarInfo);
         }
     }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getDescribe() {
+        return describe;
+    }
+
+    @Override
+    public EntityType getType() {
+        return type;
+    }
+
+    @Override
+    public String getGrammar() {
+        return grammar;
+    }
+
+    @Override
+    public Integer getGrammarType() {
+        return grammarType;
+    }
+
+    @Override
+    public String getParentName() {
+        return parentName;
+    }
+
+    @Override
+    public EntityType getParentType() {
+        return parentType;
+    }
+
+    @Override
+    public List<EntityGrammar> getChilds() {
+        return childs;
+    }
+
 }

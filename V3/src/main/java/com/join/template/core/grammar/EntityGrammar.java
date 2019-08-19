@@ -1,5 +1,6 @@
 package com.join.template.core.grammar;
 
+import com.join.template.core.constant.EntityType;
 import com.join.template.core.listener.GrammarGenListener;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface EntityGrammar {
      *
      * @param grammarGenListener
      */
-    void setGrammarGenListener(GrammarGenListener grammarGenListener);
+    EntityGrammar setGrammarGenListener(GrammarGenListener grammarGenListener);
 
     /**
      * 根据实体类生成语法
@@ -28,7 +29,7 @@ public interface EntityGrammar {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 16:25
      */
-    EntityGrammarInfo generateGrammar(String name, Class clazz);
+    EntityGrammar generateGrammar(String name, Class clazz);
 
     /**
      * 根据实体类生成语法
@@ -38,5 +39,27 @@ public interface EntityGrammar {
      * @param fieldName 对应字段信息
      * @return
      */
-    EntityGrammarInfo generateGrammar(String name, List<Map> map, FieldName fieldName);
+    EntityGrammar generateGrammar(String name, List<Map> map, FieldName fieldName);
+
+    void setName(String name);
+
+    void setDescribe(String describe);
+
+    String getName();
+
+    String getDescribe();
+
+    EntityType getType();
+
+    String getGrammar();
+
+    Integer getGrammarType();
+
+    String getParentName();
+
+    EntityType getParentType();
+
+    List<EntityGrammar> getChilds();
+
+    GrammarGenListener getGrammarGenListener();
 }

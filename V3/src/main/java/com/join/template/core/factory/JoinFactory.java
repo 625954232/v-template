@@ -3,6 +3,7 @@ package com.join.template.core.factory;
 import com.join.template.core.*;
 import com.join.template.core.expression.Expression;
 import com.join.template.core.expression.ExpressionHandle;
+import com.join.template.core.grammar.EntityGrammar;
 import com.join.template.core.grammar.GrammarExpl;
 import com.join.template.core.interpreter.Interpreter;
 import com.join.template.core.process.Process;
@@ -114,7 +115,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * 获取全部表达式配置
      *
      * @param
-     * @return java.util.Map<java.lang.Object                                                               ,                                                               com.join.template.core.expression.ExpressionHandle>
+     * @return java.util.Map<java.lang.Object                                                                                                                                                                                                                                                               ,                                                                                                                                                                                                                                                               com.join.template.core.expression.ExpressionHandle>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 16:11
      */
@@ -149,4 +150,14 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @date 2019/8/19 16:15
      */
     Interpreter getInterpreter();
+
+    /**
+     * 获取实体类语法生成器
+     *
+     * @param
+     * @return com.join.template.core.grammar.EntityGrammar
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 17:57
+     */
+    EntityGrammar getEntityGrammarr();
 }
