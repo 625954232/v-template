@@ -6,9 +6,9 @@ import com.join.template.core.Element;
 import java.util.List;
 import java.util.Map;
 
-/**  
- * @Title: 语法属性解释及效验
+/**
  * @author CAOYOU/625954232@qq.com
+ * @Title: 语法属性解释及效验
  * @date 2019/8/19 12:18
  */
 public interface GrammarExpl {
@@ -40,7 +40,7 @@ public interface GrammarExpl {
      * 获取语法表达式属性解释
      *
      * @param
-     * @return java.util.Map<java.lang.String   ,   java.lang.String>
+     * @return java.util.Map<java.lang.String       ,       java.lang.String>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:54
      */
