@@ -1,6 +1,11 @@
 package com.join.template.text;
 
 import com.join.template.core.*;
+import com.join.template.core.expression.Expression;
+import com.join.template.core.expression.ExpressionHandle;
+import com.join.template.core.grammar.GrammarExpl;
+import com.join.template.core.interpreter.ExprInterpreter;
+import com.join.template.core.interpreter.Interpreter;
 import com.join.template.core.process.Process;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.text.expression.DefaultExpressionHandle;
@@ -17,7 +22,6 @@ import com.join.template.text.expression.DefaultExpression;
 import com.join.template.text.grammar.*;
 import com.join.template.text.process.*;
 import com.join.template.text.reader.DefaultReader;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,30 +120,6 @@ public class JoinFactoryBase implements JoinFactory {
         return this;
     }
 
-    /**
-     * 加载语法解释
-     *
-     * @return
-     */
-    @Override
-    public JoinFactory loadGrammar() {
-        grammars.clear();
-        for (Map.Entry<Object, ExpressionHandle> configEntry : expressionHandles.entrySet()) {
-            ExpressionHandle expressionHandle = configEntry.getValue();
-            GrammarExpl grammar = expressionHandle.getGrammarExpl();
-            if (!(configEntry.getKey() instanceof Integer)) {
-                continue;
-            }
-            if (grammar != null) {
-                String str = getGrammar(expressionHandle, grammar.getElementAttrExpl());
-                grammars.put((Integer) configEntry.getKey(), str);
-            } else {
-                String str = getGrammar(expressionHandle, null);
-                grammars.put((Integer) configEntry.getKey(), str);
-            }
-        }
-        return this;
-    }
 
     /**
      * 缓存模版内容
@@ -203,6 +183,16 @@ public class JoinFactoryBase implements JoinFactory {
     }
 
     /**
+     * 获取全部表达式配置
+     *
+     * @return
+     */
+    @Override
+    public Map<Object, ExpressionHandle> getExpressionHandles() {
+        return expressionHandles;
+    }
+
+    /**
      * 获取表达式执行器
      *
      * @return
@@ -222,6 +212,15 @@ public class JoinFactoryBase implements JoinFactory {
         return new DefaultReader();
     }
 
+    /**
+     * 获取语法解释器
+     *
+     * @return
+     */
+    @Override
+    public Interpreter getInterpreter() {
+        return new ExprInterpreter();
+    }
 
     /**
      * 根绝模板名称获取模版
@@ -236,61 +235,4 @@ public class JoinFactoryBase implements JoinFactory {
         return templateFactory.getTemplate(name);
     }
 
-    /**
-     * 获取语法解释
-     *
-     * @return
-     */
-    @Override
-    public Map<Integer, String> getGrammars() {
-        return grammars;
-    }
-
-    /**
-     * 获取语法解释
-     *
-     * @param nodeType
-     * @param grammarAttr
-     * @return
-     */
-    @Override
-    public String getGrammar(Integer nodeType, Map<String, String> grammarAttr) {
-        ExpressionHandle expressionHandle = expressionHandles.get(nodeType);
-        String grammar = getGrammar(expressionHandle, grammarAttr);
-        return grammar;
-    }
-
-    /**
-     * 获取语法解释
-     *
-     * @param expressionHandle
-     * @param grammarAttr
-     * @return
-     */
-    @Override
-    public String getGrammar(ExpressionHandle expressionHandle, Map<String, String> grammarAttr) {
-        StringBuilder builder = new StringBuilder();
-        if (StringUtils.isBlank(expressionHandle.getTag())) {
-            return null;
-        }
-        builder.append(configuration.getExprFirstBegin());
-        builder.append(expressionHandle.getTag());
-        if (grammarAttr != null) {
-            for (Map.Entry<String, String> grammarEntry : grammarAttr.entrySet()) {
-                builder.append(" ").append(grammarEntry.getKey()).append("=\"").append(grammarEntry.getValue()).append("\"");
-            }
-        }
-        builder.append(configuration.getExprEndSupport());
-        GrammarExpl grammarExpl = expressionHandle.getGrammarExpl();
-        if (grammarExpl != null) {
-            grammarExpl.verifyElement(builder.toString(), false, grammarAttr);
-        }
-        if (Constant.EXPR_IF == expressionHandle.getNodeType() || Constant.EXPR_LIST == expressionHandle.getNodeType()) {
-            builder.append("请在这输入你需要生成的内容");
-            builder.append(configuration.getExprLastBegin());
-            builder.append(expressionHandle.getTag());
-            builder.append(configuration.getExprEndSupport());
-        }
-        return builder.toString();
-    }
 }

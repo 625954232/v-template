@@ -1,8 +1,8 @@
 package com.join.template.text.process;
 
 import com.join.template.core.Element;
-import com.join.template.core.Expression;
-import com.join.template.core.ExpressionHandle;
+import com.join.template.core.expression.Expression;
+import com.join.template.core.expression.ExpressionHandle;
 import com.join.template.core.process.AbstractProcess;
 import com.join.template.core.process.Process;
 import com.join.template.core.constant.Constant;

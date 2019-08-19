@@ -1,11 +1,10 @@
 package com.join.template.text;
 
 import com.join.template.core.Element;
-import com.join.template.core.ExpressionHandle;
+import com.join.template.core.expression.ExpressionHandle;
 import com.join.template.core.Template;
 import com.join.template.core.Word;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.text.expression.DefaultExpressionHandle;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
 import com.join.template.core.context.HashContext;

@@ -1,6 +1,9 @@
-package com.join.template.core;
+package com.join.template.core.expression;
 
 
+import com.join.template.core.grammar.GrammarExpl;
+import com.join.template.core.Parser;
+import com.join.template.core.Reader;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
 import com.join.template.core.process.Process;
@@ -47,7 +50,7 @@ public interface ExpressionHandle extends Parser, Reader {
      * 获取语法解释器
      *
      * @param
-     * @return com.join.template.core.GrammarExpl
+     * @return com.join.template.core.grammar.GrammarExpl
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:39
      */

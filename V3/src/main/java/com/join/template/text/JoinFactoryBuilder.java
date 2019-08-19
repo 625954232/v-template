@@ -53,7 +53,6 @@ public class JoinFactoryBuilder {
 
     public JoinFactory builder() {
         joinFactory.init();
-        joinFactory.loadGrammar();
         TemplateUtil.setJoinFactory(joinFactory);
         return joinFactory;
     }

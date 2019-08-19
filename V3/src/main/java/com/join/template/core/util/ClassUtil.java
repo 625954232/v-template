@@ -6,6 +6,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -17,6 +18,22 @@ import java.util.jar.JarFile;
 
 public class ClassUtil {
     /**
+     * 判断是不是基本类型
+     *
+     * @param className
+     * @return
+     */
+    public static boolean isBaseType(Class className) {
+        if (Number.class.isAssignableFrom(className)
+                || Boolean.class.equals(className)
+                || Character.class.equals(className)
+                || String.class.equals(className)
+                || Short.class.equals(className))
+            return true;
+        return false;
+    }
+
+    /**
      * 获取泛型
      *
      * @param clazz
@@ -24,6 +41,10 @@ public class ClassUtil {
      */
     public static Class getGeneric(Class clazz) {
         Type type = clazz.getGenericSuperclass();
+        return getGeneric(type);
+    }
+
+    public static Class getGeneric(Type type) {
         if (type instanceof ParameterizedType) {
             ParameterizedType pType = (ParameterizedType) type;
             Type claz = pType.getActualTypeArguments()[0];
@@ -179,7 +200,8 @@ public class ClassUtil {
      * @param classes
      */
     @SuppressWarnings("rawtypes")
-    public static void findAndAddClassesInPackageByFile(String packageName, String packagePath, final boolean recursive,
+    public static void findAndAddClassesInPackageByFile(String packageName, String packagePath,
+                                                        final boolean recursive,
                                                         Map<String, Class> classes) {
         // 获取此包的目录 建立一个File
         File dir = new File(packagePath);
