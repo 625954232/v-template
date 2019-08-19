@@ -1,5 +1,10 @@
 package com.join.template.core.constant;
 
+/**
+ * @author CAOYOU/625954232@qq.com
+ * @Title: 常量
+ * @date 2019/8/19 11:42
+ */
 public interface Constant {
     //单例模板
     String TYPE_SINGLE = "SINGLE";

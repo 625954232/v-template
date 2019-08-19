@@ -7,46 +7,69 @@ import com.join.template.core.process.Process;
 
 import java.util.List;
 
+/**
+ * @author CAOYOU/625954232@qq.com
+ * @Title: 表达式处理器
+ * @date 2019/8/19 11:41
+ */
 public interface ExpressionHandle extends Parser, Reader {
     /**
      * 获取标记
      *
-     * @return
+     * @param
+     * @return java.lang.String
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 11:39
      */
     String getTag();
 
     /**
      * 获取节点类型
      *
-     * @return
+     * @param
+     * @return java.lang.Integer
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 11:39
      */
     Integer getNodeType();
 
     /**
      * 获取处理器
      *
-     * @return
+     * @param
+     * @return com.join.template.core.process.Process
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 11:39
      */
     Process getProcess();
 
     /**
      * 获取语法解释器
      *
-     * @return
+     * @param
+     * @return com.join.template.core.GrammarExpl
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 11:39
      */
     GrammarExpl getGrammarExpl();
 
     /**
      * 获取解析监听
      *
-     * @return
+     * @param
+     * @return java.util.List<com.join.template.core.listener.ParserListener>
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 11:40
      */
     List<ParserListener> getParserListeners();
 
     /**
      * 获取处理监听
      *
-     * @return
+     * @param
+     * @return java.util.List<com.join.template.core.listener.ProcessListener>
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 11:40
      */
     List<ProcessListener> getProcessListeners();
 }

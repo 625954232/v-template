@@ -12,7 +12,9 @@ import com.join.template.text.JoinFactoryBase;
 import java.io.File;
 
 /**
- * 单一模版
+ * @author CAOYOU/625954232@qq.com
+ * @Title: 单一模版
+ * @date 2019/8/19 11:45
  */
 public class TemplateSingleFactory implements TemplateFactory<Template> {
 

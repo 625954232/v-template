@@ -13,7 +13,9 @@ public interface Template {
      *
      * @param name  值名称
      * @param value 值
-     * @return
+     * @return com.join.template.core.Template
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:17
      */
     Template putValue(String name, Object value);
 
@@ -21,72 +23,99 @@ public interface Template {
      * 写入模版所需的内容
      *
      * @param content 模版所需的内容,类似MAP结构
-     * @return
+     * @return com.join.template.core.Template
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:16
      */
     Template putContext(Content content);
 
     /**
      * 处理
      *
-     * @param writer
-     * @return
+     * @param writer 写入
+     * @return com.join.template.core.Template
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:16
      */
     Template process(Writer writer);
 
     /**
      * 获取总工厂
      *
-     * @return
+     * @param
+     * @return com.join.template.core.factory.JoinFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:16
      */
     JoinFactory getJoinFactory();
 
     /**
      * 获取模版所需的内容
      *
-     * @return
+     * @param
+     * @return com.join.template.core.context.Content
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:16
      */
     Content getContent();
 
     /**
      * 获取全部节点
      *
-     * @return
+     * @param
+     * @return java.util.List<com.join.template.core.Element>
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:16
      */
     List<Element> getAllElement();
 
     /**
      * 获取父节点
      *
-     * @return
+     * @param
+     * @return com.join.template.core.Element
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:16
      */
     Element getRootElement();
 
     /**
      * 处理模版返回字符串
      *
-     * @return
+     * @param
+     * @return java.lang.String
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:15
      */
     String process();
 
     /**
      * 获取模版内容
      *
-     * @return
+     * @param
+     * @return java.lang.String
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:15
      */
     String getText();
 
     /**
-     * 获取模版名称     *
+     * 获取模版名称
      *
-     * @return
+     * @param
+     * @return java.lang.String
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:02
      */
     String getName();
-
 
     /**
      * 获取模版行数
      *
-     * @return
+     * @param
+     * @return int
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 12:02
      */
     int getLineSize();
 }
