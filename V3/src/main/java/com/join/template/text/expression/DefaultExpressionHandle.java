@@ -42,7 +42,7 @@ public class DefaultExpressionHandle extends AbstractExpressionHandle implements
         element.addAttributes(attr);
         element.setExpressionHandle(this);
         if (grammarExpl != null)
-            grammarExpl.verifyGrammarAttr(element);
+            grammarExpl.verifyElement(element);
 
         for (ParserListener parserListener : parserListeners) {
             parserListener.onParser(element);

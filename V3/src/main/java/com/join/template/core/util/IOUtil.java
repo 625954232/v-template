@@ -33,7 +33,7 @@ public class IOUtil {
     }
 
     public static String toString(File file) {
-        byte[] bytes = new byte[0];
+        byte[] bytes = new byte[1024];
         try {
             bytes = toByte(new FileInputStream(file));
         } catch (FileNotFoundException e) {
@@ -42,7 +42,7 @@ public class IOUtil {
     }
 
     public static String toString(URL url) {
-        byte[] bytes = new byte[0];
+        byte[] bytes = new byte[1024];
         try {
             bytes = toByte(url.openStream());
         } catch (IOException e) {

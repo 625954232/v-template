@@ -131,7 +131,7 @@ public class JoinFactoryBase implements JoinFactory {
                 continue;
             }
             if (grammar != null) {
-                String str = getGrammar(expressionHandle, grammar.getGrammarAttr());
+                String str = getGrammar(expressionHandle, grammar.getElementAttrExpl());
                 grammars.put((Integer) configEntry.getKey(), str);
             } else {
                 String str = getGrammar(expressionHandle, null);
@@ -283,7 +283,7 @@ public class JoinFactoryBase implements JoinFactory {
         builder.append(configuration.getExprEndSupport());
         GrammarExpl grammarExpl = expressionHandle.getGrammarExpl();
         if (grammarExpl != null) {
-            grammarExpl.verifyGrammarAttr(builder.toString(), false, grammarAttr);
+            grammarExpl.verifyElement(builder.toString(), false, grammarAttr);
         }
         if (Constant.EXPR_IF == expressionHandle.getNodeType() || Constant.EXPR_LIST == expressionHandle.getNodeType()) {
             builder.append("请在这输入你需要生成的内容");

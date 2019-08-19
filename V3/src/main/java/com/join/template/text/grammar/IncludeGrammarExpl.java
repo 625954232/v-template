@@ -1,17 +1,19 @@
 package com.join.template.text.grammar;
 
 
+import com.join.template.core.ClassGrInfo;
 import com.join.template.core.GrammarExpl;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.TemplateException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class IncludeGrammarExpl implements GrammarExpl {
     @Override
-    public void verifyGrammarAttr(String original, Boolean endElement, Map<String, String> attr) {
+    public void verifyElement(String original, Boolean endElement, Map<String, String> attr) {
         Configuration configuration = TemplateUtil.getConfiguration();
         if (!attr.containsKey(configuration.getAttFile())) {
             throw new TemplateException("请设置模板名称（" + configuration.getAttFile() + "）：" + original);
@@ -19,10 +21,12 @@ public class IncludeGrammarExpl implements GrammarExpl {
     }
 
     @Override
-    public Map<String, String> getGrammarAttr() {
+    public Map<String, String> getElementAttrExpl() {
         Configuration configuration = TemplateUtil.getConfiguration();
         Map<String, String> fields = new HashMap<>();
         fields.put(configuration.getAttFile(), "模板名称");
         return fields;
     }
+
+
 }
