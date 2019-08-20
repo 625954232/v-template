@@ -5,12 +5,13 @@ import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.MarkedWords;
 import com.join.template.core.expression.ExpressionHandle;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.grammar.EntityGrammar;
-import com.join.template.core.grammar.FieldName;
+import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.grammar.Explain;
 import com.join.template.core.configuration.Configuration;
+import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.TemplateException;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 
@@ -52,15 +53,15 @@ public class ListExplain implements Explain {
     }
 
     @Override
-    public String genGrammar(EntityGrammar entityGrammar, Map map, FieldName field) {
+    public String genGrammar(GrammarInfo grammarInfo, Map map, GrammarField field) {
         Configuration configuration = TemplateUtil.getConfiguration();
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
         ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_LIST);
 
         Object value = map.get(field.getNameFieldName());
         StringBuilder var = new StringBuilder();
-        if (entityGrammar != null) {
-            var.append(entityGrammar.getName());
+        if (grammarInfo != null && StringUtils.isNotBlank(grammarInfo.getParentName())) {
+            var.append(grammarInfo.getParentName());
             var.append(".");
         }
         var.append(value);

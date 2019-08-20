@@ -5,10 +5,10 @@ import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.MarkedWords;
 import com.join.template.core.expression.ExpressionHandle;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.grammar.EntityGrammar;
-import com.join.template.core.grammar.FieldName;
+import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.grammar.Explain;
 import com.join.template.core.configuration.Configuration;
+import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.TemplateException;
 
@@ -42,7 +42,7 @@ public class SetExplain implements Explain {
     }
 
     @Override
-    public String genGrammar(EntityGrammar entityGrammar, Map map, FieldName field) {
+    public String genGrammar(GrammarInfo grammarInfo, Map map, GrammarField field) {
         return null;
     }
 

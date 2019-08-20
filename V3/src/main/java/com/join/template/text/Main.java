@@ -1,9 +1,11 @@
 package com.join.template.text;
 
 import com.alibaba.fastjson.JSON;
+import com.join.template.core.constant.EntityType;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.grammar.EntityGrammar;
-import com.join.template.core.grammar.FieldName;
+import com.join.template.core.grammar.generate.GrammarField;
+import com.join.template.core.grammar.GrammarGenerate;
+import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.listener.GrammarGenListener;
 import com.join.template.core.util.IOUtil;
 
@@ -55,25 +57,28 @@ public class Main {
         String string = IOUtil.toString(resource);
         Map<String, List<Map>> maps = JSON.parseObject(string, Map.class);
         for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
-            EntityGrammar entityGrammarr = joinFactory.getEntityGrammarr();
-            entityGrammarr.setGrammarGenListener(new GrammarGenListener() {
+            GrammarGenerate grammarGenerate = joinFactory.getGrammarGenerate();
+            grammarGenerate.setGrammarGenListener(new GrammarGenListener() {
 
                 @Override
-                public void onCreate(Map map, FieldName fieldName, EntityGrammar entityGrammar) {
-                    fieldName.setTypeFieldName("string");
+                public void onCreate(Map map, GrammarField fieldName, GrammarInfo grammarInfo) {
+                    if ("agent".equals(entry.getKey())
+                            || "respondent".equals(entry.getKey())
+                            || "applicant".equals(entry.getKey())) {
+                        grammarInfo.setType(EntityType.Array);
+                    } else {
+                        grammarInfo.setType(EntityType.String);
+                    }
                 }
             });
-            FieldName fieldName = new FieldName().setNameFieldName("filedKey").setDescribeFieldName("filedValue");
-            if ("agent".equals(entry.getKey())
-                    || "respondent".equals(entry.getKey())
-                    || "applicant".equals(entry.getKey())) {
-                fieldName.setTypeFieldName("string");
-            } else {
-                fieldName.setTypeFieldName("list");
-            }
-            EntityGrammar grammar = entityGrammarr.generateGrammar(entry.getKey(), entry.getValue(), fieldName);
-            grammar.setName(entry.getKey());
-            System.out.println(grammar);
+            GrammarField fieldName = new GrammarField();
+            fieldName.setNameFieldName("filedKey");
+            fieldName.setTypeFieldName("type");
+            fieldName.setDescribeFieldName("filedValue");
+            fieldName.setChildFieldName("child");
+            GrammarInfo grammarInfo = grammarGenerate.generateGrammar(entry.getKey(), entry.getValue(), fieldName);
+            grammarInfo.setName(entry.getKey());
+            System.out.println(grammarInfo);
         }
     }
 }

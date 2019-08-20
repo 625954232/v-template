@@ -3,9 +3,9 @@ package com.join.template.text;
 import com.join.template.core.*;
 import com.join.template.core.expression.Expression;
 import com.join.template.core.expression.ExpressionHandle;
-import com.join.template.core.grammar.EntityGrammar;
-import com.join.template.core.grammar.GenEntityGrammar;
+import com.join.template.core.grammar.generate.EntityGenerate;
 import com.join.template.core.grammar.Explain;
+import com.join.template.core.grammar.GrammarGenerate;
 import com.join.template.core.process.Process;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.text.expression.DefaultExpressionHandle;
@@ -33,10 +33,13 @@ public class JoinFactoryBase implements JoinFactory {
     private Map<Object, ExpressionHandle> expressionHandles = new HashMap();
     private Map<Integer, String> grammars = new HashMap();
 
+    private Reader reader;
+    private Expression expression;
+    private GrammarGenerate grammarGenerate;
+
+
     public JoinFactoryBase(Configuration configuration) {
         this.configuration = configuration;
-
-
     }
 
     @Override
@@ -54,7 +57,6 @@ public class JoinFactoryBase implements JoinFactory {
         this.addExpressionHandle(Constant.EXPR_INCLUDE, "include", new IncludeProcess(), new IncludeExplain());
         this.addExpressionHandle(Constant.EXPR_SET, "set", new SetProcess(), new SetExplain());
         this.addExpressionHandle(Constant.EXPR_GET, "get", new GetProcess(), new GetExplain());
-
         return this;
     }
 
@@ -71,6 +73,42 @@ public class JoinFactoryBase implements JoinFactory {
                 grammars.put(expressionHandle.getNodeType(), grammarExpl.getGrammarExplain());
             }
         }
+        return this;
+    }
+
+    /**
+     * 设置读取器
+     *
+     * @param reader
+     * @return
+     */
+    @Override
+    public JoinFactory setReader(Reader reader) {
+        this.reader = reader;
+        return this;
+    }
+
+    /**
+     * 设置值表达式执行器
+     *
+     * @param expression
+     * @return
+     */
+    @Override
+    public JoinFactory setExpression(Expression expression) {
+        this.expression = expression;
+        return this;
+    }
+
+    /**
+     * 设置语法生成器
+     *
+     * @param grammarGenerate
+     * @return
+     */
+    @Override
+    public JoinFactory setGrammarGenerate(GrammarGenerate grammarGenerate) {
+        this.grammarGenerate = grammarGenerate;
         return this;
     }
 
@@ -217,7 +255,9 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public Expression getExpression() {
-        return new DefaultExpression();
+        if (expression != null)
+            expression = new DefaultExpression();
+        return expression;
     }
 
     /**
@@ -227,7 +267,9 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public Reader getReader() {
-        return new DefaultReader();
+        if (reader != null)
+            reader = new DefaultReader();
+        return reader;
     }
 
 
@@ -237,8 +279,10 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public EntityGrammar getEntityGrammarr() {
-        return new GenEntityGrammar();
+    public GrammarGenerate getGrammarGenerate() {
+        if (grammarGenerate != null)
+            grammarGenerate = new EntityGenerate();
+        return grammarGenerate;
     }
 
     /**
