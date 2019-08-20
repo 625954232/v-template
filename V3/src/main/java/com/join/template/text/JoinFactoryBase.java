@@ -255,7 +255,7 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public Expression getExpression() {
-        if (expression != null)
+        if (expression == null)
             expression = new DefaultExpression();
         return expression;
     }
@@ -267,7 +267,7 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public Reader getReader() {
-        if (reader != null)
+        if (reader == null)
             reader = new DefaultReader();
         return reader;
     }
@@ -280,7 +280,7 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public GrammarGenerate getGrammarGenerate() {
-        if (grammarGenerate != null)
+        if (grammarGenerate == null)
             grammarGenerate = new EntityGenerate();
         return grammarGenerate;
     }

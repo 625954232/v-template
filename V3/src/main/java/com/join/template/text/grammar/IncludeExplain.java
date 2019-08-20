@@ -32,7 +32,7 @@ public class IncludeExplain implements Explain {
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
-        grammar.append(configuration.getAttFile()).append("=\"").append(MarkedWords.Template_Name).append("\" ");
+        grammar.append(configuration.getAttFile()).append("=\"").append(MarkedWords.Attr_Template_Name).append("\" ");
         grammar.append(configuration.getExprEndSupport());
         return grammar.toString();
     }

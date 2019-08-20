@@ -34,8 +34,8 @@ public class SetExplain implements Explain {
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
-        grammar.append(configuration.getAttVar()).append("=\"").append(MarkedWords.Varchar_Name).append("\" ");
-        grammar.append(configuration.getAttName()).append("=\"").append(MarkedWords.Varchar_Alias).append("\" ");
+        grammar.append(configuration.getAttVar()).append("=\"").append(MarkedWords.Attr_Varchar_Name).append("\" ");
+        grammar.append(configuration.getAttName()).append("=\"").append(MarkedWords.Attr_Varchar_Alias).append("\" ");
         grammar.append(configuration.getExprEndSupport());
         return grammar.toString();
 

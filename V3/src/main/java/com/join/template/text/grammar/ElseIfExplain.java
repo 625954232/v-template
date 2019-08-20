@@ -31,7 +31,7 @@ public class ElseIfExplain implements Explain {
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
-        grammar.append(configuration.getAttrText()).append("=\"").append(MarkedWords.Judgement_Conditions).append("\" ");
+        grammar.append(configuration.getAttrText()).append("=\"").append(MarkedWords.Attr_Judgement_Conditions).append("\" ");
         grammar.append(configuration.getExprEndSupport());
         grammar.append(configuration.getExprLastBegin());
         grammar.append(expressionHandle.getTag());

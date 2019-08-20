@@ -39,12 +39,12 @@ public class ListExplain implements Explain {
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
-        grammar.append(configuration.getAttVar()).append("=\"").append(MarkedWords.Varchar_Name).append("\" ");
-        grammar.append(configuration.getAttItem()).append("=\"").append(MarkedWords.Item_Name).append("\" ");
-        grammar.append(configuration.getAttIndex()).append("=\"").append(MarkedWords.Index_Name).append("\" ");
-        grammar.append(configuration.getAttOpen()).append("=\"").append(MarkedWords.Statement_Opener).append("\" ");
-        grammar.append(configuration.getAttClose()).append("=\"").append(MarkedWords.Statement_Terminator).append("\" ");
-        grammar.append(configuration.getAttSseparator()).append("=\"").append(MarkedWords.Separator).append("\" ");
+        grammar.append(configuration.getAttVar()).append("=\"").append(MarkedWords.Attr_Varchar_Name).append("\" ");
+        grammar.append(configuration.getAttItem()).append("=\"").append(MarkedWords.Attr_Item_Name).append("\" ");
+        grammar.append(configuration.getAttIndex()).append("=\"").append(MarkedWords.Attr_Index_Name).append("\" ");
+        grammar.append(configuration.getAttOpen()).append("=\"").append(MarkedWords.Attr_Statement_Opener).append("\" ");
+        grammar.append(configuration.getAttClose()).append("=\"").append(MarkedWords.Attr_Statement_Terminator).append("\" ");
+        grammar.append(configuration.getAttSseparator()).append("=\"").append(MarkedWords.Attr_Separator).append("\" ");
         grammar.append(configuration.getExprEndSupport());
         grammar.append(configuration.getExprLastBegin());
         grammar.append(expressionHandle.getTag());
@@ -71,10 +71,11 @@ public class ListExplain implements Explain {
         grammar.append(configuration.getAttVar()).append("=\"").append(var).append("\" ");
         grammar.append(configuration.getAttItem()).append("=\"").append(var).append("\" ");
         grammar.append(configuration.getAttIndex()).append("=\"").append(configuration.getAttIndex()).append("\" ");
-        grammar.append(configuration.getAttOpen()).append("=\"").append(MarkedWords.Statement_Opener).append("\" ");
-        grammar.append(configuration.getAttClose()).append("=\"").append(MarkedWords.Statement_Terminator).append("\" ");
-        grammar.append(configuration.getAttSseparator()).append("=\"").append(MarkedWords.Separator).append("\" ");
+        grammar.append(configuration.getAttOpen()).append("=\"").append(MarkedWords.Attr_Statement_Opener).append("\" ");
+        grammar.append(configuration.getAttClose()).append("=\"").append(MarkedWords.Attr_Statement_Terminator).append("\" ");
+        grammar.append(configuration.getAttSseparator()).append("=\"").append(MarkedWords.Attr_Separator).append("\" ");
         grammar.append(configuration.getExprEndSupport());
+        grammar.append(MarkedWords.Hint_Input_Generated_Content);
         grammar.append(configuration.getExprLastBegin());
         grammar.append(expressionHandle.getTag());
         grammar.append(configuration.getExprEndSupport());

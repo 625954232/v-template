@@ -32,8 +32,8 @@ public class GetExplain implements Explain {
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
-        grammar.append(configuration.getAttVar()).append("=\"").append(MarkedWords.Varchar_Name).append("\" ");
-        grammar.append(configuration.getAttrFormat()).append("=\"").append(MarkedWords.Date_Format).append("\" ");
+        grammar.append(configuration.getAttVar()).append("=\"").append(MarkedWords.Attr_Varchar_Name).append("\" ");
+        grammar.append(configuration.getAttrFormat()).append("=\"").append(MarkedWords.Attr_Date_Format).append("\" ");
         grammar.append(configuration.getExprEndSupport());
         return grammar.toString();
 

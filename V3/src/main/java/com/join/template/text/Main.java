@@ -10,6 +10,7 @@ import com.join.template.core.listener.GrammarGenListener;
 import com.join.template.core.util.IOUtil;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -56,15 +57,23 @@ public class Main {
         URL resource = Main.class.getResource("/test.json");
         String string = IOUtil.toString(resource);
         Map<String, List<Map>> maps = JSON.parseObject(string, Map.class);
+
+
+        List<GrammarInfo> list = new ArrayList<>();
         for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
             GrammarGenerate grammarGenerate = joinFactory.getGrammarGenerate();
             grammarGenerate.setGrammarGenListener(new GrammarGenListener() {
 
                 @Override
                 public void onCreate(Map map, GrammarField fieldName, GrammarInfo grammarInfo) {
-                    if ("agent".equals(entry.getKey())
-                            || "respondent".equals(entry.getKey())
-                            || "applicant".equals(entry.getKey())) {
+                    if ("agent".equals(grammarInfo.getName())) {
+                        grammarInfo.setDescribe("代理人信息");
+                        grammarInfo.setType(EntityType.Array);
+                    } else if ("respondent".equals(grammarInfo.getName())) {
+                        grammarInfo.setDescribe("被申请人信息");
+                        grammarInfo.setType(EntityType.Array);
+                    } else if ("applicant".equals(grammarInfo.getName())) {
+                        grammarInfo.setDescribe("申请人信息");
                         grammarInfo.setType(EntityType.Array);
                     } else {
                         grammarInfo.setType(EntityType.String);
@@ -77,8 +86,8 @@ public class Main {
             fieldName.setDescribeFieldName("filedValue");
             fieldName.setChildFieldName("child");
             GrammarInfo grammarInfo = grammarGenerate.generateGrammar(entry.getKey(), entry.getValue(), fieldName);
-            grammarInfo.setName(entry.getKey());
-            System.out.println(grammarInfo);
+            list.add(grammarInfo);
         }
+        System.out.println(JSON.toJSONString(list));
     }
 }

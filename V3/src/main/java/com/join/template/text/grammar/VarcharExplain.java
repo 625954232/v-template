@@ -22,7 +22,7 @@ public class VarcharExplain implements Explain {
         Configuration configuration = TemplateUtil.getConfiguration();
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getVarTagStart());
-        grammar.append(MarkedWords.Param_Name).append(" ");
+        grammar.append(MarkedWords.Attr_Param_Name).append(" ");
         grammar.append(configuration.getVarTagStart());
         return grammar.toString();
 

@@ -31,10 +31,11 @@ public class IfExplain implements Explain {
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
-        grammar.append(configuration.getAttrText()).append("=\"").append(MarkedWords.Judgement_Conditions).append("\" ");
+        grammar.append(configuration.getAttrText()).append("=\"").append(MarkedWords.Attr_Judgement_Conditions).append("\" ");
         grammar.append(configuration.getExprEndSupport());
         grammar.append(configuration.getExprLastBegin());
         grammar.append(expressionHandle.getTag());
+        grammar.append(MarkedWords.Hint_Input_Generated_Content);
         grammar.append(configuration.getExprEndSupport());
         return grammar.toString();
     }
