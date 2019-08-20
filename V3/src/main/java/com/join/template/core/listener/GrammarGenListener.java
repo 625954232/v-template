@@ -1,7 +1,7 @@
 package com.join.template.core.listener;
 
+import com.join.template.core.grammar.EntityGrammar;
 import com.join.template.core.grammar.FieldName;
-import com.join.template.core.grammar.EntityGrammarInfo;
 
 import java.util.Map;
 
@@ -12,5 +12,5 @@ import java.util.Map;
  */
 public interface GrammarGenListener {
 
-    void onCreate(Map map, FieldName entityField, EntityGrammarInfo entityGrammarInfo);
+    void onCreate(Map map, FieldName fieldName, EntityGrammar entityGrammar);
 }

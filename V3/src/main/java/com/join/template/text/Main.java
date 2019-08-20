@@ -3,9 +3,7 @@ package com.join.template.text;
 import com.alibaba.fastjson.JSON;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.grammar.EntityGrammar;
-import com.join.template.core.grammar.EntityGrammarInfo;
 import com.join.template.core.grammar.FieldName;
-import com.join.template.core.interpreter.Interpreter;
 import com.join.template.core.listener.GrammarGenListener;
 import com.join.template.core.util.IOUtil;
 
@@ -59,15 +57,20 @@ public class Main {
         for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
             EntityGrammar entityGrammarr = joinFactory.getEntityGrammarr();
             entityGrammarr.setGrammarGenListener(new GrammarGenListener() {
-                @Override
-                public void onCreate(Map map, FieldName entityField, EntityGrammarInfo entityGrammarInfo) {
 
+                @Override
+                public void onCreate(Map map, FieldName fieldName, EntityGrammar entityGrammar) {
+                    fieldName.setTypeFieldName("string");
                 }
             });
-            FieldName fieldName = new FieldName();
-            fieldName.setNameFieldName("filedKey");
-            fieldName.setDescribeFieldName("filedValue");
-            fieldName.setTypeFieldName("string");
+            FieldName fieldName = new FieldName().setNameFieldName("filedKey").setDescribeFieldName("filedValue");
+            if ("agent".equals(entry.getKey())
+                    || "respondent".equals(entry.getKey())
+                    || "applicant".equals(entry.getKey())) {
+                fieldName.setTypeFieldName("string");
+            } else {
+                fieldName.setTypeFieldName("list");
+            }
             EntityGrammar grammar = entityGrammarr.generateGrammar(entry.getKey(), entry.getValue(), fieldName);
             grammar.setName(entry.getKey());
             System.out.println(grammar);

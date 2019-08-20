@@ -45,6 +45,18 @@ public interface EntityGrammar {
 
     void setDescribe(String describe);
 
+    void setType(EntityType type);
+
+    void setGrammar(String grammar);
+
+    void setGrammarType(Integer grammarType);
+
+    void setParentName(String parentName);
+
+    void setParentType(EntityType parentType);
+
+    void setChilds(List<EntityGrammar> childs);
+
     String getName();
 
     String getDescribe();

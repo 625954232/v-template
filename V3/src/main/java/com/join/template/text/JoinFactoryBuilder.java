@@ -23,6 +23,9 @@ public class JoinFactoryBuilder {
     public JoinFactoryBuilder(Configuration configuration) {
         TemplateUtil.setConfiguration(configuration);
         this.joinFactory = new JoinFactoryBase(configuration);
+        TemplateUtil.setJoinFactory(joinFactory);
+        this.joinFactory.init();
+        TemplateUtil.setJoinFactory(joinFactory);
     }
 
 
@@ -52,7 +55,7 @@ public class JoinFactoryBuilder {
     }
 
     public JoinFactory builder() {
-        joinFactory.init();
+        joinFactory.initGrammarExplain();
         TemplateUtil.setJoinFactory(joinFactory);
         return joinFactory;
     }

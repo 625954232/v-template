@@ -1,7 +1,7 @@
 package com.join.template.core.expression;
 
 
-import com.join.template.core.grammar.GrammarExpl;
+import com.join.template.core.grammar.Explain;
 import com.join.template.core.Parser;
 import com.join.template.core.Reader;
 import com.join.template.core.listener.ParserListener;
@@ -54,7 +54,7 @@ public interface ExpressionHandle extends Parser, Reader {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:39
      */
-    GrammarExpl getGrammarExpl();
+    Explain getGrammarExpl();
 
     /**
      * 获取解析监听

@@ -4,10 +4,8 @@ import com.join.template.core.*;
 import com.join.template.core.expression.Expression;
 import com.join.template.core.expression.ExpressionHandle;
 import com.join.template.core.grammar.EntityGrammar;
-import com.join.template.core.grammar.EntityGrammarInfo;
-import com.join.template.core.grammar.GrammarExpl;
-import com.join.template.core.interpreter.ExprInterpreter;
-import com.join.template.core.interpreter.Interpreter;
+import com.join.template.core.grammar.GenEntityGrammar;
+import com.join.template.core.grammar.Explain;
 import com.join.template.core.process.Process;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.text.expression.DefaultExpressionHandle;
@@ -37,6 +35,8 @@ public class JoinFactoryBase implements JoinFactory {
 
     public JoinFactoryBase(Configuration configuration) {
         this.configuration = configuration;
+
+
     }
 
     @Override
@@ -46,17 +46,33 @@ public class JoinFactoryBase implements JoinFactory {
 
         this.addExpressionHandle(Constant.EXPR_ROOT, null, new Processs(), null);
         this.addExpressionHandle(Constant.EXPR_TEXT, null, new TextProcess(), null);
-        this.addExpressionHandle(Constant.EXPR_VAR, null, new VarcharProcess(), null);
-        this.addExpressionHandle(Constant.EXPR_LIST, "list", new ListProcess(), new ListGrammarExpl());
-        this.addExpressionHandle(Constant.EXPR_IF, "if", new IfProcess(), new IfGrammarExpl());
+        this.addExpressionHandle(Constant.EXPR_VAR, null, new VarcharProcess(), new VarcharExplain());
+        this.addExpressionHandle(Constant.EXPR_LIST, "list", new ListProcess(), new ListExplain());
+        this.addExpressionHandle(Constant.EXPR_IF, "if", new IfProcess(), new IfExplain());
         this.addExpressionHandle(Constant.EXPR_IF_ELSE, "else", new IfElseProcess(), null);
-        this.addExpressionHandle(Constant.EXPR_IF_ELSE_IF, "elseif", new ElseIfProcess(), new ElseIfGrammarExpl());
-        this.addExpressionHandle(Constant.EXPR_INCLUDE, "include", new IncludeProcess(), new IncludeGrammarExpl());
-        this.addExpressionHandle(Constant.EXPR_SET, "set", new SetProcess(), new SetGrammarExpl());
-        this.addExpressionHandle(Constant.EXPR_GET, "get", new GetProcess(), new GetGrammarExpl());
+        this.addExpressionHandle(Constant.EXPR_IF_ELSE_IF, "elseif", new ElseIfProcess(), new ElseIfExplain());
+        this.addExpressionHandle(Constant.EXPR_INCLUDE, "include", new IncludeProcess(), new IncludeExplain());
+        this.addExpressionHandle(Constant.EXPR_SET, "set", new SetProcess(), new SetExplain());
+        this.addExpressionHandle(Constant.EXPR_GET, "get", new GetProcess(), new GetExplain());
+
         return this;
     }
 
+    /**
+     * 初始化语法解释
+     *
+     * @return
+     */
+    @Override
+    public JoinFactory initGrammarExplain() {
+        for (ExpressionHandle expressionHandle : expressionHandles.values()) {
+            Explain grammarExpl = expressionHandle.getGrammarExpl();
+            if (grammarExpl != null) {
+                grammars.put(expressionHandle.getNodeType(), grammarExpl.getGrammarExplain());
+            }
+        }
+        return this;
+    }
 
     /**
      * 新增模版工厂
@@ -81,7 +97,7 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public JoinFactory addExpressionHandle(Integer nodeType, String tag, Process process, GrammarExpl grammar) {
+    public JoinFactory addExpressionHandle(Integer nodeType, String tag, Process process, Explain grammar) {
         ExpressionHandle expressionHandle = new DefaultExpressionHandle(tag, nodeType, process, grammar);
         this.expressionHandles.put(tag, expressionHandle);
         this.expressionHandles.put(nodeType, expressionHandle);
@@ -214,15 +230,6 @@ public class JoinFactoryBase implements JoinFactory {
         return new DefaultReader();
     }
 
-    /**
-     * 获取语法解释器
-     *
-     * @return
-     */
-    @Override
-    public Interpreter getInterpreter() {
-        return new ExprInterpreter();
-    }
 
     /**
      * 获取实体类语法生成器
@@ -231,7 +238,7 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public EntityGrammar getEntityGrammarr() {
-        return new EntityGrammarInfo();
+        return new GenEntityGrammar();
     }
 
     /**

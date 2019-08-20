@@ -4,8 +4,7 @@ import com.join.template.core.*;
 import com.join.template.core.expression.Expression;
 import com.join.template.core.expression.ExpressionHandle;
 import com.join.template.core.grammar.EntityGrammar;
-import com.join.template.core.grammar.GrammarExpl;
-import com.join.template.core.interpreter.Interpreter;
+import com.join.template.core.grammar.Explain;
 import com.join.template.core.process.Process;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.factory.template.TemplateFactory;
@@ -30,6 +29,15 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      */
     JoinFactory init();
 
+    /**
+     * 初始化语法解释
+     *
+     * @param
+     * @return com.join.template.core.factory.JoinFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/20 11:33
+     */
+    JoinFactory initGrammarExplain();
 
     /**
      * 新增模版工厂
@@ -54,7 +62,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:46
      */
-    JoinFactory addExpressionHandle(Integer nodeType, String tag, Process process, GrammarExpl grammar);
+    JoinFactory addExpressionHandle(Integer nodeType, String tag, Process process, Explain grammar);
 
     /**
      * 新增解析监听
@@ -115,7 +123,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * 获取全部表达式配置
      *
      * @param
-     * @return java.util.Map<java.lang.Object                                                                                                                                                                                                                                                               ,                                                                                                                                                                                                                                                               com.join.template.core.expression.ExpressionHandle>
+     * @return java.util.Map<java.lang.Object                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               com.join.template.core.expression.ExpressionHandle>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 16:11
      */
@@ -141,15 +149,6 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      */
     Reader getReader();
 
-    /**
-     * 获取语法解释器
-     *
-     * @param
-     * @return com.join.template.core.interpreter.Interpreter
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/19 16:15
-     */
-    Interpreter getInterpreter();
 
     /**
      * 获取实体类语法生成器

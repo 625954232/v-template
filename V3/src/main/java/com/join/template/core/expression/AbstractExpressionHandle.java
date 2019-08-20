@@ -1,6 +1,6 @@
 package com.join.template.core.expression;
 
-import com.join.template.core.grammar.GrammarExpl;
+import com.join.template.core.grammar.Explain;
 import com.join.template.core.process.Process;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
@@ -25,7 +25,7 @@ public abstract class AbstractExpressionHandle implements ExpressionHandle {
     /**
      * 语法示例
      */
-    protected GrammarExpl grammarExpl;
+    protected Explain grammarExpl;
 
     /**
      * 解析监听
@@ -38,7 +38,7 @@ public abstract class AbstractExpressionHandle implements ExpressionHandle {
     protected List<ProcessListener> processListeners = new ArrayList<>();
 
 
-    public AbstractExpressionHandle(String tag, Integer nodeType, Process process, GrammarExpl grammarExpl) {
+    public AbstractExpressionHandle(String tag, Integer nodeType, Process process, Explain grammarExpl) {
         this.tag = tag;
         this.nodeType = nodeType;
         this.process = process;
@@ -61,7 +61,7 @@ public abstract class AbstractExpressionHandle implements ExpressionHandle {
     }
 
     @Override
-    public GrammarExpl getGrammarExpl() {
+    public Explain getGrammarExpl() {
         return grammarExpl;
     }
 
