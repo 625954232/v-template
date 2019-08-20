@@ -1,4 +1,4 @@
-package com.join.template.text.grammar;
+package com.join.template.text.explain;
 
 
 import com.join.template.core.constant.Constant;
@@ -14,29 +14,27 @@ import com.join.template.core.verify.TemplateException;
 
 import java.util.Map;
 
-public class GetExplain implements Explain {
-
+public class IncludeExplain implements Explain {
     @Override
     public void verifyElement(String original, Boolean endElement, Map<String, String> attr) {
         Configuration configuration = TemplateUtil.getConfiguration();
-        if (!attr.containsKey(configuration.getAttVar())) {
-            throw new TemplateException("请设置需要获取的值别名（" + configuration.getAttVar() + "）：" + original);
+        if (!attr.containsKey(configuration.getAttFile())) {
+            throw new TemplateException("请设置模板名称（" + configuration.getAttFile() + "）：" + original);
         }
     }
 
     @Override
     public String getGrammarExplain() {
+
         Configuration configuration = TemplateUtil.getConfiguration();
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
-        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_GET);
+        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_INCLUDE);
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
-        grammar.append(configuration.getAttVar()).append("=\"").append(MarkedWords.Attr_Varchar_Name).append("\" ");
-        grammar.append(configuration.getAttrFormat()).append("=\"").append(MarkedWords.Attr_Date_Format).append("\" ");
+        grammar.append(configuration.getAttFile()).append("=\"").append(MarkedWords.Attr_Template_Name).append("\" ");
         grammar.append(configuration.getExprEndSupport());
         return grammar.toString();
-
     }
 
     @Override

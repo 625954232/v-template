@@ -17,7 +17,7 @@ public interface GrammarGenerate {
      * 设置语法信息类
      *
      * @param grammarInfo
-     * @return com.join.template.core.grammar.GrammarGenerate
+     * @return com.join.template.core.explain.GrammarGenerate
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 15:15
      */
@@ -35,7 +35,7 @@ public interface GrammarGenerate {
      *
      * @param name  别名
      * @param clazz 对象属性
-     * @return com.join.template.core.grammar.generate.EntityGrammarInfo
+     * @return com.join.template.core.explain.generate.EntityGrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 16:25
      */

@@ -19,7 +19,7 @@ import com.join.template.core.listener.ProcessListener;
 import com.join.template.core.verify.Assert;
 import com.join.template.core.verify.TemplateException;
 import com.join.template.text.expression.DefaultExpression;
-import com.join.template.text.grammar.*;
+import com.join.template.text.explain.*;
 import com.join.template.text.process.*;
 import com.join.template.text.reader.DefaultReader;
 
@@ -283,6 +283,16 @@ public class JoinFactoryBase implements JoinFactory {
         if (grammarGenerate == null)
             grammarGenerate = new EntityGenerate();
         return grammarGenerate;
+    }
+
+    /**
+     * 获取全部语法示例
+     *
+     * @return
+     */
+    @Override
+    public Map<Integer, String> getGrammars() {
+        return grammars;
     }
 
     /**

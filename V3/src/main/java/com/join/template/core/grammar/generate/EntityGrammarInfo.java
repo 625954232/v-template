@@ -13,7 +13,7 @@ import java.util.List;
  * @Title: 语法生成信息
  * @date 2019/8/20 14:08
  */
-@Getter
+@Data
 public class EntityGrammarInfo implements GrammarInfo {
     /**
      * 字段名称
@@ -46,53 +46,57 @@ public class EntityGrammarInfo implements GrammarInfo {
     /**
      * 子集字段
      */
-    protected List<GrammarInfo> childs = new ArrayList<>();
+    protected List<GrammarInfo> childs;
 
     @Override
-    public GrammarInfo setName(String name) {
+    public GrammarInfo name(String name) {
         this.name = name;
         return this;
     }
 
     @Override
-    public GrammarInfo setDescribe(String describe) {
+    public GrammarInfo describe(String describe) {
         this.describe = describe;
         return this;
     }
 
     @Override
-    public GrammarInfo setType(EntityType type) {
+    public GrammarInfo type(EntityType type) {
         this.type = type;
         return this;
     }
 
     @Override
-    public GrammarInfo setGrammar(String grammar) {
+    public GrammarInfo grammar(String grammar) {
         this.grammar = grammar;
         return this;
     }
 
     @Override
-    public GrammarInfo setGrammarType(Integer grammarType) {
+    public GrammarInfo grammarType(Integer grammarType) {
         this.grammarType = grammarType;
         return this;
     }
 
     @Override
-    public GrammarInfo setParentName(String parentName) {
+    public GrammarInfo parentName(String parentName) {
         this.parentName = parentName;
         return this;
     }
 
     @Override
-    public GrammarInfo setParentType(EntityType parentType) {
+    public GrammarInfo parentType(EntityType parentType) {
         this.parentType = parentType;
         return this;
     }
 
     @Override
-    public GrammarInfo setChilds(List<GrammarInfo> childs) {
-        this.childs = childs;
+    public GrammarInfo addChild(GrammarInfo grammarInfo) {
+        if (childs == null) {
+            childs = new ArrayList<>();
+        }
+        this.childs.add(grammarInfo);
         return this;
     }
+
 }

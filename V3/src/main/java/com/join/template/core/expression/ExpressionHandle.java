@@ -50,7 +50,7 @@ public interface ExpressionHandle extends Parser, Reader {
      * 获取语法解释器
      *
      * @param
-     * @return com.join.template.core.grammar.GrammarExpl
+     * @return com.join.template.core.explain.GrammarExpl
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:39
      */

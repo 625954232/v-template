@@ -21,81 +21,81 @@ public interface GrammarInfo {
      * 设置字段名称
      *
      * @param name 字段名称
-     * @return com.join.template.core.grammar.GrammarInfo
+     * @return com.join.template.core.explain.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 14:52
      */
-    public GrammarInfo setName(String name);
+    public GrammarInfo name(String name);
 
     /**
      * 设置字段描述
      *
      * @param describe 字段描述
-     * @return com.join.template.core.grammar.GrammarInfo
+     * @return com.join.template.core.explain.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 14:53
      */
-    public GrammarInfo setDescribe(String describe);
+    public GrammarInfo describe(String describe);
 
     /**
      * 设置字段类型
      *
      * @param type 字段类型
-     * @return com.join.template.core.grammar.GrammarInfo
+     * @return com.join.template.core.explain.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 14:54
      */
-    public GrammarInfo setType(EntityType type);
+    public GrammarInfo type(EntityType type);
 
     /**
      * 设置语法
      *
      * @param grammar 语法
-     * @return com.join.template.core.grammar.GrammarInfo
+     * @return com.join.template.core.explain.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 14:54
      */
-    public GrammarInfo setGrammar(String grammar);
+    public GrammarInfo grammar(String grammar);
 
     /**
      * 设置语法类型/表达式类型
      *
      * @param grammarType 语法类型/表达式类型
-     * @return com.join.template.core.grammar.GrammarInfo
+     * @return com.join.template.core.explain.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 14:55
      */
-    public GrammarInfo setGrammarType(Integer grammarType);
+    public GrammarInfo grammarType(Integer grammarType);
 
     /**
      * 设置父级字段名称
      *
      * @param parentName 父级字段名称
-     * @return com.join.template.core.grammar.GrammarInfo
+     * @return com.join.template.core.explain.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 14:57
      */
-    public GrammarInfo setParentName(String parentName);
+    public GrammarInfo parentName(String parentName);
 
     /**
      * 设置父级字段类型
      *
      * @param parentType 父级字段类型
-     * @return com.join.template.core.grammar.GrammarInfo
+     * @return com.join.template.core.explain.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 14:57
      */
-    public GrammarInfo setParentType(EntityType parentType);
+    public GrammarInfo parentType(EntityType parentType);
 
     /**
-     * 设置子集字段
+     * 设置子集字段信息
      *
-     * @param childs 子集字段
-     * @return com.join.template.core.grammar.GrammarInfo
+     * @param grammarInfo 子集字段信息
+     * @return com.join.template.core.explain.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 14:59
      */
-    public GrammarInfo setChilds(List<GrammarInfo> childs);
+    public GrammarInfo addChild(GrammarInfo grammarInfo);
 
     /**
      * 获取字段名称
@@ -171,7 +171,7 @@ public interface GrammarInfo {
      * 获取子集字段
      *
      * @param
-     * @return java.util.List<com.join.template.core.grammar.GrammarInfo>
+     * @return java.util.List<com.join.template.core.explain.GrammarInfo>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 15:00
      */

@@ -1,4 +1,4 @@
-package com.join.template.text.grammar;
+package com.join.template.text.explain;
 
 
 import com.join.template.core.constant.Constant;
@@ -14,11 +14,11 @@ import com.join.template.core.verify.TemplateException;
 
 import java.util.Map;
 
-public class ElseIfExplain implements Explain {
+public class IfExplain implements Explain {
     @Override
     public void verifyElement(String original, Boolean endElement, Map<String, String> attr) {
         Configuration configuration = TemplateUtil.getConfiguration();
-        if (!attr.containsKey(configuration.getAttrText())) {
+        if (endElement && !attr.containsKey(configuration.getAttrText())) {
             throw new TemplateException("请设置判断条件（" + configuration.getAttrText() + "）：" + original);
         }
     }
@@ -27,7 +27,7 @@ public class ElseIfExplain implements Explain {
     public String getGrammarExplain() {
         Configuration configuration = TemplateUtil.getConfiguration();
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
-        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_IF_ELSE_IF);
+        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_IF);
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
@@ -35,6 +35,7 @@ public class ElseIfExplain implements Explain {
         grammar.append(configuration.getExprEndSupport());
         grammar.append(configuration.getExprLastBegin());
         grammar.append(expressionHandle.getTag());
+        grammar.append(MarkedWords.Hint_Input_Generated_Content);
         grammar.append(configuration.getExprEndSupport());
         return grammar.toString();
     }

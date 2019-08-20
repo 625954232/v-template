@@ -1,4 +1,4 @@
-package com.join.template.text.grammar;
+package com.join.template.text.explain;
 
 
 import com.join.template.core.configuration.Configuration;

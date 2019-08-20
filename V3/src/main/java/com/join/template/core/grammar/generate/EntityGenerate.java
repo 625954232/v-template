@@ -26,8 +26,8 @@ public class EntityGenerate extends AbstractGrammarGenerate implements GrammarGe
     public GrammarInfo generateGrammar(String name, Class clazz) {
         try {
             GrammarInfo grammarInfo = grammarInfoClass.newInstance();
-            grammarInfo.setName(name);
-            grammarInfo.setType(EntityType.Object);
+            grammarInfo.name(name);
+            grammarInfo.type(EntityType.Object);
             generateGrammar(grammarInfo, clazz);
             return grammarInfo;
         } catch (InstantiationException e) {
@@ -60,30 +60,30 @@ public class EntityGenerate extends AbstractGrammarGenerate implements GrammarGe
                 continue;
             }
             GrammarInfo grammarInfo = grammarInfoClass.newInstance();
-            grammarInfo.setName(field.getName());
-            grammarInfo.setType(EntityType.of(field.getType()));
-            grammarInfo.setParentName(rootClass.getName());
-            grammarInfo.setParentType(rootClass.getType());
+            grammarInfo.name(field.getName());
+            grammarInfo.type(EntityType.of(field.getType()));
+            grammarInfo.parentName(rootClass.getName());
+            grammarInfo.parentType(rootClass.getType());
             if (clazz != field.getType() && !ClassUtil.isBaseType(field.getType())) {
                 if (Collection.class.isAssignableFrom(field.getType())) {
-                    grammarInfo.setGrammarType(Constant.EXPR_LIST);
+                    grammarInfo.grammarType(Constant.EXPR_LIST);
                     Class generic = ClassUtil.getGeneric(field.getGenericType());
                     generateGrammar(grammarInfo, generic);
                 } else {
-                    grammarInfo.setGrammarType(Constant.EXPR_VAR);
+                    grammarInfo.grammarType(Constant.EXPR_VAR);
                     generateGrammar(grammarInfo, field.getType());
                 }
             } else {
-                grammarInfo.setGrammarType(Constant.EXPR_VAR);
+                grammarInfo.grammarType(Constant.EXPR_VAR);
             }
-            rootClass.getChilds().add(grammarInfo);
+            rootClass.addChild(grammarInfo);
         }
     }
 
     private void generateGrammar(GrammarInfo parent, Collection<Map> data, GrammarField field) throws InstantiationException, IllegalAccessException {
         for (Map map : data) {
             GrammarInfo entityGrammar = this.generateFieldGrammar(parent, map, field);
-            parent.getChilds().add(entityGrammar);
+            parent.addChild(entityGrammar);
         }
     }
 
@@ -96,35 +96,35 @@ public class EntityGenerate extends AbstractGrammarGenerate implements GrammarGe
         Object fieldDescribe = map.get(field.getDescribeFieldName());
 
         GrammarInfo grammarInfo = grammarInfoClass.newInstance();
-        grammarInfo.setName(fieldName.toString());
+        grammarInfo.name(fieldName.toString());
         if (parent != null) {
-            grammarInfo.setParentName(parent.getName());
-            grammarInfo.setParentType(parent.getType());
+            grammarInfo.parentName(parent.getName());
+            grammarInfo.parentType(parent.getType());
         }
         if (fieldType != null) {
-            grammarInfo.setType(EntityType.of(fieldType.toString()));
+            grammarInfo.type(EntityType.of(fieldType.toString()));
         } else {
-            grammarInfo.setType(EntityType.of(field.getTypeFieldName()));
+            grammarInfo.type(EntityType.of(field.getTypeFieldName()));
         }
         if (fieldDescribe != null) {
-            grammarInfo.setDescribe(fieldDescribe.toString());
+            grammarInfo.describe(fieldDescribe.toString());
         } else {
-            grammarInfo.setDescribe(fieldName.toString());
+            grammarInfo.describe(fieldName.toString());
         }
         if (grammarGenListener != null) {
             grammarGenListener.onCreate(map, field, grammarInfo);
         }
         if (EntityType.Array == grammarInfo.getType()) {
-            grammarInfo.setGrammarType(Constant.EXPR_LIST);
+            grammarInfo.grammarType(Constant.EXPR_LIST);
         } else if (EntityType.Entity == grammarInfo.getType()) {
-            grammarInfo.setGrammarType(Constant.EXPR_VAR);
+            grammarInfo.grammarType(Constant.EXPR_VAR);
         } else {
-            grammarInfo.setGrammarType(Constant.EXPR_VAR);
+            grammarInfo.grammarType(Constant.EXPR_VAR);
         }
         ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(grammarInfo.getGrammarType());
         if (expressionHandle != null && expressionHandle.getGrammarExpl() != null) {
             String grammar = expressionHandle.getGrammarExpl().genGrammar(grammarInfo, map, field);
-            grammarInfo.setGrammar(grammar);
+            grammarInfo.grammar(grammar);
         }
         if (EntityType.Array == grammarInfo.getType() || EntityType.Entity == grammarInfo.getType()) {
             Object obj = map.get(field.getChildFieldName());

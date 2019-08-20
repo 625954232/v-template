@@ -1,4 +1,4 @@
-package com.join.template.text.grammar;
+package com.join.template.text.explain;
 
 
 import com.join.template.core.constant.Constant;
@@ -14,25 +14,27 @@ import com.join.template.core.verify.TemplateException;
 
 import java.util.Map;
 
-public class IncludeExplain implements Explain {
+public class ElseIfExplain implements Explain {
     @Override
     public void verifyElement(String original, Boolean endElement, Map<String, String> attr) {
         Configuration configuration = TemplateUtil.getConfiguration();
-        if (!attr.containsKey(configuration.getAttFile())) {
-            throw new TemplateException("请设置模板名称（" + configuration.getAttFile() + "）：" + original);
+        if (!attr.containsKey(configuration.getAttrText())) {
+            throw new TemplateException("请设置判断条件（" + configuration.getAttrText() + "）：" + original);
         }
     }
 
     @Override
     public String getGrammarExplain() {
-
         Configuration configuration = TemplateUtil.getConfiguration();
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
-        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_INCLUDE);
+        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_IF_ELSE_IF);
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
-        grammar.append(configuration.getAttFile()).append("=\"").append(MarkedWords.Attr_Template_Name).append("\" ");
+        grammar.append(configuration.getAttrText()).append("=\"").append(MarkedWords.Attr_Judgement_Conditions).append("\" ");
+        grammar.append(configuration.getExprEndSupport());
+        grammar.append(configuration.getExprLastBegin());
+        grammar.append(expressionHandle.getTag());
         grammar.append(configuration.getExprEndSupport());
         return grammar.toString();
     }
