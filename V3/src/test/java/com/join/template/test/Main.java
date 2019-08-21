@@ -9,6 +9,7 @@ import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.grammar.GrammarGenerate;
 import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.listener.GrammarGenListener;
+import com.join.template.core.type.TypeInfo;
 import com.join.template.core.util.IOUtil;
 import com.join.template.text.JoinFactoryBuilder;
 import com.join.template.text.node.Node;
@@ -64,21 +65,21 @@ public class Main {
         JoinFactory joinFactory = joinFactoryBuilder.builder();
         GrammarGenerate grammarGenerate = joinFactory.getGrammarGenerate();
         grammarGenerate.setGrammarGenListener(grammarGenListener);
-
-        GrammarField grammarField = new GrammarField();
-        grammarField.setNameField("filedKey");
-        grammarField.setTypeField("type");
-        grammarField.setDescribeField("filedValue");
-        grammarField.setChildField("child");
-        grammarGenerate.setGrammarField(grammarField);
-
-        URL resource = Main.class.getResource("/test.json");
-        String string = IOUtil.toString(resource);
-        Map<String, List<Map>> maps = JSON.parseObject(string, Map.class);
-        for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
-            grammarGenerate.generateGrammarRoot(entry.getKey(), entry.getValue());
-
-        }
+//
+//        GrammarField grammarField = new GrammarField();
+//        grammarField.setNameField("filedKey");
+//        grammarField.setTypeField("type");
+//        grammarField.setDescribeField("filedValue");
+//        grammarField.setChildField("child");
+//        grammarGenerate.setGrammarField(grammarField);
+//
+//        URL resource = Main.class.getResource("/test.json");
+//        String string = IOUtil.toString(resource);
+//        Map<String, List<Map>> maps = JSON.parseObject(string, Map.class);
+//        for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
+//            grammarGenerate.generateGrammarRoot(entry.getKey(), entry.getValue());
+//
+//        }
         grammarGenerate.generateGrammar(Node.class);
         List<GrammarInfo> list = grammarGenerate.getGrammarInfos();
         System.out.println(JSON.toJSONString(list));
@@ -103,7 +104,7 @@ public class Main {
         }
 
         @Override
-        public void onCreate(Field field, Class clazz, GrammarInfo grammarInfo) {
+        public void onCreate(TypeInfo typeInfo, GrammarInfo grammarInfo) {
 
         }
 

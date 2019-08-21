@@ -1,5 +1,6 @@
 package com.join.template.core.grammar.generate;
 
+import com.alibaba.fastjson.JSON;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.EntityType;
 import com.join.template.core.expression.ExpressionHandle;
@@ -96,18 +97,20 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
         TypeInfo typeInfo = TypeInfo.get(clazzOrField);
         current.name(typeInfo.getName());
         current.type(EntityType.of(typeInfo.getType()));
-        if (current.getGrammarType() != null) {
-            if (EntityType.Array == current.getType()) {
-                current.grammarType(Constant.EXPR_LIST);
-            } else {
-                current.grammarType(Constant.EXPR_VAR);
-            }
+        if (this.getGrammarGenListener() != null) {
+            this.getGrammarGenListener().onCreate(typeInfo, current);
+        }
+        if (EntityType.Array == current.getType()) {
+            current.grammarType(Constant.EXPR_LIST);
+        } else {
+            current.grammarType(Constant.EXPR_VAR);
         }
         ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(current.getGrammarType());
         if (expressionHandle != null && expressionHandle.getGrammarExpl() != null) {
             String grammar = expressionHandle.getGrammarExpl().genGrammar(current, typeInfo, this.getGrammarField());
             current.grammar(grammar);
         }
+        System.out.println(JSON.toJSONString(current));
         this.createGrammarChild(current, typeInfo);
         return current;
     }
@@ -154,13 +157,10 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
         if (this.getGrammarGenListener() != null) {
             this.getGrammarGenListener().onCreate(map, current);
         }
-
-        if (current.getGrammarType() != null) {
-            if (EntityType.Array == current.getType()) {
-                current.grammarType(Constant.EXPR_LIST);
-            } else {
-                current.grammarType(Constant.EXPR_VAR);
-            }
+        if (EntityType.Array == current.getType()) {
+            current.grammarType(Constant.EXPR_LIST);
+        } else {
+            current.grammarType(Constant.EXPR_VAR);
         }
         ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(current.getGrammarType());
         if (expressionHandle != null && expressionHandle.getGrammarExpl() != null) {
