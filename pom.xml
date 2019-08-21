@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>V2</module>
         <module>V3</module>
     </modules>
 

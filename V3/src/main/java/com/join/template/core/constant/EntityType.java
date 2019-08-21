@@ -12,7 +12,7 @@ import java.util.Collection;
  * @date 2019/8/1916:43
  */
 public enum EntityType {
-    Integer, Byte, Long, Double, Float, Character, Short, Boolean, Array, String, Object, Entity, BigDecimal, BigInteger;
+    Integer, Byte, Long, Double, Float, Character, Short, Boolean, Array, String, Object, Entity, BigDecimal, BigInteger, Map;
 
 
     public static EntityType of(String name) {
@@ -42,8 +42,8 @@ public enum EntityType {
             return EntityType.BigInteger;
         } else if (name.toLowerCase().equals("array")) {
             return EntityType.Array;
-        } else if (name.toLowerCase().equals("object")) {
-            return EntityType.Object;
+        } else if (name.toLowerCase().equals("map")) {
+            return EntityType.Map;
         } else {
             return EntityType.Entity;
         }
@@ -75,6 +75,8 @@ public enum EntityType {
             return EntityType.BigDecimal;
         } else if (clazz.equals(java.math.BigInteger.class)) {
             return EntityType.BigInteger;
+        } else if (clazz.equals(java.util.Map.class)) {
+            return EntityType.Map;
         } else if (Collection.class.isAssignableFrom(clazz) || clazz.isArray()) {
             return EntityType.Array;
         } else {

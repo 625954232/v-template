@@ -6,15 +6,20 @@ import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.verify.TemplateException;
 
 public class TemplateUtil {
-    protected final static ThreadLocal<Configuration> configurationLocal = new ThreadLocal<>();
-    protected final static ThreadLocal<JoinFactory> joinFactoryLocal = new ThreadLocal<>();
+
+    protected final static TemplateUtil instance = new TemplateUtil();
+
+    protected Configuration configuration = null;
+
+    protected JoinFactory joinFactory = null;
+
 
     public static void setConfiguration(Configuration configuration) {
-        TemplateUtil.configurationLocal.set(configuration);
+        instance.configuration = configuration;
     }
 
     public static Configuration getConfiguration() {
-        Configuration configuration = TemplateUtil.configurationLocal.get();
+        Configuration configuration = instance.configuration;
         if (configuration == null) {
             throw new TemplateException("请先创建配置");
         }
@@ -22,11 +27,11 @@ public class TemplateUtil {
     }
 
     public static void setJoinFactory(JoinFactory joinFactory) {
-        TemplateUtil.joinFactoryLocal.set(joinFactory);
+        instance.joinFactory = joinFactory;
     }
 
     public static JoinFactory getJoinFactory() {
-        JoinFactory joinFactory = TemplateUtil.joinFactoryLocal.get();
+        JoinFactory joinFactory = instance.joinFactory;
         if (joinFactory == null) {
             throw new TemplateException("请先创建模板总工厂");
         }

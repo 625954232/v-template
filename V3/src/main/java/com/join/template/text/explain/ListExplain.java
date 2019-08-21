@@ -9,6 +9,7 @@ import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.grammar.Explain;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.grammar.GrammarInfo;
+import com.join.template.core.type.TypeInfo;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.TemplateException;
 import org.apache.commons.lang.StringUtils;
@@ -54,11 +55,20 @@ public class ListExplain implements Explain {
 
     @Override
     public String genGrammar(GrammarInfo grammarInfo, Map map, GrammarField field) {
+        Object value = map.get(field.getNameField());
+        return genGrammar(grammarInfo, value);
+    }
+
+
+    @Override
+    public String genGrammar(GrammarInfo grammarInfo, TypeInfo typeInfo, GrammarField grammarField) {
+        return genGrammar(grammarInfo, typeInfo.getName());
+    }
+
+    private String genGrammar(GrammarInfo grammarInfo, Object value) {
         Configuration configuration = TemplateUtil.getConfiguration();
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
         ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_LIST);
-
-        Object value = map.get(field.getNameFieldName());
         StringBuilder var = new StringBuilder();
         if (grammarInfo != null && StringUtils.isNotBlank(grammarInfo.getParentName())) {
             var.append(grammarInfo.getParentName());
@@ -81,6 +91,5 @@ public class ListExplain implements Explain {
         grammar.append(configuration.getExprEndSupport());
         return grammar.toString();
     }
-
 
 }

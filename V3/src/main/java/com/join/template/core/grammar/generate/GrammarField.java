@@ -6,61 +6,66 @@ package com.join.template.core.grammar.generate;
  * @date 2019/8/1916:45
  */
 public class GrammarField {
-
-    private String nameFieldName;
-
-    private String describeFieldName;
-
-    private String typeFieldName;
-
-    private String childFieldName;
+    /**
+     * 字段名称对应的别名
+     */
+    private String nameField;
+    /**
+     * 字段描述对应的别名
+     */
+    private String describeField;
+    /**
+     * 字段类型对应的别名
+     */
+    private String typeField;
+    /**
+     * 子集字段列表对应的别名
+     */
+    private String childField;
 
     public GrammarField() {
     }
 
     public GrammarField(String nameFieldName, String describeFieldName, String typeFieldName) {
-        this.nameFieldName = nameFieldName;
-        this.describeFieldName = describeFieldName;
-        this.typeFieldName = typeFieldName;
+        this.nameField = nameFieldName;
+        this.describeField = describeFieldName;
+        this.typeField = typeFieldName;
     }
 
-    public GrammarField setNameFieldName(String nameFieldName) {
-        this.nameFieldName = nameFieldName;
+    public GrammarField setNameField(String nameField) {
+        this.nameField = nameField;
         return this;
     }
 
-    public GrammarField setDescribeFieldName(String describeFieldName) {
-        this.describeFieldName = describeFieldName;
+    public GrammarField setDescribeField(String describeField) {
+        this.describeField = describeField;
         return this;
     }
 
-    public GrammarField setTypeFieldName(String typeFieldName) {
-        this.typeFieldName = typeFieldName;
+    public GrammarField setTypeField(String typeField) {
+        this.typeField = typeField;
         return this;
     }
 
-    public GrammarField setChildFieldName(String childFieldName) {
-        this.childFieldName = childFieldName;
+    public GrammarField setChildField(String childField) {
+        this.childField = childField;
         return this;
     }
 
-    public String getNameFieldName() {
-        return nameFieldName;
+    public String getNameField() {
+        return nameField;
     }
 
-
-    public String getDescribeFieldName() {
-        return describeFieldName;
+    public String getDescribeField() {
+        return describeField;
     }
 
-
-    public String getTypeFieldName() {
-        return typeFieldName;
+    public String getTypeField() {
+        return typeField;
     }
 
-
-    public String getChildFieldName() {
-        return childFieldName;
+    public String getChildField() {
+        return childField;
     }
 
 

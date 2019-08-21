@@ -2,8 +2,11 @@ package com.join.template.core.grammar;
 
 
 import com.join.template.core.Element;
+import com.join.template.core.grammar.generate.EntityGrammarInfo;
 import com.join.template.core.grammar.generate.GrammarField;
+import com.join.template.core.type.TypeInfo;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
@@ -40,11 +43,12 @@ public interface Explain {
      * 获取语法解释
      *
      * @param
-     * @return java.util.Map<java.lang.String                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               java.lang.String>
+     * @return java.util.Map<java.lang.String   , java.lang.String>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:54
      */
     String getGrammarExplain();
+
 
     /**
      * 根据Map生成语法
@@ -57,4 +61,16 @@ public interface Explain {
      * @date 2019/8/20 10:35
      */
     String genGrammar(GrammarInfo grammarInfo, Map map, GrammarField field);
+
+    /**
+     * 根据实体、字段、方法等信息生成语法
+     *
+     * @param grammarInfo
+     * @param typeInfo
+     * @param grammarField
+     * @return java.lang.String
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/21 15:59
+     */
+    String genGrammar(GrammarInfo grammarInfo, TypeInfo typeInfo, GrammarField grammarField);
 }

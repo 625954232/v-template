@@ -16,4 +16,11 @@ public class Utils {
         }
         return result;
     }
+
+    public static <T> T returnOrDefault(T o, T defaultValue) {
+        if (o == null || "null".equals(o.toString()) || o.toString().length() == 0) {
+            return defaultValue;
+        }
+        return o;
+    }
 }

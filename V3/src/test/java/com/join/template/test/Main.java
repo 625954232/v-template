@@ -11,8 +11,10 @@ import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.listener.GrammarGenListener;
 import com.join.template.core.util.IOUtil;
 import com.join.template.text.JoinFactoryBuilder;
+import com.join.template.text.node.Node;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -60,39 +62,51 @@ public class Main {
     public void generateGrammar() {
         JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
         JoinFactory joinFactory = joinFactoryBuilder.builder();
+        GrammarGenerate grammarGenerate = joinFactory.getGrammarGenerate();
+        grammarGenerate.setGrammarGenListener(grammarGenListener);
+
+        GrammarField grammarField = new GrammarField();
+        grammarField.setNameField("filedKey");
+        grammarField.setTypeField("type");
+        grammarField.setDescribeField("filedValue");
+        grammarField.setChildField("child");
+        grammarGenerate.setGrammarField(grammarField);
+
         URL resource = Main.class.getResource("/test.json");
         String string = IOUtil.toString(resource);
         Map<String, List<Map>> maps = JSON.parseObject(string, Map.class);
-
-        List<GrammarInfo> list = new ArrayList<>();
         for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
-            GrammarGenerate grammarGenerate = joinFactory.getGrammarGenerate();
-            grammarGenerate.setGrammarGenListener(new GrammarGenListener() {
+            grammarGenerate.generateGrammarRoot(entry.getKey(), entry.getValue());
 
-                @Override
-                public void onCreate(Map map, GrammarField fieldName, GrammarInfo grammarInfo) {
-                    if ("agent".equals(grammarInfo.getName())) {
-                        grammarInfo.describe("代理人信息");
-                        grammarInfo.type(EntityType.Array);
-                    } else if ("respondent".equals(grammarInfo.getName())) {
-                        grammarInfo.describe("被申请人信息");
-                        grammarInfo.type(EntityType.Array);
-                    } else if ("applicant".equals(grammarInfo.getName())) {
-                        grammarInfo.describe("申请人信息");
-                        grammarInfo.type(EntityType.Array);
-                    } else {
-                        grammarInfo.type(EntityType.String);
-                    }
-                }
-            });
-            GrammarField fieldName = new GrammarField();
-            fieldName.setNameFieldName("filedKey");
-            fieldName.setTypeFieldName("type");
-            fieldName.setDescribeFieldName("filedValue");
-            fieldName.setChildFieldName("child");
-            GrammarInfo grammarInfo = grammarGenerate.generateGrammar(entry.getKey(), entry.getValue(), fieldName);
-            list.add(grammarInfo);
         }
+        grammarGenerate.generateGrammar(Node.class);
+        List<GrammarInfo> list = grammarGenerate.getGrammarInfos();
         System.out.println(JSON.toJSONString(list));
     }
+
+    private GrammarGenListener grammarGenListener = new GrammarGenListener() {
+
+        @Override
+        public void onCreate(Map map, GrammarInfo grammarInfo) {
+            if ("agent".equals(grammarInfo.getName())) {
+                grammarInfo.describe("代理人信息");
+                grammarInfo.type(EntityType.Array);
+            } else if ("respondent".equals(grammarInfo.getName())) {
+                grammarInfo.describe("被申请人信息");
+                grammarInfo.type(EntityType.Array);
+            } else if ("applicant".equals(grammarInfo.getName())) {
+                grammarInfo.describe("申请人信息");
+                grammarInfo.type(EntityType.Array);
+            } else {
+                grammarInfo.type(EntityType.String);
+            }
+        }
+
+        @Override
+        public void onCreate(Field field, Class clazz, GrammarInfo grammarInfo) {
+
+        }
+
+
+    };
 }

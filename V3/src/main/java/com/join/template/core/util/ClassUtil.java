@@ -6,7 +6,6 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -16,6 +15,7 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+@SuppressWarnings("rawtypes")
 public class ClassUtil {
     /**
      * 判断是不是基本类型
@@ -39,29 +39,48 @@ public class ClassUtil {
      * @param clazz
      * @return
      */
-    public static Class getGeneric(Class clazz) {
+    public static Class getClassGenricType(Class clazz) {
         Type type = clazz.getGenericSuperclass();
-        return getGeneric(type);
+        return getClassGenricType(type, 0);
     }
 
-    public static Class getGeneric(Type type) {
-        if (type instanceof ParameterizedType) {
-            ParameterizedType pType = (ParameterizedType) type;
-            Type claz = pType.getActualTypeArguments()[0];
-            if (claz instanceof Class) {
-                return (Class) claz;
-            }
+    /**
+     * 获取泛型
+     *
+     * @param type
+     * @return
+     */
+    public static Class getClassGenricType(Type type) {
+        return getClassGenricType(type, 0);
+    }
+
+    /**
+     * 获取泛型
+     *
+     * @param genType
+     * @param index
+     * @return
+     * @throws IndexOutOfBoundsException
+     */
+    public static Class getClassGenricType(Type genType, int index) throws IndexOutOfBoundsException {
+        if (!(genType instanceof ParameterizedType)) {
+            return Object.class;
         }
-        return null;
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        if (index >= params.length || index < 0) {
+            return Object.class;
+        }
+        if (!(params[index] instanceof Class)) {
+            return Object.class;
+        }
+        return (Class) params[index];
     }
-
 
     /**
      * 取得某个接口下所有实现这个接口的类
      *
      * @param
      */
-    @SuppressWarnings("rawtypes")
     public static Map<String, Class> getAllClassByInterface(Class<?> c) {
         Map<String, Class> returnClassList = null;
         if (c.isInterface()) {
@@ -111,7 +130,6 @@ public class ClassUtil {
      * @param packageName
      * @return
      */
-    @SuppressWarnings("rawtypes")
     public static Map<String, Class> getClasses(String packageName) {
 
         // 第一个class类的集合
@@ -199,7 +217,6 @@ public class ClassUtil {
      * @param recursive
      * @param classes
      */
-    @SuppressWarnings("rawtypes")
     public static void findAndAddClassesInPackageByFile(String packageName, String packagePath,
                                                         final boolean recursive,
                                                         Map<String, Class> classes) {

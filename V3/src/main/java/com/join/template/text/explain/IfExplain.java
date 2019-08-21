@@ -5,10 +5,12 @@ import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.MarkedWords;
 import com.join.template.core.expression.ExpressionHandle;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.grammar.generate.EntityGrammarInfo;
 import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.grammar.Explain;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.grammar.GrammarInfo;
+import com.join.template.core.type.TypeInfo;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.TemplateException;
 
@@ -42,6 +44,11 @@ public class IfExplain implements Explain {
 
     @Override
     public String genGrammar(GrammarInfo grammarInfo, Map map, GrammarField field) {
+        return null;
+    }
+
+    @Override
+    public String genGrammar(GrammarInfo grammarInfo, TypeInfo typeInfo, GrammarField grammarField) {
         return null;
     }
 

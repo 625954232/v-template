@@ -4,10 +4,10 @@ import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.EntityType;
 import com.join.template.core.expression.ExpressionHandle;
 import com.join.template.core.grammar.GrammarGenerate;
-import com.join.template.core.grammar.GrammarInfo;
+import com.join.template.core.type.TypeInfo;
 import com.join.template.core.util.ClassUtil;
+import com.join.template.core.util.Utils;
 import com.join.template.core.verify.TemplateException;
-import lombok.Getter;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -15,21 +15,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Getter
-public class EntityGenerate extends AbstractGrammarGenerate implements GrammarGenerate {
+
+public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> implements GrammarGenerate<EntityGrammarInfo> {
 
     public EntityGenerate() {
-        grammarInfoClass = EntityGrammarInfo.class;
+        super.setGrammarInfo(EntityGrammarInfo.class);
     }
 
+
     @Override
-    public GrammarInfo generateGrammar(String name, Class clazz) {
+    public EntityGenerate generateGrammarRoot(String name, Class clazz) {
         try {
-            GrammarInfo grammarInfo = grammarInfoClass.newInstance();
-            grammarInfo.name(name);
-            grammarInfo.type(EntityType.Object);
-            generateGrammar(grammarInfo, clazz);
-            return grammarInfo;
+            EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+            this.createGrammarInfo(grammarInfo, clazz);
+            this.getGrammarInfos().add(grammarInfo);
+            return this;
         } catch (InstantiationException e) {
             throw new TemplateException("语法生成失败", e);
         } catch (IllegalAccessException e) {
@@ -38,14 +38,16 @@ public class EntityGenerate extends AbstractGrammarGenerate implements GrammarGe
     }
 
     @Override
-    public GrammarInfo generateGrammar(String name, List<Map> map, GrammarField field) {
+    public EntityGenerate generateGrammarRoot(String name, List<Map> map) {
         try {
             Map<String, Object> root = new HashMap<>();
-            root.put(field.getNameFieldName(), name);
-            root.put(field.getTypeFieldName(), EntityType.Object.name());
-            root.put(field.getChildFieldName(), map);
-            GrammarInfo entityGrammar = this.generateFieldGrammar(null, root, field);
-            return entityGrammar;
+            root.put(this.getGrammarField().getNameField(), name);
+            root.put(this.getGrammarField().getTypeField(), EntityType.Object.name());
+            root.put(this.getGrammarField().getChildField(), map);
+            EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+            this.createGrammarInfo(grammarInfo, root);
+            this.getGrammarInfos().add(grammarInfo);
+            return this;
         } catch (InstantiationException e) {
             throw new TemplateException("语法生成失败", e);
         } catch (IllegalAccessException e) {
@@ -53,92 +55,140 @@ public class EntityGenerate extends AbstractGrammarGenerate implements GrammarGe
         }
     }
 
-    private void generateGrammar(GrammarInfo rootClass, Class clazz) throws IllegalAccessException, InstantiationException {
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            if (this.getClass() == field.getType()) {
-                continue;
-            }
-            GrammarInfo grammarInfo = grammarInfoClass.newInstance();
-            grammarInfo.name(field.getName());
-            grammarInfo.type(EntityType.of(field.getType()));
-            grammarInfo.parentName(rootClass.getName());
-            grammarInfo.parentType(rootClass.getType());
-            if (clazz != field.getType() && !ClassUtil.isBaseType(field.getType())) {
-                if (Collection.class.isAssignableFrom(field.getType())) {
-                    grammarInfo.grammarType(Constant.EXPR_LIST);
-                    Class generic = ClassUtil.getGeneric(field.getGenericType());
-                    generateGrammar(grammarInfo, generic);
-                } else {
-                    grammarInfo.grammarType(Constant.EXPR_VAR);
-                    generateGrammar(grammarInfo, field.getType());
+
+    @Override
+    public EntityGenerate generateGrammar(Class clazz) {
+        try {
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
+                if (this.getClass() == field.getType()) {
+                    continue;
                 }
-            } else {
-                grammarInfo.grammarType(Constant.EXPR_VAR);
+                EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                this.createGrammarInfo(grammarInfo, field);
+                this.getGrammarInfos().add(grammarInfo);
             }
-            rootClass.addChild(grammarInfo);
+            return this;
+        } catch (InstantiationException e) {
+            throw new TemplateException("语法生成失败", e);
+        } catch (IllegalAccessException e) {
+            throw new TemplateException("语法生成失败", e);
         }
     }
 
-    private void generateGrammar(GrammarInfo parent, Collection<Map> data, GrammarField field) throws InstantiationException, IllegalAccessException {
-        for (Map map : data) {
-            GrammarInfo entityGrammar = this.generateFieldGrammar(parent, map, field);
-            parent.addChild(entityGrammar);
+    @Override
+    public EntityGenerate generateGrammar(List<Map> maps) {
+        try {
+            for (Map map : maps) {
+                EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                this.createGrammarInfo(grammarInfo, map);
+                this.getGrammarInfos().add(grammarInfo);
+            }
+            return this;
+        } catch (InstantiationException e) {
+            throw new TemplateException("语法生成失败", e);
+        } catch (IllegalAccessException e) {
+            throw new TemplateException("语法生成失败", e);
         }
     }
 
-    private GrammarInfo generateFieldGrammar(GrammarInfo parent, Map map, GrammarField field) throws IllegalAccessException, InstantiationException {
-        Object fieldName = map.get(field.getNameFieldName());
+    private EntityGrammarInfo createGrammarInfo(EntityGrammarInfo current, Object clazzOrField) throws IllegalAccessException, InstantiationException {
+        TypeInfo typeInfo = TypeInfo.get(clazzOrField);
+        current.name(typeInfo.getName());
+        current.type(EntityType.of(typeInfo.getType()));
+        if (current.getGrammarType() != null) {
+            if (EntityType.Array == current.getType()) {
+                current.grammarType(Constant.EXPR_LIST);
+            } else {
+                current.grammarType(Constant.EXPR_VAR);
+            }
+        }
+        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(current.getGrammarType());
+        if (expressionHandle != null && expressionHandle.getGrammarExpl() != null) {
+            String grammar = expressionHandle.getGrammarExpl().genGrammar(current, typeInfo, this.getGrammarField());
+            current.grammar(grammar);
+        }
+        this.createGrammarChild(current, typeInfo);
+        return current;
+    }
+
+    private void createGrammarChild(EntityGrammarInfo current, TypeInfo typeInfo) throws InstantiationException, IllegalAccessException {
+        if (EntityType.Array == current.getType() || EntityType.Entity == current.getType()) {
+            Class clazz_ = null;
+            if (Collection.class.isAssignableFrom(typeInfo.getType())) {
+                clazz_ = ClassUtil.getClassGenricType(typeInfo.getGenericType());
+            } else {
+                clazz_ = typeInfo.getType();
+            }
+            Field[] fields = clazz_.getDeclaredFields();
+            for (Field item : fields) {
+                if (this.getClass() == item.getType()) {
+                    continue;
+                }
+                EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                grammarInfo.parentName(current.getName());
+                grammarInfo.parentType(current.getType());
+                this.createGrammarInfo(grammarInfo, item);
+                current.addChild(grammarInfo);
+            }
+        }
+    }
+
+
+    private void createGrammarInfo(EntityGrammarInfo current, Map map) throws IllegalAccessException, InstantiationException {
+        String fieldName = String.valueOf(map.get(this.getGrammarField().getNameField()));
         if (fieldName == null) {
             throw new TemplateException("缺少名称的对应字段名称");
         }
-        Object fieldType = map.get(field.getTypeFieldName());
-        Object fieldDescribe = map.get(field.getDescribeFieldName());
 
-        GrammarInfo grammarInfo = grammarInfoClass.newInstance();
-        grammarInfo.name(fieldName.toString());
-        if (parent != null) {
-            grammarInfo.parentName(parent.getName());
-            grammarInfo.parentType(parent.getType());
+        String fieldType = String.valueOf(map.get(this.getGrammarField().getTypeField()));
+        String fieldDescribe = String.valueOf(map.get(this.getGrammarField().getDescribeField()));
+
+        fieldType = Utils.returnOrDefault(fieldType, this.getGrammarField().getTypeField());
+        fieldDescribe = Utils.returnOrDefault(fieldDescribe, fieldName);
+
+        current.name(fieldName);
+        current.type(EntityType.of(fieldType));
+        current.describe(fieldDescribe);
+
+        if (this.getGrammarGenListener() != null) {
+            this.getGrammarGenListener().onCreate(map, current);
         }
-        if (fieldType != null) {
-            grammarInfo.type(EntityType.of(fieldType.toString()));
-        } else {
-            grammarInfo.type(EntityType.of(field.getTypeFieldName()));
+
+        if (current.getGrammarType() != null) {
+            if (EntityType.Array == current.getType()) {
+                current.grammarType(Constant.EXPR_LIST);
+            } else {
+                current.grammarType(Constant.EXPR_VAR);
+            }
         }
-        if (fieldDescribe != null) {
-            grammarInfo.describe(fieldDescribe.toString());
-        } else {
-            grammarInfo.describe(fieldName.toString());
-        }
-        if (grammarGenListener != null) {
-            grammarGenListener.onCreate(map, field, grammarInfo);
-        }
-        if (EntityType.Array == grammarInfo.getType()) {
-            grammarInfo.grammarType(Constant.EXPR_LIST);
-        } else if (EntityType.Entity == grammarInfo.getType()) {
-            grammarInfo.grammarType(Constant.EXPR_VAR);
-        } else {
-            grammarInfo.grammarType(Constant.EXPR_VAR);
-        }
-        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(grammarInfo.getGrammarType());
+        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(current.getGrammarType());
         if (expressionHandle != null && expressionHandle.getGrammarExpl() != null) {
-            String grammar = expressionHandle.getGrammarExpl().genGrammar(grammarInfo, map, field);
-            grammarInfo.grammar(grammar);
+            String grammar = expressionHandle.getGrammarExpl().genGrammar(current, map, this.getGrammarField());
+            current.grammar(grammar);
         }
-        if (EntityType.Array == grammarInfo.getType() || EntityType.Entity == grammarInfo.getType()) {
-            Object obj = map.get(field.getChildFieldName());
+        this.createGrammarChild(current, map);
+    }
+
+    private void createGrammarChild(EntityGrammarInfo current, Map map) throws InstantiationException, IllegalAccessException {
+        if (EntityType.Array == current.getType() || EntityType.Entity == current.getType()) {
+            Object obj = map.get(this.getGrammarField().getChildField());
             if (obj == null) {
-                return grammarInfo;
+                return;
             }
             if (obj instanceof Collection) {
                 List<Map> maps = (List<Map>) obj;
-                generateGrammar(grammarInfo, maps, field);
+                for (Map item : maps) {
+                    EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                    grammarInfo.parentName(current.getName());
+                    grammarInfo.parentType(current.getType());
+                    this.createGrammarInfo(grammarInfo, item);
+                    current.addChild(grammarInfo);
+                }
             } else {
-                throw new TemplateException("错误的集合：" + grammarInfo.getName());
+                throw new TemplateException("错误的集合：" + current.getName());
             }
         }
-        return grammarInfo;
     }
 
 

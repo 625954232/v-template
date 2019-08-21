@@ -9,6 +9,7 @@ import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.grammar.Explain;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.grammar.GrammarInfo;
+import com.join.template.core.type.TypeInfo;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.TemplateException;
 
@@ -41,6 +42,11 @@ public class GetExplain implements Explain {
 
     @Override
     public String genGrammar(GrammarInfo grammarInfo, Map map, GrammarField field) {
+        return null;
+    }
+
+    @Override
+    public String genGrammar(GrammarInfo grammarInfo, TypeInfo typeInfo, GrammarField grammarField) {
         return null;
     }
 
