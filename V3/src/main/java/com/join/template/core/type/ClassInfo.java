@@ -84,21 +84,6 @@ public class ClassInfo implements TypeInfo {
         return aClass.getSigners();
     }
 
-    @CallerSensitive
-    public Method getEnclosingMethod() throws SecurityException {
-        return aClass.getEnclosingMethod();
-    }
-
-    @CallerSensitive
-    public Constructor<?> getEnclosingConstructor() throws SecurityException {
-        return aClass.getEnclosingConstructor();
-    }
-
-    @CallerSensitive
-    public Class<?> getEnclosingClass() throws SecurityException {
-        return aClass.getEnclosingClass();
-    }
-
     public String getSimpleName() {
         return aClass.getSimpleName();
     }

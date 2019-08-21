@@ -11,6 +11,7 @@ import com.join.template.core.util.Utils;
 import com.join.template.core.verify.TemplateException;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +63,9 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
         try {
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
-                if (this.getClass() == field.getType()) {
+                if (this.getClass() == field.getType()
+                        || Modifier.isStatic(field.getModifiers())
+                        || Modifier.isFinal(field.getModifiers())) {
                     continue;
                 }
                 GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
@@ -142,7 +145,10 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
             }
             Field[] fields = clazz_.getDeclaredFields();
             for (Field item : fields) {
-                if (this.getClass() == item.getType()) {
+                if (this.getClass() == item.getType()
+                        || typeInfo.getType() == item.getType()
+                        || Modifier.isStatic(item.getModifiers())
+                        || Modifier.isFinal(item.getModifiers())) {
                     continue;
                 }
                 GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();

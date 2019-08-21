@@ -28,7 +28,7 @@ public class MethodInfo implements TypeInfo {
 
     @Override
     public Class<?> getType() {
-        return method.getClass();
+        return method.getReturnType();
     }
 
     @Override
@@ -48,10 +48,6 @@ public class MethodInfo implements TypeInfo {
 
     public TypeVariable<Method>[] getTypeParameters() {
         return method.getTypeParameters();
-    }
-
-    public Class<?> getReturnType() {
-        return method.getReturnType();
     }
 
     public Type getGenericReturnType() {
