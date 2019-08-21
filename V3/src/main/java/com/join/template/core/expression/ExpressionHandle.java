@@ -15,7 +15,7 @@ import java.util.List;
  * @Title: 表达式处理器
  * @date 2019/8/19 11:41
  */
-public interface ExpressionHandle extends Parser, Reader {
+public interface ExpressionHandle extends Parser {
     /**
      * 获取标记
      *
@@ -54,7 +54,7 @@ public interface ExpressionHandle extends Parser, Reader {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:39
      */
-    Explain getGrammarExpl();
+    Explain getExplain();
 
     /**
      * 获取解析监听

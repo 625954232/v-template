@@ -1,6 +1,5 @@
 package com.join.template.core.grammar.generate;
 
-import com.alibaba.fastjson.JSON;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.EntityType;
 import com.join.template.core.expression.ExpressionHandle;
@@ -115,8 +114,8 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
             current.grammarType(Constant.EXPR_VAR);
         }
         ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(current.getGrammarType());
-        if (expressionHandle != null && expressionHandle.getGrammarExpl() != null) {
-            String grammar = expressionHandle.getGrammarExpl().genGrammar(current, typeInfo, this.getGrammarField());
+        if (expressionHandle != null && expressionHandle.getExplain() != null) {
+            String grammar = expressionHandle.getExplain().genGrammar(current, typeInfo, this.getGrammarField());
             current.grammar(grammar);
         }
         this.createGrammarChild(current, typeInfo);
@@ -188,8 +187,8 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
             current.grammarType(Constant.EXPR_VAR);
         }
         ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(current.getGrammarType());
-        if (expressionHandle != null && expressionHandle.getGrammarExpl() != null) {
-            String grammar = expressionHandle.getGrammarExpl().genGrammar(current, map, this.getGrammarField());
+        if (expressionHandle != null && expressionHandle.getExplain() != null) {
+            String grammar = expressionHandle.getExplain().genGrammar(current, map, this.getGrammarField());
             current.grammar(grammar);
         }
         this.createGrammarChild(current, map);

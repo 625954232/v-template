@@ -25,7 +25,7 @@ public abstract class AbstractExpressionHandle implements ExpressionHandle {
     /**
      * 语法示例
      */
-    protected Explain grammarExpl;
+    protected Explain explain;
 
     /**
      * 解析监听
@@ -38,11 +38,11 @@ public abstract class AbstractExpressionHandle implements ExpressionHandle {
     protected List<ProcessListener> processListeners = new ArrayList<>();
 
 
-    public AbstractExpressionHandle(String tag, Integer nodeType, Process process, Explain grammarExpl) {
+    public AbstractExpressionHandle(String tag, Integer nodeType, Process process, Explain explain) {
         this.tag = tag;
         this.nodeType = nodeType;
         this.process = process;
-        this.grammarExpl = grammarExpl;
+        this.explain = explain;
     }
 
     @Override
@@ -61,8 +61,8 @@ public abstract class AbstractExpressionHandle implements ExpressionHandle {
     }
 
     @Override
-    public Explain getGrammarExpl() {
-        return grammarExpl;
+    public Explain getExplain() {
+        return explain;
     }
 
     @Override

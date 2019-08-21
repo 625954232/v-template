@@ -68,7 +68,7 @@ public class JoinFactoryBase implements JoinFactory {
     @Override
     public JoinFactory initGrammarExplain() {
         for (ExpressionHandle expressionHandle : expressionHandles.values()) {
-            Explain grammarExpl = expressionHandle.getGrammarExpl();
+            Explain grammarExpl = expressionHandle.getExplain();
             if (grammarExpl != null) {
                 grammars.put(expressionHandle.getNodeType(), grammarExpl.getGrammarExplain());
             }
