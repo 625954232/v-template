@@ -18,6 +18,7 @@
         <junit>4.11</junit>
         <lombok>1.18.4</lombok>
         <jexl>2.0</jexl>
+        <fastjson>1.2.47</fastjson>
     </properties>
 
 
@@ -45,7 +46,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.47</version>
+            <version>${fastjson}</version>
         </dependency>
     </dependencies>
 

@@ -93,6 +93,15 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
         }
     }
 
+    /**
+     * 创建字段对应语法信息
+     *
+     * @param current
+     * @param clazzOrField
+     * @return com.join.template.core.grammar.generate.EntityGrammarInfo
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/21 16:16
+     */
     private EntityGrammarInfo createGrammarInfo(EntityGrammarInfo current, Object clazzOrField) throws IllegalAccessException, InstantiationException {
         TypeInfo typeInfo = TypeInfo.get(clazzOrField);
         current.name(typeInfo.getName());
@@ -110,11 +119,19 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
             String grammar = expressionHandle.getGrammarExpl().genGrammar(current, typeInfo, this.getGrammarField());
             current.grammar(grammar);
         }
-        System.out.println(JSON.toJSONString(current));
         this.createGrammarChild(current, typeInfo);
         return current;
     }
 
+    /**
+     * 创建子集字段对应语法信息
+     *
+     * @param current
+     * @param typeInfo
+     * @return void
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/21 16:17
+     */
     private void createGrammarChild(EntityGrammarInfo current, TypeInfo typeInfo) throws InstantiationException, IllegalAccessException {
         if (EntityType.Array == current.getType() || EntityType.Entity == current.getType()) {
             Class clazz_ = null;
@@ -137,7 +154,15 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
         }
     }
 
-
+    /**
+     * 创建字段对应语法信息
+     *
+     * @param current
+     * @param map
+     * @return void
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/21 16:18
+     */
     private void createGrammarInfo(EntityGrammarInfo current, Map map) throws IllegalAccessException, InstantiationException {
         String fieldName = String.valueOf(map.get(this.getGrammarField().getNameField()));
         if (fieldName == null) {
@@ -170,6 +195,15 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
         this.createGrammarChild(current, map);
     }
 
+    /**
+     * 创建子集字段对应语法信息
+     *
+     * @param current
+     * @param map
+     * @return void
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/21 16:18
+     */
     private void createGrammarChild(EntityGrammarInfo current, Map map) throws InstantiationException, IllegalAccessException {
         if (EntityType.Array == current.getType() || EntityType.Entity == current.getType()) {
             Object obj = map.get(this.getGrammarField().getChildField());
