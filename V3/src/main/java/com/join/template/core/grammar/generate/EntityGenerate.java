@@ -4,6 +4,7 @@ import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.EntityType;
 import com.join.template.core.expression.ExpressionHandle;
 import com.join.template.core.grammar.GrammarGenerate;
+import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.type.TypeInfo;
 import com.join.template.core.util.ClassUtil;
 import com.join.template.core.util.Utils;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> implements GrammarGenerate<EntityGrammarInfo> {
+public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> implements GrammarGenerate<GrammarInfo> {
 
     public EntityGenerate() {
         super.setGrammarInfo(EntityGrammarInfo.class);
@@ -26,7 +27,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
     @Override
     public EntityGenerate generateGrammarRoot(String name, Class clazz) {
         try {
-            EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+            GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
             this.createGrammarInfo(grammarInfo, clazz);
             this.getGrammarInfos().add(grammarInfo);
             return this;
@@ -44,7 +45,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
             root.put(this.getGrammarField().getNameField(), name);
             root.put(this.getGrammarField().getTypeField(), EntityType.Object.name());
             root.put(this.getGrammarField().getChildField(), map);
-            EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+            GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
             this.createGrammarInfo(grammarInfo, root);
             this.getGrammarInfos().add(grammarInfo);
             return this;
@@ -64,7 +65,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
                 if (this.getClass() == field.getType()) {
                     continue;
                 }
-                EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
                 this.createGrammarInfo(grammarInfo, field);
                 this.getGrammarInfos().add(grammarInfo);
             }
@@ -80,7 +81,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
     public EntityGenerate generateGrammar(List<Map> maps) {
         try {
             for (Map map : maps) {
-                EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
                 this.createGrammarInfo(grammarInfo, map);
                 this.getGrammarInfos().add(grammarInfo);
             }
@@ -97,11 +98,11 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
      *
      * @param current
      * @param clazzOrField
-     * @return com.join.template.core.grammar.generate.EntityGrammarInfo
+     * @return com.join.template.core.grammar.generate.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/21 16:16
      */
-    private EntityGrammarInfo createGrammarInfo(EntityGrammarInfo current, Object clazzOrField) throws IllegalAccessException, InstantiationException {
+    private GrammarInfo createGrammarInfo(GrammarInfo current, Object clazzOrField) throws IllegalAccessException, InstantiationException {
         TypeInfo typeInfo = TypeInfo.get(clazzOrField);
         current.name(typeInfo.getName());
         current.type(EntityType.of(typeInfo.getType()));
@@ -131,7 +132,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/21 16:17
      */
-    private void createGrammarChild(EntityGrammarInfo current, TypeInfo typeInfo) throws InstantiationException, IllegalAccessException {
+    private void createGrammarChild(GrammarInfo current, TypeInfo typeInfo) throws InstantiationException, IllegalAccessException {
         if (EntityType.Array == current.getType() || EntityType.Entity == current.getType()) {
             Class clazz_ = null;
             if (Collection.class.isAssignableFrom(typeInfo.getType())) {
@@ -144,7 +145,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
                 if (this.getClass() == item.getType()) {
                     continue;
                 }
-                EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
                 grammarInfo.parentName(current.getName());
                 grammarInfo.parentType(current.getType());
                 this.createGrammarInfo(grammarInfo, item);
@@ -162,7 +163,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/21 16:18
      */
-    private void createGrammarInfo(EntityGrammarInfo current, Map map) throws IllegalAccessException, InstantiationException {
+    private void createGrammarInfo(GrammarInfo current, Map map) throws IllegalAccessException, InstantiationException {
         String fieldName = String.valueOf(map.get(this.getGrammarField().getNameField()));
         if (fieldName == null) {
             throw new TemplateException("缺少名称的对应字段名称");
@@ -203,7 +204,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/21 16:18
      */
-    private void createGrammarChild(EntityGrammarInfo current, Map map) throws InstantiationException, IllegalAccessException {
+    private void createGrammarChild(GrammarInfo current, Map map) throws InstantiationException, IllegalAccessException {
         if (EntityType.Array == current.getType() || EntityType.Entity == current.getType()) {
             Object obj = map.get(this.getGrammarField().getChildField());
             if (obj == null) {
@@ -212,7 +213,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<EntityGrammarInfo> i
             if (obj instanceof Collection) {
                 List<Map> maps = (List<Map>) obj;
                 for (Map item : maps) {
-                    EntityGrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                    GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
                     grammarInfo.parentName(current.getName());
                     grammarInfo.parentType(current.getType());
                     this.createGrammarInfo(grammarInfo, item);

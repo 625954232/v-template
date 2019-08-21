@@ -22,7 +22,7 @@ public interface GrammarGenerate<T extends GrammarInfo> {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 15:15
      */
-    GrammarGenerate setGrammarInfo(Class<T> grammarInfo);
+    GrammarGenerate setGrammarInfo(Class<? extends GrammarInfo> grammarInfo);
 
     /**
      * 生成语法生成监听

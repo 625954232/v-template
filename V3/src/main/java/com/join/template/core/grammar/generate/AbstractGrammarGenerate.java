@@ -33,8 +33,8 @@ public abstract class AbstractGrammarGenerate<T extends GrammarInfo> implements 
     }
 
     @Override
-    public AbstractGrammarGenerate setGrammarInfo(Class<T> grammarInfo) {
-        this.grammarInfoClass = grammarInfo;
+    public AbstractGrammarGenerate setGrammarInfo(Class<? extends GrammarInfo> grammarInfo) {
+        this.grammarInfoClass = (Class<T>) grammarInfo;
         return this;
     }
 
