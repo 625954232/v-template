@@ -1,21 +1,21 @@
 package com.join.template.core.grammar.generate;
 
+import com.join.template.core.Template;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.EntityType;
+import com.join.template.core.context.HashContext;
 import com.join.template.core.expression.ExpressionHandle;
 import com.join.template.core.grammar.GrammarGenerate;
 import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.type.TypeInfo;
 import com.join.template.core.util.ClassUtil;
+import com.join.template.core.util.RandomUtil;
 import com.join.template.core.util.Utils;
 import com.join.template.core.verify.TemplateException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> implements GrammarGenerate<GrammarInfo> {
@@ -95,6 +95,18 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
             throw new TemplateException("语法生成失败", e);
         }
     }
+
+    @Override
+    public String preview(String text, int previewSize) {
+        Map<String, Object> map = new HashMap<>();
+        for (GrammarInfo grammarInfo : this.getGrammarInfos()) {
+            genContent(grammarInfo, map, previewSize);
+        }
+        Template template = (Template) joinFactory.putTemplate("preview", text);
+        template.putContext(new HashContext(map));
+        return template.process();
+    }
+
 
     /**
      * 创建字段对应语法信息
@@ -228,6 +240,55 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
             } else {
                 throw new TemplateException("错误的集合：" + current.getName());
             }
+        }
+    }
+
+
+    private void genContent(GrammarInfo grammarInfo, Map<String, Object> item, int previewSize) {
+        Object value = null;
+        List<GrammarInfo> childs = grammarInfo.getChilds();
+        if (EntityType.Integer == grammarInfo.getType()) {
+            value = RandomUtil.toInt(0, 999999999);
+        } else if (EntityType.Byte == grammarInfo.getType()) {
+            value = RandomUtil.toByte();
+        } else if (EntityType.Long == grammarInfo.getType()) {
+            value = RandomUtil.toLong();
+        } else if (EntityType.Float == grammarInfo.getType()) {
+            value = RandomUtil.toFloat();
+        } else if (EntityType.BigDecimal == grammarInfo.getType()) {
+            value = RandomUtil.toBigDecimal();
+        } else if (EntityType.BigInteger == grammarInfo.getType()) {
+            value = RandomUtil.toBigInteger();
+        } else if (EntityType.Short == grammarInfo.getType()) {
+            value = RandomUtil.toShort(3);
+        } else if (EntityType.Character == grammarInfo.getType()) {
+            value = RandomUtil.toCharacter();
+        } else if (EntityType.Time == grammarInfo.getType()) {
+            value = RandomUtil.toDouble();
+        } else if (EntityType.Double == grammarInfo.getType()) {
+            value = RandomUtil.toDouble();
+        } else if (EntityType.Boolean == grammarInfo.getType()) {
+            value = RandomUtil.toBoolean();
+        } else if (EntityType.Object == grammarInfo.getType()) {
+            value = RandomUtil.toString(6);
+        } else if (EntityType.String == grammarInfo.getType()) {
+            value = RandomUtil.toString(6);
+        } else if ((EntityType.Array == grammarInfo.getType() || EntityType.Entity == grammarInfo.getType()) && childs != null) {
+            for (GrammarInfo child : childs) {
+                genContent(child, item, previewSize);
+            }
+            if (EntityType.Array == grammarInfo.getType()) {
+                List<Map<String, Object>> list = new ArrayList<>();
+                for (int i = 0; i < previewSize; i++) {
+                    list.add(item);
+                }
+                value = list;
+            } else {
+                value = item;
+            }
+        }
+        if (value != null) {
+            item.put(grammarInfo.getName(), value);
         }
     }
 

@@ -1,6 +1,5 @@
 package com.join.template.core.grammar;
 
-import com.join.template.core.grammar.generate.AbstractGrammarGenerate;
 import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.listener.GrammarGenListener;
 
@@ -95,4 +94,17 @@ public interface GrammarGenerate<T extends GrammarInfo> {
      * @date 2019/8/21 11:32
      */
     List<T> getGrammarInfos();
+
+
+    /**
+     * 预览
+     *
+     *
+     * @param text
+     * @param previewSize 预览列表的个数
+     * @return java.lang.String
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/22 10:01
+     */
+    String preview(String text, int previewSize);
 }

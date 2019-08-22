@@ -12,6 +12,10 @@ public class HashContext implements Content {
         this.context = new HashMap();
     }
 
+    public HashContext(Map<String, Object> context) {
+        this.context = context;
+    }
+
     @Override
     public Object get(String K) {
         return (context.containsKey(K) == true ? context.get(K) : null);

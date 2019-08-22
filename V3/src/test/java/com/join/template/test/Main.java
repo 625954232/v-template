@@ -15,7 +15,6 @@ import com.join.template.text.JoinFactoryBuilder;
 import com.join.template.text.node.Node;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ import java.util.Map;
 
 public class Main {
     @Test
-    public void processTemplate() {
+    public void process() {
         long start = System.currentTimeMillis();
 
         JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
@@ -34,7 +33,7 @@ public class Main {
         Map<Integer, String> grammars = joinFactory.getGrammars();
         System.out.println("语法解释：" + grammars.toString());
 
-        Template template = joinFactory.getTemplate("/test1.html");
+        Template template = joinFactory.getTemplate("/process.html");
         System.out.println("语法解析耗时：" + (System.currentTimeMillis() - start));
 
         List<Element> elements = template.getAllElement();
@@ -60,30 +59,59 @@ public class Main {
     }
 
     @Test
-    public void generateGrammar() {
+    public void grammarGenerate() {
         JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
         JoinFactory joinFactory = joinFactoryBuilder.builder();
         GrammarGenerate grammarGenerate = joinFactory.getGrammarGenerate();
         grammarGenerate.setGrammarGenListener(grammarGenListener);
-//
-//        GrammarField grammarField = new GrammarField();
-//        grammarField.setNameField("filedKey");
-//        grammarField.setTypeField("type");
-//        grammarField.setDescribeField("filedValue");
-//        grammarField.setChildField("child");
-//        grammarGenerate.setGrammarField(grammarField);
-//
-//        URL resource = Main.class.getResource("/test.json");
-//        String string = IOUtil.toString(resource);
-//        Map<String, List<Map>> maps = JSON.parseObject(string, Map.class);
-//        for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
-//            grammarGenerate.generateGrammarRoot(entry.getKey(), entry.getValue());
-//
-//        }
+
+        GrammarField grammarField = new GrammarField();
+        grammarField.setNameField("filedKey");
+        grammarField.setTypeField("type");
+        grammarField.setDescribeField("filedValue");
+        grammarField.setChildField("child");
+        grammarGenerate.setGrammarField(grammarField);
+
+        URL resource = Main.class.getResource("/gramma.json");
+        String string = IOUtil.toString(resource);
+        Map<String, List<Map>> maps = JSON.parseObject(string, Map.class);
+        for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
+            grammarGenerate.generateGrammarRoot(entry.getKey(), entry.getValue());
+
+        }
         grammarGenerate.generateGrammar(Node.class);
         List<GrammarInfo> list = grammarGenerate.getGrammarInfos();
         System.out.println(JSON.toJSONString(list));
     }
+
+    @Test
+    public void generateGrammarPreview() {
+        JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder();
+        JoinFactory joinFactory = joinFactoryBuilder.builder();
+        GrammarGenerate grammarGenerate = joinFactory.getGrammarGenerate();
+        grammarGenerate.setGrammarGenListener(grammarGenListener);
+        grammarGenerate.setGrammarField(grammarField);
+
+        URL gramma = Main.class.getResource("/gramma.json");
+        URL preview = Main.class.getResource("/preview.html");
+        String grammaStr = IOUtil.toString(gramma);
+        String previewStr = IOUtil.toString(preview);
+        Map<String, List<Map>> maps = JSON.parseObject(grammaStr, Map.class);
+        for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
+            grammarGenerate.generateGrammarRoot(entry.getKey(), entry.getValue());
+
+        }
+        String preview1 = grammarGenerate.preview(previewStr, 4);
+        System.out.println(preview1);
+    }
+
+
+    private GrammarField grammarField = new GrammarField() {{
+        this.setNameField("filedKey");
+        this.setTypeField("type");
+        this.setDescribeField("filedValue");
+        this.setChildField("child");
+    }};
 
     private GrammarGenListener grammarGenListener = new GrammarGenListener() {
 
@@ -108,6 +136,9 @@ public class Main {
 
         }
 
+        @Override
+        public void onPreview() {
 
+        }
     };
 }

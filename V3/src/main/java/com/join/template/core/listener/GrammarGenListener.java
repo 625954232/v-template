@@ -17,4 +17,6 @@ public interface GrammarGenListener {
     void onCreate(Map map, GrammarInfo grammarInfo);
 
     void onCreate(TypeInfo typeInfo, GrammarInfo grammarInfo);
+
+    void onPreview();
 }
