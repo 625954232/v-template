@@ -18,4 +18,5 @@ public interface MarkedWords {
     String Attr_Statement_Terminator = "语句结束符";
     String Attr_Separator = "分隔符";
     String Hint_Input_Generated_Content = "请在此处填写你要生成的内容";
+    String Hint_Input_Generated_Default_Content = "请在此处填写你要生成的默认内容";
 }

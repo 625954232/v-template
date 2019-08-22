@@ -36,10 +36,11 @@ public class ListExplain implements Explain {
     public String getGrammarExplain() {
         Configuration configuration = TemplateUtil.getConfiguration();
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
-        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_LIST);
+        ExpressionHandle expressionList = joinFactory.getExpressionHandle(Constant.EXPR_LIST);
+        ExpressionHandle expressionElse = joinFactory.getExpressionHandle(Constant.EXPR_ELSE);
 
         StringBuilder grammar = new StringBuilder();
-        grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
+        grammar.append(configuration.getExprFirstBegin()).append(expressionList.getTag()).append(" ");
         grammar.append(configuration.getAttVar()).append("=\"").append(MarkedWords.Attr_Varchar_Name).append("\" ");
         grammar.append(configuration.getAttItem()).append("=\"").append(MarkedWords.Attr_Item_Name).append("\" ");
         grammar.append(configuration.getAttIndex()).append("=\"").append(MarkedWords.Attr_Index_Name).append("\" ");
@@ -47,9 +48,10 @@ public class ListExplain implements Explain {
         grammar.append(configuration.getAttClose()).append("=\"").append(MarkedWords.Attr_Statement_Terminator).append("\" ");
         grammar.append(configuration.getAttSseparator()).append("=\"").append(MarkedWords.Attr_Separator).append("\" ");
         grammar.append(configuration.getExprEndSupport());
-        grammar.append(configuration.getExprLastBegin());
-        grammar.append(expressionHandle.getTag());
-        grammar.append(configuration.getExprEndSupport());
+        grammar.append(MarkedWords.Hint_Input_Generated_Content);
+        grammar.append(configuration.getExprFirstBegin()).append(expressionElse.getTag()).append(configuration.getExprEndSupport());
+        grammar.append(MarkedWords.Hint_Input_Generated_Default_Content);
+        grammar.append(configuration.getExprLastBegin()).append(expressionList.getTag()).append(configuration.getExprEndSupport());
         return grammar.toString();
     }
 
@@ -68,7 +70,8 @@ public class ListExplain implements Explain {
     private String genGrammar(GrammarInfo grammarInfo, Object value) {
         Configuration configuration = TemplateUtil.getConfiguration();
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
-        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_LIST);
+        ExpressionHandle expressionList = joinFactory.getExpressionHandle(Constant.EXPR_LIST);
+        ExpressionHandle expressionElse = joinFactory.getExpressionHandle(Constant.EXPR_ELSE);
         StringBuilder var = new StringBuilder();
         if (grammarInfo != null && StringUtils.isNotBlank(grammarInfo.getParentName())) {
             var.append(grammarInfo.getParentName());
@@ -77,7 +80,7 @@ public class ListExplain implements Explain {
         var.append(value);
 
         StringBuilder grammar = new StringBuilder();
-        grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");
+        grammar.append(configuration.getExprFirstBegin()).append(expressionList.getTag()).append(" ");
         grammar.append(configuration.getAttVar()).append("=\"").append(var).append("\" ");
         grammar.append(configuration.getAttItem()).append("=\"").append(var).append("\" ");
         grammar.append(configuration.getAttIndex()).append("=\"").append(configuration.getAttIndex()).append("\" ");
@@ -86,9 +89,9 @@ public class ListExplain implements Explain {
         grammar.append(configuration.getAttSseparator()).append("=\"").append(MarkedWords.Attr_Separator).append("\" ");
         grammar.append(configuration.getExprEndSupport());
         grammar.append(MarkedWords.Hint_Input_Generated_Content);
-        grammar.append(configuration.getExprLastBegin());
-        grammar.append(expressionHandle.getTag());
-        grammar.append(configuration.getExprEndSupport());
+        grammar.append(configuration.getExprFirstBegin()).append(expressionElse.getTag()).append(configuration.getExprEndSupport());
+        grammar.append(MarkedWords.Hint_Input_Generated_Default_Content);
+        grammar.append(configuration.getExprLastBegin()).append(expressionList.getTag()).append(configuration.getExprEndSupport());
         return grammar.toString();
     }
 

@@ -108,7 +108,6 @@ public class Main {
         Map<String, List<Map>> maps = JSON.parseObject(grammaStr, Map.class);
         for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
             grammarGenerate.generateGrammarRoot(entry.getKey(), entry.getValue());
-
         }
         String preview1 = grammarGenerate.preview(previewStr, 4);
         System.out.println(preview1);
@@ -148,7 +147,7 @@ public class Main {
         @Override
         public void onPreview(GrammarInfo grammarInfo, Object value, Map<String, Object> map) {
             if (EntityType.Entity != grammarInfo.getType() && EntityType.Array != grammarInfo.getType())
-                if (StringUtils.isNotBlank(grammarInfo.getDescribe())) {
+                if (StringUtils.isNotBlank( grammarInfo.getDescribe())) {
                     map.put(grammarInfo.getName(), grammarInfo.getDescribe());
                 } else {
                     map.put(grammarInfo.getName(), grammarInfo.getName());
