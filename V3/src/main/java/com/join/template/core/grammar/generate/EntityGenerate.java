@@ -100,7 +100,9 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
     @Override
     public String preview(String text, int previewSize) {
         Map<String, Object> map = new HashMap<>();
-        for (GrammarInfo grammarInfo : this.getGrammarInfos()) {
+        List<GrammarInfo> grammarInfos = this.getGrammarInfos();
+        for (int i = 0; i < grammarInfos.size(); i++) {
+            GrammarInfo grammarInfo = grammarInfos.get(i);
             genContent(grammarInfo, map, previewSize);
         }
         TemplateFactory templateFactory = joinFactory.getTemplateFactorys(Constant.TYPE_SINGLE);
@@ -277,7 +279,8 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
             value = RandomUtil.toString(6);
         } else if ((EntityType.Array == grammarInfo.getType() || EntityType.Entity == grammarInfo.getType()) && childs != null) {
             Map<String, Object> childMap = new HashMap<>();
-            for (GrammarInfo child : childs) {
+            for (int i = 0; i < childs.size(); i++) {
+                GrammarInfo child = childs.get(i);
                 genContent(child, childMap, previewSize);
             }
             if (EntityType.Array == grammarInfo.getType()) {
@@ -291,10 +294,10 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
             }
         }
         if (value != null) {
-            if (this.getGrammarGenListener() != null) {
-                this.getGrammarGenListener().onPreview(grammarInfo, value);
-            }
             map.put(grammarInfo.getName(), value);
+            if (this.getGrammarGenListener() != null) {
+                this.getGrammarGenListener().onPreview(grammarInfo, value, map);
+            }
         }
     }
 

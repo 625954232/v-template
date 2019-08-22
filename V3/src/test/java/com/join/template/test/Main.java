@@ -13,6 +13,7 @@ import com.join.template.core.type.TypeInfo;
 import com.join.template.core.util.IOUtil;
 import com.join.template.text.JoinFactoryBuilder;
 import com.join.template.text.node.Node;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
 import java.net.URL;
@@ -145,8 +146,13 @@ public class Main {
         }
 
         @Override
-        public void onPreview(GrammarInfo grammarInfo, Object value) {
-
+        public void onPreview(GrammarInfo grammarInfo, Object value, Map<String, Object> map) {
+            if (EntityType.Entity != grammarInfo.getType() && EntityType.Array != grammarInfo.getType())
+                if (StringUtils.isNotBlank(grammarInfo.getDescribe())) {
+                    map.put(grammarInfo.getName(), grammarInfo.getDescribe());
+                } else {
+                    map.put(grammarInfo.getName(), grammarInfo.getName());
+                }
         }
     };
 }

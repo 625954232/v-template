@@ -16,5 +16,5 @@ public interface GrammarGenListener {
 
     void onCreate(TypeInfo typeInfo, GrammarInfo grammarInfo);
 
-    void onPreview(GrammarInfo grammarInfo, Object value);
+    void onPreview(  GrammarInfo grammarInfo, Object value, Map<String, Object> map);
 }
