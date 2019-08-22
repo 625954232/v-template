@@ -18,17 +18,17 @@ public interface Constant {
     //表达式类型/节点类型-列表
     int EXPR_LIST = 3;
     //表达式类型/节点类型-判断总节点
-    int EXPR_IF = 4;
+    int EXPR_IF = 5;
     //表达式类型/节点类型-判断其他
-    int EXPR_IF_ELSE = 5;
+    int EXPR_ELSE = 6;
     //表达式类型/节点类型-其他判断
-    int EXPR_IF_ELSE_IF = 6;
+    int EXPR_IF_ELSE_IF = 7;
     //表达式类型/节点类型-顶层节点
-    int EXPR_ROOT = 7;
+    int EXPR_ROOT = 8;
     //表达式类型/节点类型-文本
-    int EXPR_TEXT = 8;
+    int EXPR_TEXT = 9;
     //表达式类型/节点类型-写入值
-    int EXPR_SET = 9;
+    int EXPR_SET = 10;
     //表达式类型/节点类型-读取值
-    int EXPR_GET = 10;
+    int EXPR_GET = 11;
 }

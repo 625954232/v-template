@@ -52,7 +52,7 @@ public class JoinFactoryBase implements JoinFactory {
         this.addExpressionHandle(Constant.EXPR_VAR, null, new VarcharProcess(), new VarcharExplain());
         this.addExpressionHandle(Constant.EXPR_LIST, "list", new ListProcess(), new ListExplain());
         this.addExpressionHandle(Constant.EXPR_IF, "if", new IfProcess(), new IfExplain());
-        this.addExpressionHandle(Constant.EXPR_IF_ELSE, "else", new IfElseProcess(), null);
+        this.addExpressionHandle(Constant.EXPR_ELSE, "else", new IfElseProcess(), null);
         this.addExpressionHandle(Constant.EXPR_IF_ELSE_IF, "elseif", new ElseIfProcess(), new ElseIfExplain());
         this.addExpressionHandle(Constant.EXPR_INCLUDE, "include", new IncludeProcess(), new IncludeExplain());
         this.addExpressionHandle(Constant.EXPR_SET, "set", new SetProcess(), new SetExplain());
@@ -200,8 +200,7 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public JoinFactory putTemplate(String fileName) {
-        TemplateFactory templateFactory = templateFactorys.get(configuration.getType());
-        Assert.isNull(templateFactory, "没该" + configuration.getType() + "类型模版工厂");
+        TemplateFactory templateFactory = getTemplateFactorys(configuration.getType());
         templateFactory.putTemplate(fileName);
         return this;
     }
@@ -214,6 +213,19 @@ public class JoinFactoryBase implements JoinFactory {
     @Override
     public Configuration getConfiguration() {
         return configuration;
+    }
+
+    /**
+     * 获取模版工厂
+     *
+     * @param type
+     * @return
+     */
+    @Override
+    public TemplateFactory getTemplateFactorys(String type) {
+        TemplateFactory templateFactory = templateFactorys.get(type);
+        Assert.isNull(templateFactory, "没该" + configuration.getType() + "类型模版工厂");
+        return templateFactory;
     }
 
     /**

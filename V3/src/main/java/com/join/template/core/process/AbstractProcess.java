@@ -21,22 +21,13 @@ public abstract class AbstractProcess implements Process {
         this.joinFactory = TemplateUtil.getJoinFactory();
     }
 
-    //去节点开始换行
-    protected void removeStartSpace(Element child) {
-        if (child.getNodeType() == Constant.EXPR_TEXT
-                && child.getOriginal().startsWith("\r\n")) {
-            String string = child.getOriginal().substring(2, child.getOriginal().length());
-            child.setOriginal(string);
-        }
-    }
-
-    //去节点结束换行
-    protected void removeEndSpace(Element child) {
-        if (child.getNodeType() == Constant.EXPR_TEXT
+    protected void removeSpace(Element child, int index, int size) {
+        if (index == (size - 1) && child.getNodeType() == Constant.EXPR_TEXT
                 && child.getOriginal().endsWith("\r\n")) {
             String string = child.getOriginal().substring(0, child.getOriginal().length() - 2);
             child.setOriginal(string);
         }
     }
+
 
 }

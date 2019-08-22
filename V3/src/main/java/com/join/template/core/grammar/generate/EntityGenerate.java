@@ -5,6 +5,7 @@ import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.EntityType;
 import com.join.template.core.context.HashContext;
 import com.join.template.core.expression.ExpressionHandle;
+import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.grammar.GrammarGenerate;
 import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.type.TypeInfo;
@@ -102,7 +103,8 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
         for (GrammarInfo grammarInfo : this.getGrammarInfos()) {
             genContent(grammarInfo, map, previewSize);
         }
-        Template template = (Template) joinFactory.putTemplate("preview", text);
+        TemplateFactory templateFactory = joinFactory.getTemplateFactorys(Constant.TYPE_SINGLE);
+        Template template = (Template) templateFactory.putTemplate("preview", text);
         template.putContext(new HashContext(map));
         return template.process();
     }
@@ -244,7 +246,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
     }
 
 
-    private void genContent(GrammarInfo grammarInfo, Map<String, Object> item, int previewSize) {
+    private void genContent(GrammarInfo grammarInfo, Map<String, Object> map, int previewSize) {
         Object value = null;
         List<GrammarInfo> childs = grammarInfo.getChilds();
         if (EntityType.Integer == grammarInfo.getType()) {
@@ -274,21 +276,25 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
         } else if (EntityType.String == grammarInfo.getType()) {
             value = RandomUtil.toString(6);
         } else if ((EntityType.Array == grammarInfo.getType() || EntityType.Entity == grammarInfo.getType()) && childs != null) {
+            Map<String, Object> childMap = new HashMap<>();
             for (GrammarInfo child : childs) {
-                genContent(child, item, previewSize);
+                genContent(child, childMap, previewSize);
             }
             if (EntityType.Array == grammarInfo.getType()) {
                 List<Map<String, Object>> list = new ArrayList<>();
                 for (int i = 0; i < previewSize; i++) {
-                    list.add(item);
+                    list.add(childMap);
                 }
                 value = list;
             } else {
-                value = item;
+                value = childMap;
             }
         }
         if (value != null) {
-            item.put(grammarInfo.getName(), value);
+            if (this.getGrammarGenListener() != null) {
+                this.getGrammarGenListener().onPreview(grammarInfo, value);
+            }
+            map.put(grammarInfo.getName(), value);
         }
     }
 

@@ -6,8 +6,10 @@ import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.util.IOUtil;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.Assert;
+import com.join.template.core.verify.TemplateException;
 import com.join.template.text.DefaultTemplate;
 import com.join.template.text.JoinFactoryBase;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 
@@ -18,10 +20,17 @@ import java.io.File;
  */
 public class TemplateSingleFactory implements TemplateFactory<Template> {
 
+    private String name;
+    private String text;
+    private Template template;
+
+
     @Override
     public Template putTemplate(String name, String text) {
-        Template tb = new DefaultTemplate(name, text);
-        return tb;
+        this.name = name;
+        this.text = text;
+        this.template = new DefaultTemplate(name, text);
+        return template;
     }
 
     @Override
@@ -30,14 +39,20 @@ public class TemplateSingleFactory implements TemplateFactory<Template> {
         File resource = joinFactory.getConfiguration().getResource(fileName);
         Assert.ifTrue(!resource.exists(), fileName + "该模版不存在");
 
-        String name = resource.getName();
-        String text = IOUtil.toString(resource);
-        Template template = new DefaultTemplate(name, text);
+        this.name = resource.getName();
+        this.text = IOUtil.toString(resource);
+        this.template = new DefaultTemplate(name, text);
         return template;
     }
 
     @Override
     public Template getTemplate(String fileName) {
-        return putTemplate(fileName);
+        if (StringUtils.isBlank(name)) {
+            return putTemplate(fileName);
+        }
+        if (this.template == null && !name.equals(this.template.getName())) {
+            throw new TemplateException("未找到该模板");
+        }
+        return this.template;
     }
 }

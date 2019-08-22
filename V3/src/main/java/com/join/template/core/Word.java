@@ -62,4 +62,6 @@ public interface Word {
      * @date 2019/8/19 12:21
      */
     int getLineSize();
+
+    Template getTemplate();
 }

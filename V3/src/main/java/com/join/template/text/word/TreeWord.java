@@ -1,9 +1,11 @@
 package com.join.template.text.word;
 
 import com.join.template.core.Element;
+import com.join.template.core.Template;
 import com.join.template.core.Word;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.verify.TemplateException;
+import com.join.template.text.DefaultTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,10 @@ public class TreeWord extends AbstractWord implements Word {
     private int ifEndSize = 0;
     private int listBeginSize = 0;
     private int listEndSize = 0;
+
+    public TreeWord(Template template) {
+        super(template);
+    }
 
 
     @Override

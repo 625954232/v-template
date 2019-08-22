@@ -22,7 +22,7 @@ public class IfProcess extends AbstractProcess implements Process {
         boolean condition = evaluate(element, content); //条件是否成立
         for (int i = 0; i < element.getChilds().size(); i++) {
             Element child = element.getChilds().get(i);
-            if (child.getNodeType() == Constant.EXPR_IF_ELSE) {//条件成立判断是否有其他判断
+            if (child.getNodeType() == Constant.EXPR_ELSE) {//条件成立判断是否有其他判断
                 if (condition) {
                     return;
                 }
@@ -34,8 +34,7 @@ public class IfProcess extends AbstractProcess implements Process {
                 condition = evaluate(child, content);
             } else {
                 if (condition) {
-                    removeStartSpace(child);
-                    removeEndSpace(child);
+                    removeSpace(child, i, element.getChilds().size());
                     ExpressionHandle exprConfig = joinFactory.getExpressionHandle(child.getNodeType());
                     exprConfig.getProcess().process(child, content, writer);
                 }

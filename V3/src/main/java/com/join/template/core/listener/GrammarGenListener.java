@@ -1,10 +1,8 @@
 package com.join.template.core.listener;
 
-import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.type.TypeInfo;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
@@ -18,5 +16,5 @@ public interface GrammarGenListener {
 
     void onCreate(TypeInfo typeInfo, GrammarInfo grammarInfo);
 
-    void onPreview();
+    void onPreview(GrammarInfo grammarInfo, Object value);
 }

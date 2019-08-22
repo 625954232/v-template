@@ -128,6 +128,16 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
     Configuration getConfiguration();
 
     /**
+     * 获取模版工厂
+     *
+     * @param type 模版类型
+     * @return com.join.template.core.factory.template.TemplateFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/22 11:51
+     */
+    TemplateFactory getTemplateFactorys(String type);
+
+    /**
      * 根据标记获取表达式配置
      *
      * @param tag 表达式标记
@@ -193,7 +203,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * 获取全部语法示例
      *
      * @param
-     * @return java.util.Map<java.lang.Integer   ,   java.lang.String>
+     * @return java.util.Map<java.lang.Integer                               ,                               java.lang.String>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 16:09
      */

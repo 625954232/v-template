@@ -2,6 +2,7 @@ package com.join.template.text.word;
 
 import com.join.template.core.Element;
 import com.join.template.core.Reader;
+import com.join.template.core.Template;
 import com.join.template.core.Word;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
@@ -14,6 +15,7 @@ import java.util.List;
 
 
 public abstract class AbstractWord implements Word {
+    protected Template template;
     protected Configuration configuration;
     protected Reader reader;
     protected List<Element> elementss = new ArrayList<>();
@@ -27,15 +29,17 @@ public abstract class AbstractWord implements Word {
     protected String text;
 
 
-    public AbstractWord() {
+    public AbstractWord(Template template) {
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
         this.configuration = joinFactory.getConfiguration();
         this.reader = joinFactory.getReader();
-        this.root = new Node();
+        this.root = new Node(template);
         this.root.setNodeType(Constant.EXPR_ROOT);
         this.current = this.root;
         this.parent = this.root;
+        this.template = template;
     }
+
 
     @Override
     public void word(String text) {
@@ -114,4 +118,8 @@ public abstract class AbstractWord implements Word {
         return elementss;
     }
 
+    @Override
+    public Template getTemplate() {
+        return template;
+    }
 }

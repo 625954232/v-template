@@ -1,6 +1,7 @@
 package com.join.template.text.node;
 
 import com.join.template.core.Element;
+import com.join.template.core.Template;
 import com.join.template.text.expression.DefaultExpressionHandle;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Map;
 
 
 public class Node implements Element {
+    protected Template template;
     protected Integer nodeType;
     protected String original;
     protected Element parent;
@@ -25,6 +27,10 @@ public class Node implements Element {
         this.nodeType = nodeType;
         this.original = original;
         this.parent = parent;
+    }
+
+    public Node(Template template) {
+        this.template = template;
     }
 
     @Override

@@ -26,11 +26,11 @@ public class DefaultTemplate implements Template {
     protected String text;
 
     public DefaultTemplate(String name, String text) {
-        this.joinFactory = TemplateUtil.getJoinFactory();
-        this.context = new HashContext();
-        this.tokenizer = new TreeWord();
         this.name = name;
         this.text = text;
+        this.joinFactory = TemplateUtil.getJoinFactory();
+        this.context = new HashContext();
+        this.tokenizer = new TreeWord(this);
         this.tokenizer.word(this.text);
     }
 
