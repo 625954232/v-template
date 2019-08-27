@@ -1,5 +1,7 @@
 package com.join.template.core.grammar;
 
+import com.join.template.core.constant.TemplateType;
+import com.join.template.core.grammar.generate.AbstractGrammarGenerate;
 import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.listener.GrammarGenListener;
 
@@ -12,6 +14,15 @@ import java.util.Map;
  * @date 2019/8/1915:49
  */
 public interface GrammarGenerate<T extends GrammarInfo> {
+    /**
+     * 设置模版类型
+     *
+     * @param templateType
+     * @return com.join.template.core.grammar.GrammarGenerate
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/27 14:37
+     */
+    GrammarGenerate setTemplateType(TemplateType templateType);
 
     /**
      * 设置语法信息类
@@ -98,7 +109,6 @@ public interface GrammarGenerate<T extends GrammarInfo> {
 
     /**
      * 预览
-     *
      *
      * @param text
      * @param previewSize 预览列表的个数

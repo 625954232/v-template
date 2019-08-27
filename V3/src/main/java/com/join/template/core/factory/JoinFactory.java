@@ -1,9 +1,10 @@
 package com.join.template.core.factory;
 
 import com.join.template.core.*;
-import com.join.template.core.expression.Expression;
-import com.join.template.core.expression.ExpressionHandle;
-import com.join.template.core.grammar.Explain;
+import com.join.template.core.expression.Expr;
+import com.join.template.core.expression.ExprAttr;
+import com.join.template.core.expression.ExprHandle;
+import com.join.template.core.explain.Explain;
 import com.join.template.core.grammar.GrammarGenerate;
 import com.join.template.core.process.Process;
 import com.join.template.core.configuration.Configuration;
@@ -47,7 +48,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 15:13
      */
-    JoinFactory setReader(Reader reader);
+    JoinFactory setReader(Class<? extends Reader> reader);
 
     /**
      * 设置值表达式执行器
@@ -57,7 +58,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 15:12
      */
-    JoinFactory setExpression(Expression expression);
+    JoinFactory setExpr(Class<? extends Expr> expression);
 
     /**
      * 设置语法生成器
@@ -67,7 +68,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 15:12
      */
-    JoinFactory setGrammarGenerate(GrammarGenerate grammarGenerate);
+    JoinFactory setGrammarGenerate(Class<? extends GrammarGenerate> grammarGenerate);
 
     /**
      * 新增模版工厂
@@ -88,11 +89,12 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @param tag      表达式标记
      * @param process  语法处理器
      * @param grammar  语法示例器
+     * @param exprAttr
      * @return com.join.template.core.factory.JoinFactory
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:46
      */
-    JoinFactory addExpressionHandle(Integer nodeType, String tag, Process process, Explain grammar);
+    JoinFactory addExprHandle(Integer nodeType, String tag, Process process, Explain grammar, ExprAttr exprAttr);
 
     /**
      * 新增解析监听
@@ -145,7 +147,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:48
      */
-    ExpressionHandle getExpressionHandle(String tag);
+    ExprHandle getExprHandle(String tag);
 
 
     /**
@@ -156,7 +158,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:49
      */
-    ExpressionHandle getExpressionHandle(Integer nodeType);
+    ExprHandle getExprHandle(Integer nodeType);
 
     /**
      * 获取全部表达式配置
@@ -166,7 +168,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 16:11
      */
-    Map<Object, ExpressionHandle> getExpressionHandles();
+    Map<Object, ExprHandle> getExprHandles();
 
     /**
      * 获取表达式执行器
@@ -176,7 +178,7 @@ public interface JoinFactory extends TemplateFactory<JoinFactory> {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:49
      */
-    Expression getExpression();
+    Expr getExpr();
 
     /**
      * 获取解析器

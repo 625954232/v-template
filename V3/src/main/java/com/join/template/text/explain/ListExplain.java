@@ -3,10 +3,12 @@ package com.join.template.text.explain;
 
 import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.MarkedWords;
-import com.join.template.core.expression.ExpressionHandle;
+import com.join.template.core.constant.TemplateType;
+import com.join.template.core.expression.ExprHandle;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.explain.AbstractExplain;
 import com.join.template.core.grammar.generate.GrammarField;
-import com.join.template.core.grammar.Explain;
+import com.join.template.core.explain.Explain;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.type.TypeInfo;
@@ -14,9 +16,10 @@ import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.TemplateException;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class ListExplain implements Explain {
+public class ListExplain extends AbstractExplain implements Explain {
 
     @Override
     public void verifyElement(String original, Boolean endElement, Map<String, String> attr) {
@@ -36,17 +39,21 @@ public class ListExplain implements Explain {
     public String getGrammarExplain() {
         Configuration configuration = TemplateUtil.getConfiguration();
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
-        ExpressionHandle expressionList = joinFactory.getExpressionHandle(Constant.EXPR_LIST);
-        ExpressionHandle expressionElse = joinFactory.getExpressionHandle(Constant.EXPR_ELSE);
+        ExprHandle expressionList = joinFactory.getExprHandle(Constant.EXPR_LIST);
+        ExprHandle expressionElse = joinFactory.getExprHandle(Constant.EXPR_ELSE);
+
+        Map<String, String> attr = new HashMap<>();
+        attr.put(configuration.getAttVar(), MarkedWords.Attr_Varchar_Name);
+        attr.put(configuration.getAttItem(), MarkedWords.Attr_Item_Name);
+        attr.put(configuration.getAttOpen(), MarkedWords.Attr_Statement_Opener);
+        attr.put(configuration.getAttClose(), MarkedWords.Attr_Statement_Terminator);
+        attr.put(configuration.getAttSseparator(), MarkedWords.Attr_Separator);
+        String attribute = expressionList.getExprAttr().genAttribute(attr);
+
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionList.getTag()).append(" ");
-        grammar.append(configuration.getAttVar()).append("=\"").append(MarkedWords.Attr_Varchar_Name).append("\" ");
-        grammar.append(configuration.getAttItem()).append("=\"").append(MarkedWords.Attr_Item_Name).append("\" ");
-        grammar.append(configuration.getAttIndex()).append("=\"").append(MarkedWords.Attr_Index_Name).append("\" ");
-        grammar.append(configuration.getAttOpen()).append("=\"").append(MarkedWords.Attr_Statement_Opener).append("\" ");
-        grammar.append(configuration.getAttClose()).append("=\"").append(MarkedWords.Attr_Statement_Terminator).append("\" ");
-        grammar.append(configuration.getAttSseparator()).append("=\"").append(MarkedWords.Attr_Separator).append("\" ");
+        grammar.append(attribute);
         grammar.append(configuration.getExprEndSupport());
         grammar.append(MarkedWords.Hint_Input_Generated_Content);
         grammar.append(configuration.getExprFirstBegin()).append(expressionElse.getTag()).append(configuration.getExprEndSupport());
@@ -56,22 +63,22 @@ public class ListExplain implements Explain {
     }
 
     @Override
-    public String genGrammar(GrammarInfo grammarInfo, Map map, GrammarField field) {
+    public String genGrammar(TemplateType templateType, GrammarInfo grammarInfo, Map map, GrammarField field) {
         Object value = map.get(field.getNameField());
-        return genGrammar(grammarInfo, value);
+        return genGrammar(templateType, grammarInfo, value);
     }
 
 
     @Override
-    public String genGrammar(GrammarInfo grammarInfo, TypeInfo typeInfo, GrammarField grammarField) {
-        return genGrammar(grammarInfo, typeInfo.getName());
+    public String genGrammar(TemplateType templateType, GrammarInfo grammarInfo, TypeInfo typeInfo, GrammarField grammarField) {
+        return genGrammar(templateType, grammarInfo, typeInfo.getName());
     }
 
-    private String genGrammar(GrammarInfo grammarInfo, Object value) {
+    private String genGrammar(TemplateType templateType, GrammarInfo grammarInfo, Object value) {
         Configuration configuration = TemplateUtil.getConfiguration();
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
-        ExpressionHandle expressionList = joinFactory.getExpressionHandle(Constant.EXPR_LIST);
-        ExpressionHandle expressionElse = joinFactory.getExpressionHandle(Constant.EXPR_ELSE);
+        ExprHandle expressionList = joinFactory.getExprHandle(Constant.EXPR_LIST);
+        ExprHandle expressionElse = joinFactory.getExprHandle(Constant.EXPR_ELSE);
         StringBuilder var = new StringBuilder();
         if (grammarInfo != null && StringUtils.isNotBlank(grammarInfo.getParentName())) {
             var.append(grammarInfo.getParentName());
@@ -79,14 +86,17 @@ public class ListExplain implements Explain {
         }
         var.append(value);
 
+        Map<String, String> attr = new HashMap<>();
+        attr.put(configuration.getAttVar(), var.toString());
+        attr.put(configuration.getAttItem(), var.toString());
+        attr.put(configuration.getAttOpen(), MarkedWords.Attr_Statement_Opener);
+        attr.put(configuration.getAttClose(), MarkedWords.Attr_Statement_Terminator);
+        attr.put(configuration.getAttSseparator(), MarkedWords.Attr_Separator);
+        String attribute = expressionList.getExprAttr().genAttribute(attr);
+
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionList.getTag()).append(" ");
-        grammar.append(configuration.getAttVar()).append("=\"").append(var).append("\" ");
-        grammar.append(configuration.getAttItem()).append("=\"").append(var).append("\" ");
-        grammar.append(configuration.getAttIndex()).append("=\"").append(configuration.getAttIndex()).append("\" ");
-        grammar.append(configuration.getAttOpen()).append("=\"").append(MarkedWords.Attr_Statement_Opener).append("\" ");
-        grammar.append(configuration.getAttClose()).append("=\"").append(MarkedWords.Attr_Statement_Terminator).append("\" ");
-        grammar.append(configuration.getAttSseparator()).append("=\"").append(MarkedWords.Attr_Separator).append("\" ");
+        grammar.append(attribute);
         grammar.append(configuration.getExprEndSupport());
         grammar.append(MarkedWords.Hint_Input_Generated_Content);
         grammar.append(configuration.getExprFirstBegin()).append(expressionElse.getTag()).append(configuration.getExprEndSupport());

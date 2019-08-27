@@ -3,8 +3,9 @@ package com.join.template.core.grammar.generate;
 import com.join.template.core.Template;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.constant.EntityType;
+import com.join.template.core.constant.MarkedWords;
 import com.join.template.core.context.HashContext;
-import com.join.template.core.expression.ExpressionHandle;
+import com.join.template.core.expression.ExprHandle;
 import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.grammar.GrammarGenerate;
 import com.join.template.core.grammar.GrammarInfo;
@@ -29,7 +30,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
     @Override
     public EntityGenerate generateGrammarRoot(String name, Class clazz) {
         try {
-            GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+            GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
             this.createGrammarInfo(grammarInfo, clazz);
             this.getGrammarInfos().add(grammarInfo);
             return this;
@@ -44,10 +45,10 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
     public EntityGenerate generateGrammarRoot(String name, List<Map> map) {
         try {
             Map<String, Object> root = new HashMap<>();
-            root.put(this.getGrammarField().getNameField(), name);
-            root.put(this.getGrammarField().getTypeField(), EntityType.Object.name());
-            root.put(this.getGrammarField().getChildField(), map);
-            GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+            root.put(this.grammarField.getNameField(), name);
+            root.put(this.grammarField.getTypeField(), EntityType.Object.name());
+            root.put(this.grammarField.getChildField(), map);
+            GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
             this.createGrammarInfo(grammarInfo, root);
             this.getGrammarInfos().add(grammarInfo);
             return this;
@@ -69,7 +70,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
                         || Modifier.isFinal(field.getModifiers())) {
                     continue;
                 }
-                GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
                 this.createGrammarInfo(grammarInfo, field);
                 this.getGrammarInfos().add(grammarInfo);
             }
@@ -85,7 +86,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
     public EntityGenerate generateGrammar(List<Map> maps) {
         try {
             for (Map map : maps) {
-                GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
                 this.createGrammarInfo(grammarInfo, map);
                 this.getGrammarInfos().add(grammarInfo);
             }
@@ -106,7 +107,8 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
             genContent(grammarInfo, map, previewSize);
         }
         TemplateFactory templateFactory = joinFactory.getTemplateFactorys(Constant.TYPE_SINGLE);
-        Template template = (Template) templateFactory.putTemplate("preview", text);
+        String name = "preview." + this.templateType.name().toLowerCase();
+        Template template = (Template) templateFactory.putTemplate(name, text);
         template.putContext(new HashContext(map));
         return template.process();
     }
@@ -125,17 +127,17 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
         TypeInfo typeInfo = TypeInfo.get(clazzOrField);
         current.name(typeInfo.getName());
         current.type(EntityType.of(typeInfo.getType()));
-        if (this.getGrammarGenListener() != null) {
-            this.getGrammarGenListener().onCreate(typeInfo, current);
+        if (this.grammarGenListener != null) {
+            this.grammarGenListener.onCreate(typeInfo, current);
         }
         if (EntityType.Array == current.getType()) {
             current.grammarType(Constant.EXPR_LIST);
         } else {
             current.grammarType(Constant.EXPR_VAR);
         }
-        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(current.getGrammarType());
-        if (expressionHandle != null && expressionHandle.getExplain() != null) {
-            String grammar = expressionHandle.getExplain().genGrammar(current, typeInfo, this.getGrammarField());
+        ExprHandle expressionHandle = joinFactory.getExprHandle(current.getGrammarType());
+        if (expressionHandle != null && expressionHandle.getExplain() != null && EntityType.Entity != current.getType()) {
+            String grammar = expressionHandle.getExplain().genGrammar(this.templateType, current, typeInfo, this.grammarField);
             current.grammar(grammar);
         }
         this.createGrammarChild(current, typeInfo);
@@ -159,6 +161,8 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
             } else {
                 clazz_ = typeInfo.getType();
             }
+            if (EntityType.Array == current.getType())
+                createGrammarIndex(current);
             Field[] fields = clazz_.getDeclaredFields();
             for (Field item : fields) {
                 if (this.getClass() == item.getType()
@@ -167,7 +171,7 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
                         || Modifier.isFinal(item.getModifiers())) {
                     continue;
                 }
-                GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
                 grammarInfo.parentName(current.getName());
                 grammarInfo.parentType(current.getType());
                 this.createGrammarInfo(grammarInfo, item);
@@ -186,32 +190,32 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
      * @date 2019/8/21 16:18
      */
     private void createGrammarInfo(GrammarInfo current, Map map) throws IllegalAccessException, InstantiationException {
-        String fieldName = String.valueOf(map.get(this.getGrammarField().getNameField()));
+        String fieldName = String.valueOf(map.get(this.grammarField.getNameField()));
         if (fieldName == null) {
             throw new TemplateException("缺少名称的对应字段名称");
         }
 
-        String fieldType = String.valueOf(map.get(this.getGrammarField().getTypeField()));
-        String fieldDescribe = String.valueOf(map.get(this.getGrammarField().getDescribeField()));
+        String fieldType = String.valueOf(map.get(this.grammarField.getTypeField()));
+        String fieldDescribe = String.valueOf(map.get(this.grammarField.getDescribeField()));
 
-        fieldType = Utils.returnOrDefault(fieldType, this.getGrammarField().getTypeField());
+        fieldType = Utils.returnOrDefault(fieldType, this.grammarField.getTypeField());
         fieldDescribe = Utils.returnOrDefault(fieldDescribe, fieldName);
 
         current.name(fieldName);
         current.type(EntityType.of(fieldType));
         current.describe(fieldDescribe);
 
-        if (this.getGrammarGenListener() != null) {
-            this.getGrammarGenListener().onCreate(map, current);
+        if (this.grammarGenListener != null) {
+            this.grammarGenListener.onCreate(map, current);
         }
         if (EntityType.Array == current.getType()) {
             current.grammarType(Constant.EXPR_LIST);
         } else {
             current.grammarType(Constant.EXPR_VAR);
         }
-        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(current.getGrammarType());
+        ExprHandle expressionHandle = joinFactory.getExprHandle(current.getGrammarType());
         if (expressionHandle != null && expressionHandle.getExplain() != null) {
-            String grammar = expressionHandle.getExplain().genGrammar(current, map, this.getGrammarField());
+            String grammar = expressionHandle.getExplain().genGrammar(this.templateType, current, map, this.grammarField);
             current.grammar(grammar);
         }
         this.createGrammarChild(current, map);
@@ -228,19 +232,22 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
      */
     private void createGrammarChild(GrammarInfo current, Map map) throws InstantiationException, IllegalAccessException {
         if (EntityType.Array == current.getType() || EntityType.Entity == current.getType()) {
-            Object obj = map.get(this.getGrammarField().getChildField());
+            Object obj = map.get(this.grammarField.getChildField());
             if (obj == null) {
                 return;
             }
             if (obj instanceof Collection) {
+                if (EntityType.Array == current.getType())
+                    createGrammarIndex(current);
                 List<Map> maps = (List<Map>) obj;
                 for (Map item : maps) {
-                    GrammarInfo grammarInfo = this.getGrammarInfoClass().newInstance();
+                    GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
                     grammarInfo.parentName(current.getName());
                     grammarInfo.parentType(current.getType());
                     this.createGrammarInfo(grammarInfo, item);
                     current.addChild(grammarInfo);
                 }
+
             } else {
                 throw new TemplateException("错误的集合：" + current.getName());
             }
@@ -295,11 +302,32 @@ public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> impleme
         }
         if (value != null) {
             map.put(grammarInfo.getName(), value);
-            if (this.getGrammarGenListener() != null) {
-                this.getGrammarGenListener().onPreview(grammarInfo, value, map);
+            if (this.grammarGenListener != null) {
+                this.grammarGenListener.onPreview(grammarInfo, value, map);
             }
+
         }
     }
 
+
+    private void createGrammarIndex(GrammarInfo current) throws IllegalAccessException, InstantiationException {
+        GrammarInfo index = this.grammarInfoClass.newInstance();
+//        index.parentName(current.getName());
+//        index.parentType(current.getType());
+        index.name(current.getName().concat("_").concat(configuration.getAttIndex()));
+        index.type(EntityType.Integer);
+        index.describe(MarkedWords.Attr_Index_Name);
+        index.grammarType(Constant.EXPR_VAR);
+
+        ExprHandle expressionHandle = joinFactory.getExprHandle(index.getGrammarType());
+        if (expressionHandle != null && expressionHandle.getExplain() != null) {
+            Map<String, Object> root = new HashMap<>();
+            root.put(this.grammarField.getNameField(), index.getName());
+            root.put(this.grammarField.getTypeField(), EntityType.Integer.name());
+            String grammar = expressionHandle.getExplain().genGrammar(this.templateType, index, root, this.grammarField);
+            index.grammar(grammar);
+        }
+        current.addChild(index);
+    }
 
 }

@@ -4,12 +4,15 @@ package com.join.template.core.factory.template;
 import com.join.template.core.Template;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.util.IOUtil;
+import com.join.template.core.util.ResourceFind;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.Assert;
 import com.join.template.text.DefaultTemplate;
 import com.join.template.text.JoinFactoryBase;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,15 +53,14 @@ public class TemplateMapFactory implements TemplateFactory<Template> {
     @Override
     public Template putTemplate(String fileName) {
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
-        File resource = joinFactory.getConfiguration().getResource(fileName);
-        Assert.ifTrue(!resource.exists(), fileName + "该模版不存在");
+        ResourceFind.ResourceInfo resource = joinFactory.getConfiguration().getResource(fileName);
         //判断模版是否存在
         if (templateMap.containsKey(resource.getName())) {
             return templateMap.get(resource.getName());
         }
         removeUnnecessary();
         //初始化模版
-        String text = IOUtil.toString(resource);
+        String text = IOUtil.toString(resource.getIO());
         Template template = new DefaultTemplate(resource.getName(), text);
         templateMap.put(fileName, template);
         return template;

@@ -1,12 +1,12 @@
-package com.join.template.core.grammar;
+package com.join.template.core.explain;
 
 
 import com.join.template.core.Element;
-import com.join.template.core.grammar.generate.EntityGrammarInfo;
+import com.join.template.core.constant.TemplateType;
+import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.type.TypeInfo;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
@@ -15,6 +15,7 @@ import java.util.Map;
  * @date 2019/8/19 12:18
  */
 public interface Explain {
+
     /**
      * 效验节点属性
      *
@@ -23,9 +24,7 @@ public interface Explain {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:53
      */
-    default void verifyElement(Element element) {
-        verifyElement(element.getOriginal(), element.isEndElement(), element.getAttributes());
-    }
+    void verifyElement(Element element);
 
     /**
      * 效验节点属性
@@ -43,7 +42,7 @@ public interface Explain {
      * 获取语法解释
      *
      * @param
-     * @return java.util.Map<java.lang.String   , java.lang.String>
+     * @return java.util.Map<java.lang.String                                                                                                                               ,                                                               java.lang.String>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:54
      */
@@ -53,6 +52,8 @@ public interface Explain {
     /**
      * 根据Map生成语法
      *
+     *
+     * @param templateType
      * @param grammarInfo
      * @param map
      * @param field
@@ -60,11 +61,13 @@ public interface Explain {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 10:35
      */
-    String genGrammar(GrammarInfo grammarInfo, Map map, GrammarField field);
+    String genGrammar(TemplateType templateType, GrammarInfo grammarInfo, Map map, GrammarField field);
 
     /**
      * 根据实体、字段、方法等信息生成语法
      *
+     *
+     * @param templateType
      * @param grammarInfo
      * @param typeInfo
      * @param grammarField
@@ -72,5 +75,6 @@ public interface Explain {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/21 15:59
      */
-    String genGrammar(GrammarInfo grammarInfo, TypeInfo typeInfo, GrammarField grammarField);
+    String genGrammar(TemplateType templateType, GrammarInfo grammarInfo, TypeInfo typeInfo, GrammarField grammarField);
+
 }

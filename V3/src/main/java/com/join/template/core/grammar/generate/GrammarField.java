@@ -9,19 +9,19 @@ public class GrammarField {
     /**
      * 字段名称对应的别名
      */
-    private String nameField;
+    private String nameField = "name_field";
     /**
      * 字段描述对应的别名
      */
-    private String describeField;
+    private String describeField = "describe_field";
     /**
      * 字段类型对应的别名
      */
-    private String typeField;
+    private String typeField = "type_field";
     /**
      * 子集字段列表对应的别名
      */
-    private String childField;
+    private String childField = "child_field";
 
     public GrammarField() {
     }

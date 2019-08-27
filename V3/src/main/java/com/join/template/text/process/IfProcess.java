@@ -1,8 +1,8 @@
 package com.join.template.text.process;
 
 import com.join.template.core.Element;
-import com.join.template.core.expression.Expression;
-import com.join.template.core.expression.ExpressionHandle;
+import com.join.template.core.expression.Expr;
+import com.join.template.core.expression.ExprHandle;
 import com.join.template.core.process.AbstractProcess;
 import com.join.template.core.process.Process;
 import com.join.template.core.constant.Constant;
@@ -34,8 +34,7 @@ public class IfProcess extends AbstractProcess implements Process {
                 condition = evaluate(child, content);
             } else {
                 if (condition) {
-                    removeSpace(child, i, element.getChilds().size());
-                    ExpressionHandle exprConfig = joinFactory.getExpressionHandle(child.getNodeType());
+                    ExprHandle exprConfig = joinFactory.getExprHandle(child.getNodeType());
                     exprConfig.getProcess().process(child, content, writer);
                 }
             }
@@ -44,7 +43,7 @@ public class IfProcess extends AbstractProcess implements Process {
 
     private boolean evaluate(Element element, Content content) {
         String text = element.getAttribute(configuration.getAttrText());
-        Expression expression = joinFactory.getExpression();
+        Expr expression = joinFactory.getExpr();
         expression.setExpression(text);
         expression.setContext(content);
         Object evaluate = expression.evaluate();

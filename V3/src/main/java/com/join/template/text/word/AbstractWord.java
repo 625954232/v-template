@@ -71,7 +71,7 @@ public abstract class AbstractWord implements Word {
     private void match(String matchBeginTag, String matchEndTag) {
         if (this.start < this.index) {
             String token = this.text.substring(this.start, this.index);
-            Element element = new Node(Constant.EXPR_TEXT, token, this.parent);
+            Element element = new Node(template, Constant.EXPR_TEXT, token, this.parent);
             this.arrange(element);
             elementss.add(element);
         }
@@ -80,7 +80,7 @@ public abstract class AbstractWord implements Word {
         }
         int index = this.text.indexOf(matchEndTag, this.index);
         String token = this.text.substring(this.index + matchBeginTag.length(), index);
-        Element element = this.reader.reader(matchBeginTag, matchEndTag, token);
+        Element element = this.reader.reader(template,matchBeginTag, matchEndTag, token);
         this.arrange(element);
         elementss.add(element);
         this.start = this.index = index + matchEndTag.length();

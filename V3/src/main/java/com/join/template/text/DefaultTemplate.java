@@ -1,7 +1,8 @@
 package com.join.template.text;
 
 import com.join.template.core.Element;
-import com.join.template.core.expression.ExpressionHandle;
+import com.join.template.core.constant.TemplateType;
+import com.join.template.core.expression.ExprHandle;
 import com.join.template.core.Template;
 import com.join.template.core.Word;
 import com.join.template.core.configuration.Configuration;
@@ -24,10 +25,12 @@ public class DefaultTemplate implements Template {
     protected Word tokenizer;
     protected String name;
     protected String text;
+    protected TemplateType templateType;
 
     public DefaultTemplate(String name, String text) {
         this.name = name;
         this.text = text;
+        this.templateType = TemplateType.of(name);
         this.joinFactory = TemplateUtil.getJoinFactory();
         this.context = new HashContext();
         this.tokenizer = new TreeWord(this);
@@ -49,7 +52,7 @@ public class DefaultTemplate implements Template {
 
     @Override
     public Template process(Writer writer) {
-        ExpressionHandle expressionHandle = joinFactory.getExpressionHandle(Constant.EXPR_ROOT);
+        ExprHandle expressionHandle = joinFactory.getExprHandle(Constant.EXPR_ROOT);
         expressionHandle.getProcess().process(this.getRootElement(), context, writer);
         return this;
     }
@@ -69,6 +72,11 @@ public class DefaultTemplate implements Template {
     @Override
     public String getText() {
         return this.text;
+    }
+
+    @Override
+    public TemplateType getTemplateType() {
+        return templateType;
     }
 
     @Override

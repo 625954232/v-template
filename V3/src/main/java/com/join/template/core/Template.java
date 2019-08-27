@@ -1,5 +1,6 @@
 package com.join.template.core;
 
+import com.join.template.core.constant.TemplateType;
 import com.join.template.core.context.Content;
 import com.join.template.core.factory.JoinFactory;
 
@@ -38,6 +39,16 @@ public interface Template {
      * @date 2019/8/19 12:16
      */
     Template process(Writer writer);
+
+    /**
+     * 获取模版类型
+     *
+     * @param
+     * @return com.join.template.core.constant.TemplateType
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/27 14:22
+     */
+    TemplateType getTemplateType();
 
     /**
      * 获取总工厂

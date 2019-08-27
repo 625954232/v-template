@@ -17,6 +17,30 @@ import java.util.jar.JarFile;
 
 @SuppressWarnings("rawtypes")
 public class ClassUtil {
+
+    public static ClassLoader getClassLoader() {
+        ClassLoader classLoader = null;
+        if (classLoader == null) {
+            try {
+                classLoader = Thread.currentThread().getContextClassLoader();
+            } catch (Exception e) {
+            }
+        }
+        if (classLoader == null) {
+            try {
+                classLoader = ResourceFind.class.getClassLoader();
+            } catch (Exception e) {
+            }
+        }
+        if (classLoader == null) {
+            try {
+                classLoader = ClassLoader.getSystemClassLoader();
+            } catch (Exception e) {
+            }
+        }
+        return classLoader;
+    }
+
     /**
      * 判断是不是基本类型
      *

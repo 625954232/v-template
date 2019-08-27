@@ -11,6 +11,8 @@ public interface Reader {
     /**
      * 读取
      *
+     *
+     * @param template
      * @param matchBeginTag 匹配节点的开始标记
      * @param matchEndTag   匹配节点的结束标记
      * @param text          文本内容
@@ -18,5 +20,5 @@ public interface Reader {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:55
      */
-    Element reader(String matchBeginTag, String matchEndTag, String text);
+    Element reader(Template template, String matchBeginTag, String matchEndTag, String text);
 }

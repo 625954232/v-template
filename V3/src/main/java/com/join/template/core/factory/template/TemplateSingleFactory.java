@@ -4,6 +4,7 @@ package com.join.template.core.factory.template;
 import com.join.template.core.Template;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.util.IOUtil;
+import com.join.template.core.util.ResourceFind;
 import com.join.template.core.util.TemplateUtil;
 import com.join.template.core.verify.Assert;
 import com.join.template.core.verify.TemplateException;
@@ -36,11 +37,9 @@ public class TemplateSingleFactory implements TemplateFactory<Template> {
     @Override
     public Template putTemplate(String fileName) {
         JoinFactory joinFactory = TemplateUtil.getJoinFactory();
-        File resource = joinFactory.getConfiguration().getResource(fileName);
-        Assert.ifTrue(!resource.exists(), fileName + "该模版不存在");
-
+        ResourceFind.ResourceInfo resource = joinFactory.getConfiguration().getResource(fileName);
         this.name = resource.getName();
-        this.text = IOUtil.toString(resource);
+        this.text = IOUtil.toString(resource.getIO());
         this.template = new DefaultTemplate(name, text);
         return template;
     }

@@ -15,9 +15,13 @@ public class TextProcess extends AbstractProcess implements Process {
     public void process(Element element, Content context, Writer writer) {
         super.process(element, context, writer);
         try {
-            writer.write(element.getOriginal());
+            StringBuilder stringBuilder = new StringBuilder(element.getOriginal());
+            this.insertText(element, stringBuilder);
+            writer.write(stringBuilder.toString());
         } catch (IOException e) {
             throw new IllegalArgumentException("语法转换失败：", e);
         }
     }
+
+
 }

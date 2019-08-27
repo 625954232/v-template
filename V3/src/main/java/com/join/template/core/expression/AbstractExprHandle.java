@@ -1,6 +1,6 @@
 package com.join.template.core.expression;
 
-import com.join.template.core.grammar.Explain;
+import com.join.template.core.explain.Explain;
 import com.join.template.core.process.Process;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
@@ -8,7 +8,7 @@ import com.join.template.core.listener.ProcessListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractExpressionHandle implements ExpressionHandle {
+public abstract class AbstractExprHandle implements ExprHandle {
     /**
      * 标记
      */
@@ -28,6 +28,10 @@ public abstract class AbstractExpressionHandle implements ExpressionHandle {
     protected Explain explain;
 
     /**
+     * 表达式属性处理器
+     */
+    protected ExprAttr exprAttr;
+    /**
      * 解析监听
      */
     protected List<ParserListener> parserListeners = new ArrayList<>();
@@ -38,11 +42,12 @@ public abstract class AbstractExpressionHandle implements ExpressionHandle {
     protected List<ProcessListener> processListeners = new ArrayList<>();
 
 
-    public AbstractExpressionHandle(String tag, Integer nodeType, Process process, Explain explain) {
+    public AbstractExprHandle(String tag, Integer nodeType, Process process, Explain explain, ExprAttr exprAttr) {
         this.tag = tag;
         this.nodeType = nodeType;
         this.process = process;
         this.explain = explain;
+        this.exprAttr = exprAttr;
     }
 
     @Override
@@ -66,6 +71,11 @@ public abstract class AbstractExpressionHandle implements ExpressionHandle {
     }
 
     @Override
+    public ExprAttr getExprAttr() {
+        return exprAttr;
+    }
+
+    @Override
     public List<ParserListener> getParserListeners() {
         return parserListeners;
     }
@@ -74,4 +84,6 @@ public abstract class AbstractExpressionHandle implements ExpressionHandle {
     public List<ProcessListener> getProcessListeners() {
         return processListeners;
     }
+
+
 }

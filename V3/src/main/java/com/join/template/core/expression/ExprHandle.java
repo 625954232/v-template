@@ -1,9 +1,8 @@
 package com.join.template.core.expression;
 
 
-import com.join.template.core.grammar.Explain;
+import com.join.template.core.explain.Explain;
 import com.join.template.core.Parser;
-import com.join.template.core.Reader;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
 import com.join.template.core.process.Process;
@@ -15,7 +14,7 @@ import java.util.List;
  * @Title: 表达式处理器
  * @date 2019/8/19 11:41
  */
-public interface ExpressionHandle extends Parser {
+public interface ExprHandle extends Parser {
     /**
      * 获取标记
      *
@@ -55,6 +54,16 @@ public interface ExpressionHandle extends Parser {
      * @date 2019/8/19 11:39
      */
     Explain getExplain();
+
+    /**
+     * 获取表达式属性处理器
+     *
+     * @param
+     * @return com.join.template.core.expression.ExprAttr
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/26 12:12
+     */
+    ExprAttr getExprAttr();
 
     /**
      * 获取解析监听

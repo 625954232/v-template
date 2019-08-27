@@ -2,6 +2,7 @@ package com.join.template.text.node;
 
 import com.join.template.core.Element;
 import com.join.template.core.Template;
+import com.join.template.core.expression.ExprHandle;
 import com.join.template.text.expression.DefaultExpressionHandle;
 
 import java.util.ArrayList;
@@ -18,12 +19,11 @@ public class Node implements Element {
     protected Boolean isEndElement = false;
     private Map<String, String> attributes = new HashMap<>();
     private List<Element> childs = new ArrayList<>();
-    protected DefaultExpressionHandle expressionHandle;
+    protected ExprHandle exprHandle;
 
-    public Node() {
-    }
 
-    public Node(Integer nodeType, String original, Element parent) {
+    public Node(Template template, Integer nodeType, String original, Element parent) {
+        this.template = template;
         this.nodeType = nodeType;
         this.original = original;
         this.parent = parent;
@@ -31,6 +31,12 @@ public class Node implements Element {
 
     public Node(Template template) {
         this.template = template;
+    }
+
+    @Override
+    public Element setEndElement(Boolean endElement) {
+        this.isEndElement = endElement;
+        return this;
     }
 
     @Override
@@ -51,6 +57,11 @@ public class Node implements Element {
         return this;
     }
 
+    @Override
+    public Element setExprHandle(ExprHandle exprHandle) {
+        this.exprHandle = exprHandle;
+        return this;
+    }
 
     @Override
     public Element addAttributes(String name, String value) {
@@ -64,11 +75,6 @@ public class Node implements Element {
         return this;
     }
 
-    @Override
-    public Node setEndElement(Boolean endElement) {
-        this.isEndElement = endElement;
-        return this;
-    }
 
     @Override
     public Element addChilds(Element child) {
@@ -76,9 +82,10 @@ public class Node implements Element {
         return this;
     }
 
+
     @Override
-    public void setExpressionHandle(DefaultExpressionHandle exprConfig) {
-        this.expressionHandle = exprConfig;
+    public String getAttribute(String name, String defaultValue) {
+        return attributes.getOrDefault(name, defaultValue);
     }
 
     @Override
@@ -107,8 +114,8 @@ public class Node implements Element {
     }
 
     @Override
-    public DefaultExpressionHandle getExpressionHandle() {
-        return expressionHandle;
+    public ExprHandle getExprHandle() {
+        return exprHandle;
     }
 
     @Override
@@ -122,14 +129,7 @@ public class Node implements Element {
     }
 
     @Override
-    public String toString() {
-        return "Node{" +
-                "nodeType=" + nodeType +
-                ", original='" + original + '\'' +
-                ", parent=" + parent +
-                ", isEndElement=" + isEndElement +
-                ", attributes=" + attributes +
-                ", expressionHandle=" + expressionHandle +
-                '}';
+    public Template getTemplate() {
+        return template;
     }
 }

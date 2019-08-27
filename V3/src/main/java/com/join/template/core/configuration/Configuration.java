@@ -1,28 +1,33 @@
 package com.join.template.core.configuration;
 
 import com.join.template.core.constant.Constant;
+import com.join.template.core.util.ResourceFind;
+import com.join.template.core.verify.TemplateException;
 import lombok.Data;
-import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
+import java.io.IOException;
 
 /**
- * @Title: 模版引擎总配置
  * @author CAOYOU/625954232@qq.com
+ * @Title: 模版引擎总配置
  * @date 2019/8/19 11:52
  */
 @Data
 public class Configuration {
-    //占位符开始标记
+    //值表达式截取开始标记
     private String varTagStart = "${";
-    //占位符结束标记
+    //值表达式截取结束标记
     private String varTagEnd = "}";
-    //表达式开始标签首部标记
-    private String exprFirstBegin = "<#";
-    //表达式结束标签首部标记
-    private String exprLastBegin = "</#";
-    //表达式开始标签或结束标签结束标记
-    private String exprEndSupport = "#>";
+    //语法表达式开始标签首部截取标记
+    private String exprFirstBegin = "【#";
+    //语法表达式结束标签首部截取标记
+    private String exprLastBegin = "【/#";
+    //表达式开始标签或结束标签尾部截取标记
+    private String exprEndSupport = "#】";
+    //属性截取开始符
+    private String attStart = "(\"";
+    //属性截取结束符
+    private String attEnd = "\")";
     //分隔符属性
     private String attSseparator = "separator";
     //值属性
@@ -46,11 +51,6 @@ public class Configuration {
     //编码
     private String encoding;
 
-
-    /**
-     * 项目根目录
-     */
-    private String userDir;
     /**
      * 项目资源目录
      */
@@ -65,6 +65,8 @@ public class Configuration {
     private String type;
 
 
+    private ResourceFind resourceFind;
+
     public Configuration() {
         init();
     }
@@ -73,34 +75,30 @@ public class Configuration {
      * 初始化
      */
     public void init() {
-        this.userDir = System.getProperty("user.dir");
-        this.resourcesDir = getClass().getResource("/").getPath();
+        this.resourceFind = new ResourceFind();
+        this.resourcesDir = "";
         this.encoding = "UTF-8";
         this.type = Constant.TYPE_MAP;
         this.templateCacheSize = 50;
     }
 
-    /**
-     * 获取资源文件
-     *
-     * @param fileName 文件名称
-     * @return
-     */
-    public File getResource(String fileName) {
-        if (!StringUtils.isBlank(this.userDir)) {
-            File file = new File(this.userDir + fileName);
-            if (file.exists()) {
-                return file;
-            }
+//    public InputStream getInputStream(String fileName) {
+//        try {
+//            return resourceFind.getInputStream(this.resourcesDir + fileName);
+//        } catch (IOException e) {
+//            throw new TemplateException("没有该文件", e);
+//        }
+//    }
+
+    public ResourceFind.ResourceInfo getResource(String fileName) {
+        try {
+            return resourceFind.getURL(this.resourcesDir + fileName);
+        } catch (IOException e) {
+            throw new TemplateException("没有该文件", e);
         }
-        if (!StringUtils.isBlank(this.resourcesDir)) {
-            File file = new File(this.resourcesDir + fileName);
-            if (file.exists()) {
-                return file;
-            }
-        }
-        return new File(fileName);
     }
 
-
+    public String getUserDir() {
+        return resourceFind.getUserDir();
+    }
 }

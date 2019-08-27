@@ -2,7 +2,7 @@ package com.join.template.core.expression;
 
 import com.join.template.core.context.Content;
 
-public interface Expression {
+public interface Expr {
     
     /**
      * 设置表达式

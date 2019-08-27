@@ -82,14 +82,6 @@ public class Main {
         }
         grammarGenerate.generateGrammar(Node.class);
         List<GrammarInfo> list = grammarGenerate.getGrammarInfos();
-        for (GrammarInfo grammarInfo : list) {
-            System.out.println(grammarInfo.getGrammar());
-            if (grammarInfo.getChilds() != null) {
-                for (GrammarInfo info : grammarInfo.getChilds()) {
-                    System.out.println(info.getGrammar());
-                }
-            }
-        }
         System.out.println(JSON.toJSONString(list));
     }
 

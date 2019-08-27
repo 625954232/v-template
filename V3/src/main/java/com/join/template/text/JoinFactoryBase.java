@@ -1,10 +1,12 @@
 package com.join.template.text;
 
 import com.join.template.core.*;
-import com.join.template.core.expression.Expression;
-import com.join.template.core.expression.ExpressionHandle;
+import com.join.template.core.expression.DefaultExprAttr;
+import com.join.template.core.expression.Expr;
+import com.join.template.core.expression.ExprAttr;
+import com.join.template.core.expression.ExprHandle;
 import com.join.template.core.grammar.generate.EntityGenerate;
-import com.join.template.core.grammar.Explain;
+import com.join.template.core.explain.Explain;
 import com.join.template.core.grammar.GrammarGenerate;
 import com.join.template.core.process.Process;
 import com.join.template.core.configuration.Configuration;
@@ -30,12 +32,12 @@ import java.util.Map;
 public class JoinFactoryBase implements JoinFactory {
     private Configuration configuration;
     private Map<String, TemplateFactory> templateFactorys = new HashMap();
-    private Map<Object, ExpressionHandle> expressionHandles = new HashMap();
+    private Map<Object, ExprHandle> exprHandles = new HashMap();
     private Map<Integer, String> grammars = new HashMap();
 
-    private Reader reader;
-    private Expression expression;
-    private GrammarGenerate grammarGenerate;
+    private Class<? extends Reader> reader;
+    private Class<? extends Expr> expr;
+    private Class<? extends GrammarGenerate> grammarGenerate;
 
 
     public JoinFactoryBase(Configuration configuration) {
@@ -46,17 +48,16 @@ public class JoinFactoryBase implements JoinFactory {
     public JoinFactory init() {
         this.addFactory(Constant.TYPE_MAP, new TemplateMapFactory());
         this.addFactory(Constant.TYPE_SINGLE, new TemplateSingleFactory());
-
-        this.addExpressionHandle(Constant.EXPR_ROOT, null, new Processs(), null);
-        this.addExpressionHandle(Constant.EXPR_TEXT, null, new TextProcess(), null);
-        this.addExpressionHandle(Constant.EXPR_VAR, null, new VarcharProcess(), new VarcharExplain());
-        this.addExpressionHandle(Constant.EXPR_LIST, "list", new ListProcess(), new ListExplain());
-        this.addExpressionHandle(Constant.EXPR_IF, "if", new IfProcess(), new IfExplain());
-        this.addExpressionHandle(Constant.EXPR_ELSE, "else", new IfElseProcess(), null);
-        this.addExpressionHandle(Constant.EXPR_IF_ELSE_IF, "elseif", new ElseIfProcess(), new ElseIfExplain());
-        this.addExpressionHandle(Constant.EXPR_INCLUDE, "include", new IncludeProcess(), new IncludeExplain());
-        this.addExpressionHandle(Constant.EXPR_SET, "set", new SetProcess(), new SetExplain());
-        this.addExpressionHandle(Constant.EXPR_GET, "get", new GetProcess(), new GetExplain());
+        this.addExprHandle(Constant.EXPR_ROOT, null, new Processs(), null, new DefaultExprAttr());
+        this.addExprHandle(Constant.EXPR_TEXT, null, new TextProcess(), null, new DefaultExprAttr());
+        this.addExprHandle(Constant.EXPR_VAR, null, new VarcharProcess(), new VarcharExplain(), new DefaultExprAttr());
+        this.addExprHandle(Constant.EXPR_LIST, "list", new ListProcess(), new ListExplain(), new DefaultExprAttr());
+        this.addExprHandle(Constant.EXPR_IF, "if", new IfProcess(), new IfExplain(), new DefaultExprAttr());
+        this.addExprHandle(Constant.EXPR_ELSE, "else", new IfElseProcess(), null, new DefaultExprAttr());
+        this.addExprHandle(Constant.EXPR_IF_ELSE_IF, "elseif", new ElseIfProcess(), new ElseIfExplain(), new DefaultExprAttr());
+        this.addExprHandle(Constant.EXPR_INCLUDE, "include", new IncludeProcess(), new IncludeExplain(), new DefaultExprAttr());
+        this.addExprHandle(Constant.EXPR_SET, "set", new SetProcess(), new SetExplain(), new DefaultExprAttr());
+        this.addExprHandle(Constant.EXPR_GET, "get", new GetProcess(), new GetExplain(), new DefaultExprAttr());
         return this;
     }
 
@@ -67,7 +68,7 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public JoinFactory initGrammarExplain() {
-        for (ExpressionHandle expressionHandle : expressionHandles.values()) {
+        for (ExprHandle expressionHandle : exprHandles.values()) {
             Explain grammarExpl = expressionHandle.getExplain();
             if (grammarExpl != null) {
                 grammars.put(expressionHandle.getNodeType(), grammarExpl.getGrammarExplain());
@@ -83,7 +84,7 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public JoinFactory setReader(Reader reader) {
+    public JoinFactory setReader(Class<? extends Reader> reader) {
         this.reader = reader;
         return this;
     }
@@ -91,12 +92,12 @@ public class JoinFactoryBase implements JoinFactory {
     /**
      * 设置值表达式执行器
      *
-     * @param expression
+     * @param expr
      * @return
      */
     @Override
-    public JoinFactory setExpression(Expression expression) {
-        this.expression = expression;
+    public JoinFactory setExpr(Class<? extends Expr> expr) {
+        this.expr = expr;
         return this;
     }
 
@@ -107,7 +108,7 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public JoinFactory setGrammarGenerate(GrammarGenerate grammarGenerate) {
+    public JoinFactory setGrammarGenerate(Class<? extends GrammarGenerate> grammarGenerate) {
         this.grammarGenerate = grammarGenerate;
         return this;
     }
@@ -132,13 +133,14 @@ public class JoinFactoryBase implements JoinFactory {
      * @param tag
      * @param process
      * @param grammar
+     * @param exprAttr
      * @return
      */
     @Override
-    public JoinFactory addExpressionHandle(Integer nodeType, String tag, Process process, Explain grammar) {
-        ExpressionHandle expressionHandle = new DefaultExpressionHandle(tag, nodeType, process, grammar);
-        this.expressionHandles.put(tag, expressionHandle);
-        this.expressionHandles.put(nodeType, expressionHandle);
+    public JoinFactory addExprHandle(Integer nodeType, String tag, Process process, Explain grammar, ExprAttr exprAttr) {
+        ExprHandle expressionHandle = new DefaultExpressionHandle(tag, nodeType, process, grammar, exprAttr);
+        this.exprHandles.put(tag, expressionHandle);
+        this.exprHandles.put(nodeType, expressionHandle);
         return this;
     }
 
@@ -151,10 +153,10 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public JoinFactory addListener(Integer nodeType, ParserListener parserListener) {
-        if (!expressionHandles.containsKey(nodeType)) {
+        if (!exprHandles.containsKey(nodeType)) {
             throw new TemplateException("请配置表达式");
         }
-        ExpressionHandle expressionHandle = expressionHandles.get(nodeType);
+        ExprHandle expressionHandle = exprHandles.get(nodeType);
         expressionHandle.getParserListeners().add(parserListener);
         return this;
     }
@@ -168,10 +170,10 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public JoinFactory addListener(Integer nodeType, ProcessListener processListener) {
-        if (!expressionHandles.containsKey(nodeType)) {
+        if (!exprHandles.containsKey(nodeType)) {
             throw new TemplateException("请配置表达式");
         }
-        ExpressionHandle expressionHandle = expressionHandles.get(nodeType);
+        ExprHandle expressionHandle = exprHandles.get(nodeType);
         expressionHandle.getProcessListeners().add(processListener);
         return this;
     }
@@ -235,8 +237,8 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public ExpressionHandle getExpressionHandle(String tag) {
-        return expressionHandles.get(tag);
+    public ExprHandle getExprHandle(String tag) {
+        return exprHandles.get(tag);
     }
 
     /**
@@ -246,8 +248,8 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public ExpressionHandle getExpressionHandle(Integer nodeType) {
-        return expressionHandles.get(nodeType);
+    public ExprHandle getExprHandle(Integer nodeType) {
+        return exprHandles.get(nodeType);
     }
 
     /**
@@ -256,8 +258,8 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public Map<Object, ExpressionHandle> getExpressionHandles() {
-        return expressionHandles;
+    public Map<Object, ExprHandle> getExprHandles() {
+        return exprHandles;
     }
 
     /**
@@ -266,10 +268,16 @@ public class JoinFactoryBase implements JoinFactory {
      * @return
      */
     @Override
-    public Expression getExpression() {
-        if (expression == null)
-            expression = new DefaultExpression();
-        return expression;
+    public Expr getExpr() {
+        try {
+            if (expr == null)
+                return new DefaultExpression();
+            return expr.newInstance();
+        } catch (InstantiationException e) {
+            throw new TemplateException("加载表达式执行器失败", e);
+        } catch (IllegalAccessException e) {
+            throw new TemplateException("加载表达式执行器失败", e);
+        }
     }
 
     /**
@@ -279,9 +287,15 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public Reader getReader() {
-        if (reader == null)
-            reader = new DefaultReader();
-        return reader;
+        try {
+            if (reader == null)
+                return new DefaultReader();
+            return reader.newInstance();
+        } catch (InstantiationException e) {
+            throw new TemplateException("加载解析器失败", e);
+        } catch (IllegalAccessException e) {
+            throw new TemplateException("加载解析器失败", e);
+        }
     }
 
 
@@ -292,9 +306,15 @@ public class JoinFactoryBase implements JoinFactory {
      */
     @Override
     public GrammarGenerate getGrammarGenerate() {
-        if (grammarGenerate == null)
-            grammarGenerate = new EntityGenerate();
-        return grammarGenerate;
+        try {
+            if (grammarGenerate == null)
+                return new EntityGenerate();
+            return grammarGenerate.newInstance();
+        } catch (InstantiationException e) {
+            throw new TemplateException("加载实体类语法生成器失败", e);
+        } catch (IllegalAccessException e) {
+            throw new TemplateException("加载实体类语法生成器失败", e);
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.join.template.text.process;
 
 import com.join.template.core.Element;
-import com.join.template.core.expression.Expression;
+import com.join.template.core.expression.Expr;
 import com.join.template.core.process.AbstractProcess;
 import com.join.template.core.process.Process;
 import com.join.template.core.context.Content;
@@ -26,7 +26,7 @@ public class VarcharProcess extends AbstractProcess implements Process {
             if (StringUtils.isBlank(var)) {
                 return;
             }
-            Expression expression = joinFactory.getExpression();
+            Expr expression = joinFactory.getExpr();
             expression.setExpression(var);
             expression.setContext(context);
             Object evaluate = expression.evaluate();

@@ -1,11 +1,11 @@
 package com.join.template.text.expression;
 
-import com.join.template.core.expression.Expression;
+import com.join.template.core.expression.Expr;
 import com.join.template.core.context.Content;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 
-public class DefaultExpression implements Expression {
+public class DefaultExpression implements Expr {
 
     private Content context;
     private String expression;
