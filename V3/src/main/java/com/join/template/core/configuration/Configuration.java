@@ -82,13 +82,6 @@ public class Configuration {
         this.templateCacheSize = 50;
     }
 
-//    public InputStream getInputStream(String fileName) {
-//        try {
-//            return resourceFind.getInputStream(this.resourcesDir + fileName);
-//        } catch (IOException e) {
-//            throw new TemplateException("没有该文件", e);
-//        }
-//    }
 
     public ResourceFind.ResourceInfo getResource(String fileName) {
         try {
