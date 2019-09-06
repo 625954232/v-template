@@ -10,7 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>V3</module>
+        <module>join-template-core</module>
+        <module>join-template-text</module>
     </modules>
 
     <build>
