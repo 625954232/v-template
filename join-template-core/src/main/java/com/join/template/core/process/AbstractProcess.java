@@ -31,11 +31,8 @@ public abstract class AbstractProcess implements Process {
 
 
     protected void insertText(Element element, StringBuilder stringBuilder) {
-        Template template = element.getTemplate();
-        if (TemplateType.Html == template.getTemplateType()) {
-            if (element.getOriginal().startsWith("\r\n") || element.getOriginal().endsWith("\r\n")) {
-                stringBuilder.append(element.getOriginal().replaceAll("\r\n", ""));
-            }
+        if (element.getOriginal().startsWith("\r\n")) {
+            stringBuilder.delete(0, 2);
         }
     }
 

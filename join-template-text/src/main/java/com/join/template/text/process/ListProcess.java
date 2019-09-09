@@ -67,22 +67,21 @@ public class ListProcess extends AbstractProcess implements Process {
             context.put(item, list.value.get(i));
             for (int j = 0; j < validElement.size(); j++) {
                 Element child = validElement.get(j);
-                StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder stringBuilder = new StringBuilder(child.getOriginal());
                 if (i == 0 && j == 0) {
                     if (Constant.EXPR_TEXT == child.getNodeType()) {
-                        stringBuilder.append(child.getOriginal());
-                        this.insertOpen(element, stringBuilder, open);
+                        this.insertOpen(child, stringBuilder, open);
                     } else {
                         stringBuilder.append(open);
                     }
-                }
-                if (i == (list.value.size() - 1) && j == (validElement.size() - 1)) {
+                } else if (i == (list.value.size() - 1) && j == (validElement.size() - 1)) {
                     if (Constant.EXPR_TEXT == child.getNodeType()) {
-                        stringBuilder.append(child.getOriginal());
-                        this.insertClose(element, stringBuilder, close);
+                        this.insertClose(child, stringBuilder, close);
                     } else {
                         stringBuilder.append(close);
                     }
+                } else {
+                    this.insertText(child, stringBuilder);
                 }
                 if (Constant.EXPR_TEXT == child.getNodeType()) {
                     writer.write(stringBuilder.toString());

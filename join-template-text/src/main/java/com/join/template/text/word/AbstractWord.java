@@ -74,10 +74,10 @@ public abstract class AbstractWord implements Word {
      * @param isEndElement
      */
     private void match(String matchBeginTag, String matchEndTag, Boolean isVarTag, Boolean isEndElement) {
-        ElementBuilder elementBuilder = template.elementBuilder();
+        ElementBuilder elementBuilder = null;
         if (this.start < this.index) {
             String token = this.text.substring(this.start, this.index);
-            this.parser.parser(elementBuilder, Constant.EXPR_TEXT, matchBeginTag, matchEndTag, token, false);
+            elementBuilder = this.parser.parser(template, Constant.EXPR_TEXT, matchBeginTag, matchEndTag, token, false);
             this.arrange(elementBuilder);
             elementss.add(elementBuilder.build());
         }
@@ -87,9 +87,9 @@ public abstract class AbstractWord implements Word {
         int index = this.text.indexOf(matchEndTag, this.index);
         String token = this.text.substring(this.index + matchBeginTag.length(), index);
         if (isVarTag) {
-            this.parser.parser(elementBuilder, Constant.EXPR_VAR, matchBeginTag, matchEndTag, token, isEndElement);
+            elementBuilder = this.parser.parser(template, Constant.EXPR_VAR, matchBeginTag, matchEndTag, token, isEndElement);
         } else {
-            this.parser.parser(elementBuilder, null, matchBeginTag, matchEndTag, token, isEndElement);
+            elementBuilder = this.parser.parser(template, null, matchBeginTag, matchEndTag, token, isEndElement);
         }
         this.arrange(elementBuilder);
         elementss.add(elementBuilder.build());

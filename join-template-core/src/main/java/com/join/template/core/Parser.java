@@ -22,5 +22,5 @@ public interface Parser {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:55
      */
-    ElementBuilder parser(ElementBuilder elementBuilder, Integer exprText, String matchBeginTag, String matchEndTag, String text, Boolean isEndElement);
+    ElementBuilder parser(Template elementBuilder, Integer exprText, String matchBeginTag, String matchEndTag, String text, Boolean isEndElement);
 }
