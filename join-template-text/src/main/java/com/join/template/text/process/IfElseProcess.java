@@ -11,9 +11,6 @@ import java.io.Writer;
 public class IfElseProcess extends AbstractProcess implements Process {
 
 
-    public IfElseProcess(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
 
     @Override
     public void process(Element element, Content context, Writer writer) {

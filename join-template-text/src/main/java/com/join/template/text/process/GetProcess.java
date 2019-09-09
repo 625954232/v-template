@@ -18,10 +18,6 @@ import java.util.Date;
 
 public class GetProcess extends AbstractProcess implements Process {
 
-    public GetProcess(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void process(Element element, Content context, Writer writer) {
         super.process(element, context, writer);

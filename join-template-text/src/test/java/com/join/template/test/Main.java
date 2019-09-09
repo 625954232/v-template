@@ -4,7 +4,6 @@ package com.join.template.test;
 import com.alibaba.fastjson.JSON;
 import com.join.template.core.Element;
 import com.join.template.core.Template;
-import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.EntityType;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.text.TextJoinFactoryBuilder;
@@ -15,7 +14,6 @@ import com.join.template.core.listener.GrammarGenListener;
 import com.join.template.core.type.TypeInfo;
 import com.join.template.core.util.IOUtil;
 
-import com.join.template.text.TextJoinFactory;
 import com.join.template.text.node.Node;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
@@ -38,7 +36,7 @@ public class Main {
         Map<Integer, String> grammars = joinFactory.getGrammarGenerate().generateGrammarExplain();
         System.out.println("语法解释：" + grammars.toString());
 
-        Template template = joinFactory.getTemplate("/process.html");
+        Template template = joinFactory.getTemplate("/process.txt");
         System.out.println("语法解析耗时：" + (System.currentTimeMillis() - start));
 
         List<Element> elements = template.getAllElement();

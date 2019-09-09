@@ -13,11 +13,6 @@ import java.io.Writer;
 
 public class IfProcess extends AbstractProcess implements Process {
 
-
-    public IfProcess(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void process(Element element, Content content, Writer writer) {
         super.process(element, content, writer);

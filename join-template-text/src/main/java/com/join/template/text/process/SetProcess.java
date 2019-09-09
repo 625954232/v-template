@@ -11,10 +11,6 @@ import java.io.Writer;
 public class SetProcess extends AbstractProcess implements Process {
 
 
-    public SetProcess(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void process(Element element, Content context, Writer writer) {
         super.process(element, context, writer);

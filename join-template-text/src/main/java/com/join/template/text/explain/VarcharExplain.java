@@ -16,10 +16,6 @@ import java.util.Map;
 public class VarcharExplain extends AbstractExplain implements Explain {
 
 
-    public VarcharExplain(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void verifyElement(String original, Map<String, String> attr) {
 

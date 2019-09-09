@@ -12,10 +12,6 @@ import java.io.Writer;
 public class TextProcess extends AbstractProcess implements Process {
 
 
-    public TextProcess(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void process(Element element, Content context, Writer writer) {
         super.process(element, context, writer);

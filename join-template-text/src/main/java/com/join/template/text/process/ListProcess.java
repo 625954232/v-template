@@ -20,10 +20,6 @@ import java.util.List;
 
 public class ListProcess extends AbstractProcess implements Process {
 
-    public ListProcess(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void process(Element element, Content context, Writer writer) {
         try {

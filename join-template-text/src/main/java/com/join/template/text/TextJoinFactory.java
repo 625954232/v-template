@@ -25,62 +25,61 @@ public class TextJoinFactory extends AbstractJoinFactory implements JoinFactory 
         this.setParser(new TextParser(this));
         this.builderExprHandle()
                 .nodeType(Constant.EXPR_ROOT)
-                .process(new Processs(this))
+                .process(new Processs())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_TEXT)
-                .process(new TextProcess(this))
+                .process(new TextProcess())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_VAR)
-                .process(new VarcharProcess(this))
-                .explain(new VarcharExplain(this))
+                .process(new VarcharProcess())
+                .explain(new VarcharExplain())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_LIST).tag("list")
-                .process(new ListProcess(this))
-                .explain(new ListExplain(this))
+                .process(new ListProcess())
+                .explain(new ListExplain())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_IF).tag("if")
-                .process(new IfProcess(this))
-                .explain(new IfExplain(this))
+                .process(new IfProcess())
+                .explain(new IfExplain())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_ELSE).tag("else")
-                .process(new IfElseProcess(this))
+                .process(new IfElseProcess())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_IF_ELSE_IF).tag("elseif")
-                .process(new ElseIfProcess(this))
-                .explain(new ElseIfExplain(this))
+                .process(new ElseIfProcess())
+                .explain(new ElseIfExplain())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_INCLUDE).tag("include")
-                .process(new IncludeProcess(this))
-                .explain(new IncludeExplain(this))
+                .process(new IncludeProcess())
+                .explain(new IncludeExplain())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_SET).tag("set")
-                .process(new SetProcess(this))
-                .explain(new SetExplain(this))
+                .process(new SetProcess())
+                .explain(new SetExplain())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_GET).tag("get")
-                .process(new GetProcess(this))
-                .explain(new GetExplain(this))
+                .process(new GetProcess())
+                .explain(new GetExplain())
                 .addIn(this);
     }
-
 
     /**
      * 缓存模版内容

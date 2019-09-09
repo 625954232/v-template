@@ -19,10 +19,6 @@ import java.util.Map;
 
 public class ListExplain extends AbstractExplain implements Explain {
 
-    public ListExplain(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void verifyElement(String original, Map<String, String> attr) {
         if (!attr.containsKey(configuration.getAttVar())) {

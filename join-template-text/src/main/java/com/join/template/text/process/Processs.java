@@ -14,9 +14,6 @@ import java.util.List;
 public class Processs extends AbstractProcess implements Process {
 
 
-    public Processs(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
 
     @Override
     public void process(Element element, Content context, Writer writer) {

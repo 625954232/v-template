@@ -18,13 +18,8 @@ import java.util.Map;
 
 public class GetExplain extends AbstractExplain implements Explain {
 
-    public GetExplain(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void verifyElement(String original, Map<String, String> attr) {
-
         if (!attr.containsKey(configuration.getAttVar())) {
             throw new TemplateException("请设置需要获取的值别名（" + configuration.getAttVar() + "）：" + original);
         }

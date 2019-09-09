@@ -18,10 +18,6 @@ import java.util.Map;
 
 public class ElseIfExplain extends AbstractExplain implements Explain {
 
-    public ElseIfExplain(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void verifyElement(String original, Map<String, String> attr) {
         if (!attr.containsKey(configuration.getAttrText())) {

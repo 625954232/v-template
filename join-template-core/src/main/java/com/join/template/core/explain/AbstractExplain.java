@@ -15,14 +15,12 @@ public abstract class AbstractExplain implements Explain {
     protected Configuration configuration;
     protected ExprHandle exprHandle;
 
-    public AbstractExplain(JoinFactory joinFactory) {
-        this.joinFactory = joinFactory;
-        this.configuration = joinFactory.getConfiguration();
-    }
 
     @Override
     public void setExprHandle(ExprHandle exprHandle) {
         this.exprHandle = exprHandle;
+        this.joinFactory = exprHandle.getJoinFactory();
+        this.configuration = exprHandle.getJoinFactory().getConfiguration();
     }
 
     @Override

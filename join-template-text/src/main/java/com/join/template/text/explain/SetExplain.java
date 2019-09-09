@@ -18,10 +18,6 @@ import java.util.Map;
 
 public class SetExplain extends AbstractExplain implements Explain {
 
-    public SetExplain(JoinFactory joinFactory) {
-        super(joinFactory);
-    }
-
     @Override
     public void verifyElement(String original, Map<String, String> attr) {
         if (!attr.containsKey(configuration.getAttVar())) {
