@@ -1,7 +1,9 @@
 package com.join.template.core.factory;
 
-import com.join.template.core.Reader;
+import com.join.template.core.Parser;
+import com.join.template.core.Template;
 import com.join.template.core.expression.ExprActuator;
+import com.join.template.core.expression.ExprAttr;
 import com.join.template.core.expression.ExprHandle;
 import com.join.template.core.expression.ExprHandleBuilder;
 import com.join.template.core.factory.template.TemplateFactory;
@@ -10,54 +12,108 @@ import com.join.template.core.grammar.GrammarGenerate;
 /**
  * @author CAOYOU
  * @Title: JoinFactoryBuilder
- * @date 2019/9/616:03
+ * @date 2019/9/99:53
  */
-public class JoinFactoryBuilder<T extends JoinFactory> {
-    private T joinFactory;
+public interface JoinFactoryBuilder {
 
-    public JoinFactoryBuilder(T joinFactory) {
-        this.joinFactory = joinFactory;
-    }
+    /**
+     * 设置解析器
+     *
+     * @param parser
+     * @return com.join.template.core.factory.JoinFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/9/9 9:54
+     */
+    JoinFactoryBuilder setParser(Parser parser);
 
-    public JoinFactoryBuilder(Class<? extends T> clazz) throws ReflectiveOperationException {
-        this.joinFactory = clazz.newInstance();
-    }
-    
-    public JoinFactory setReader(Reader reader) {
-        return joinFactory.setReader(reader);
-    }
+    /**
+     * 设置表达式属性处理器
+     *
+     * @param exprAttr
+     * @return com.join.template.core.factory.JoinFactoryBuilder
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/9/9 10:36
+     */
+    JoinFactoryBuilder setExprAttr(ExprAttr exprAttr);
 
-    public JoinFactory setExprActuator(ExprActuator expression) {
-        return joinFactory.setExprActuator(expression);
-    }
+    /**
+     * 设置值表达式执行器
+     *
+     * @param expression 值表达式执行器
+     * @return com.join.template.core.factory.JoinFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/20 15:12
+     */
+    JoinFactoryBuilder setExprActuator(ExprActuator expression);
 
-    public JoinFactory setGrammarGenerate(GrammarGenerate grammarGenerate) {
-        return joinFactory.setGrammarGenerate(grammarGenerate);
-    }
+    /**
+     * 设置语法生成器
+     *
+     * @param grammarGenerate 语法生成器
+     * @return com.join.template.core.factory.JoinFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/20 15:12
+     */
+    JoinFactoryBuilder setGrammarGenerate(GrammarGenerate grammarGenerate);
 
-    public JoinFactory addFactory(String nodeType, TemplateFactory templateFactory) {
-        return joinFactory.addFactory(nodeType, templateFactory);
-    }
+    /**
+     * 新增模版工厂
+     *
+     * @param nodeType        节点类型
+     * @param templateFactory 模版工厂
+     * @return com.join.template.core.factory.JoinFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 11:46
+     */
+    JoinFactoryBuilder addFactory(String nodeType, TemplateFactory templateFactory);
 
-    public JoinFactory addExprHandle(ExprHandle exprHandle) {
-        return joinFactory.addExprHandle(exprHandle);
-    }
+    /**
+     * 新增表达式配置
+     *
+     * @param exprHandle 表达式配置
+     * @return com.join.template.core.factory.JoinFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/19 11:46
+     */
+    JoinFactoryBuilder addExprHandle(ExprHandle exprHandle);
 
-    public JoinFactory buildExprHandle() {
-        return joinFactory.buildExprHandle();
-    }
 
-    public ExprHandleBuilder builderExprHandle() {
-        return joinFactory.builderExprHandle();
-    }
+    /**
+     * 获取表达式处理建造器
+     *
+     * @param
+     * @return com.join.template.core.expression.ExprHandleBuilder
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/9/6 15:29
+     */
+    ExprHandleBuilder builderExprHandle();
 
-    public JoinFactoryBuilder putTemplate(String name, String text) {
-        joinFactory.putTemplate(name, text);
-        return this;
-    }
 
-    public JoinFactory build() {
-        return this.joinFactory.init();
-    }
+    /**
+     * 建造表达式处理器
+     *
+     * @param
+     * @return com.join.template.core.factory.JoinFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/9/6 17:41
+     */
+    JoinFactoryBuilder buildExprHandle();
 
+    /**
+     * 添加模版
+     *
+     * @param name
+     * @param text
+     * @return com.join.template.core.factory.JoinFactoryBuilder
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/9/9 10:32
+     */
+    JoinFactoryBuilder addTemplate(String name, String text);
+
+    /**
+     * 建造模版总工厂
+     *
+     * @return
+     */
+    JoinFactory build();
 }

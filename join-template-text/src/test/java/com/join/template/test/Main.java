@@ -7,7 +7,7 @@ import com.join.template.core.Template;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.EntityType;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.factory.JoinFactoryBuilder;
+import com.join.template.text.TextJoinFactoryBuilder;
 import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.grammar.GrammarGenerate;
 import com.join.template.core.grammar.GrammarInfo;
@@ -32,7 +32,7 @@ public class Main {
     public void process() {
         long start = System.currentTimeMillis();
 
-        JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder(new TextJoinFactory(new Configuration()));
+        TextJoinFactoryBuilder joinFactoryBuilder = new TextJoinFactoryBuilder();
         JoinFactory joinFactory = joinFactoryBuilder.build();
 
         Map<Integer, String> grammars = joinFactory.getGrammarGenerate().generateGrammarExplain();
@@ -65,7 +65,7 @@ public class Main {
 
     @Test
     public void grammarGenerate() {
-        JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder(new TextJoinFactory(new Configuration()));
+        TextJoinFactoryBuilder joinFactoryBuilder = new TextJoinFactoryBuilder();
         JoinFactory joinFactory = joinFactoryBuilder.build();
 
 
@@ -93,7 +93,7 @@ public class Main {
 
     @Test
     public void generateGrammarPreview() {
-        JoinFactoryBuilder joinFactoryBuilder = new JoinFactoryBuilder(new TextJoinFactory(new Configuration()));
+        TextJoinFactoryBuilder joinFactoryBuilder = new TextJoinFactoryBuilder();
         JoinFactory joinFactory = joinFactoryBuilder.build();
 
         GrammarGenerate grammarGenerate = joinFactory.getGrammarGenerate();

@@ -39,7 +39,7 @@ public class SetExplain extends AbstractExplain implements Explain {
         Map<String, String> attr = new HashMap<>();
         attr.put(configuration.getAttVar(), MarkedWords.Attr_Varchar_Name);
         attr.put(configuration.getAttName(), MarkedWords.Attr_Varchar_Alias);
-        String attribute = exprHandle.getExprAttr().genAttribute(attr);
+        String attribute = joinFactory.getExprAttr().genAttribute(attr);
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(exprHandle.getTag()).append(" ");

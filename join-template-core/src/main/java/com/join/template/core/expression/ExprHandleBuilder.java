@@ -3,6 +3,7 @@ package com.join.template.core.expression;
 
 import com.join.template.core.explain.Explain;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.factory.JoinFactoryBuilder;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
 import com.join.template.core.process.Process;
@@ -22,11 +23,9 @@ public interface ExprHandleBuilder {
 
     ExprHandleBuilder explain(Explain explain);
 
-    ExprHandleBuilder exprAttr(ExprAttr exprAttr);
-
     ExprHandleBuilder addParserListeners(ParserListener parserListener);
 
     ExprHandleBuilder addProcessListeners(ProcessListener parserListener);
 
-    JoinFactory addIn();
+    JoinFactoryBuilder addIn(JoinFactoryBuilder joinFactoryBuilder);
 }

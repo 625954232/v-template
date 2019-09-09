@@ -44,7 +44,7 @@ public class ListExplain extends AbstractExplain implements Explain {
         attr.put(configuration.getAttOpen(), MarkedWords.Attr_Statement_Opener);
         attr.put(configuration.getAttClose(), MarkedWords.Attr_Statement_Terminator);
         attr.put(configuration.getAttSseparator(), MarkedWords.Attr_Separator);
-        String attribute = expressionList.getExprAttr().genAttribute(attr);
+        String attribute = joinFactory.getExprAttr().genAttribute(attr);
 
 
         StringBuilder grammar = new StringBuilder();
@@ -86,7 +86,7 @@ public class ListExplain extends AbstractExplain implements Explain {
         attr.put(configuration.getAttOpen(), MarkedWords.Attr_Statement_Opener);
         attr.put(configuration.getAttClose(), MarkedWords.Attr_Statement_Terminator);
         attr.put(configuration.getAttSseparator(), MarkedWords.Attr_Separator);
-        String attribute = expressionList.getExprAttr().genAttribute(attr);
+        String attribute = joinFactory.getExprAttr().genAttribute(attr);
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionList.getTag()).append(" ");

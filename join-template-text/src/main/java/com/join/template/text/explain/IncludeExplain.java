@@ -36,7 +36,7 @@ public class IncludeExplain extends AbstractExplain implements Explain {
 
         Map<String, String> attr = new HashMap<>();
         attr.put(configuration.getAttFile(), MarkedWords.Attr_Template_Name);
-        String attribute = exprHandle.getExprAttr().genAttribute(attr);
+        String attribute = joinFactory.getExprAttr().genAttribute(attr);
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(exprHandle.getTag()).append(" ");

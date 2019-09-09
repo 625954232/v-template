@@ -15,86 +15,6 @@ import java.util.Map;
  * @date 2019/8/19 11:45
  */
 public interface JoinFactory extends TemplateFactory {
-    /**
-     * 初始化
-     *
-     * @param
-     * @return com.join.template.core.factory.JoinFactory
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/19 11:46
-     */
-    JoinFactory init();
-
-    /**
-     * 设置读取器
-     *
-     * @param reader 读取器
-     * @return com.join.template.core.factory.JoinFactory
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/20 15:13
-     */
-    JoinFactory setReader(Reader reader);
-
-    /**
-     * 设置值表达式执行器
-     *
-     * @param expression 值表达式执行器
-     * @return com.join.template.core.factory.JoinFactory
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/20 15:12
-     */
-    JoinFactory setExprActuator(ExprActuator expression);
-
-    /**
-     * 设置语法生成器
-     *
-     * @param grammarGenerate 语法生成器
-     * @return com.join.template.core.factory.JoinFactory
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/20 15:12
-     */
-    JoinFactory setGrammarGenerate(GrammarGenerate grammarGenerate);
-
-    /**
-     * 新增模版工厂
-     *
-     * @param nodeType        节点类型
-     * @param templateFactory 模版工厂
-     * @return com.join.template.core.factory.JoinFactory
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/19 11:46
-     */
-    JoinFactory addFactory(String nodeType, TemplateFactory templateFactory);
-
-    /**
-     * 新增表达式配置
-     *
-     * @param exprHandle 表达式配置
-     * @return com.join.template.core.factory.JoinFactory
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/19 11:46
-     */
-    JoinFactory addExprHandle(ExprHandle exprHandle);
-
-    /**
-     * 建造表达式处理器
-     *
-     * @param
-     * @return com.join.template.core.factory.JoinFactory
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/9/6 17:41
-     */
-    JoinFactory buildExprHandle();
-
-    /**
-     * 获取表达式处理建造器
-     *
-     * @param
-     * @return com.join.template.core.expression.ExprHandleBuilder
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/9/6 15:29
-     */
-    ExprHandleBuilder builderExprHandle();
 
 
     /**
@@ -152,7 +72,7 @@ public interface JoinFactory extends TemplateFactory {
      * 获取全部模版工厂
      *
      * @param
-     * @return java.util.Map<java.lang.String                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               com.join.template.core.factory.template.TemplateFactory>
+     * @return java.util.Map<java.lang.String, com.join.template.core.factory.template.TemplateFactory>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/9/6 15:32
      */
@@ -172,12 +92,22 @@ public interface JoinFactory extends TemplateFactory {
      * 获取解析器
      *
      * @param
-     * @return com.join.template.core.Reader
+     * @return com.join.template.core.Parser
      * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/19 11:49
+     * @date 2019/9/9 10:06
      */
-    Reader getReader();
+    Parser getParser();
 
+
+    /**
+     * 获取表达式属性处理器
+     *
+     * @param
+     * @return com.join.template.core.expression.ExprAttr
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/8/26 12:12
+     */
+    ExprAttr getExprAttr();
 
     /**
      * 获取实体类语法生成器

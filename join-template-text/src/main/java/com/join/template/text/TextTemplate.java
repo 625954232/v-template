@@ -10,6 +10,8 @@ import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
 import com.join.template.core.context.HashContext;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.element.ElementBuilder;
+import com.join.template.text.node.Node;
 import com.join.template.text.word.TreeWord;
 
 import java.io.StringWriter;
@@ -36,6 +38,10 @@ public class TextTemplate implements Template {
         this.tokenizer.word(this.text);
     }
 
+    @Override
+    public ElementBuilder elementBuilder() {
+        return new Node(this);
+    }
 
     @Override
     public Template putValue(String name, Object value) {
@@ -97,7 +103,6 @@ public class TextTemplate implements Template {
     public Element getRootElement() {
         return this.tokenizer.getRootElement();
     }
-
 
     @Override
     public int getLineSize() {

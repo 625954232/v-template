@@ -12,12 +12,12 @@ import java.util.regex.Pattern;
  * @Title: DefaultExprAttr
  * @date 2019/8/2611:49
  */
-public class TextExprAttr implements ExprAttr {
+public class TemplateExprAttr implements ExprAttr {
 
     private final Configuration configuration;
 
 
-    public TextExprAttr(Configuration configuration) {
+    public TemplateExprAttr(Configuration configuration) {
         this.configuration = configuration;
     }
 

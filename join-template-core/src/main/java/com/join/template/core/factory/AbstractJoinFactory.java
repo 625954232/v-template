@@ -1,12 +1,9 @@
 package com.join.template.core.factory;
 
-import com.join.template.core.Reader;
+import com.join.template.core.Parser;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
-import com.join.template.core.expression.DefaultExpression;
-import com.join.template.core.expression.ExprActuator;
-import com.join.template.core.expression.ExprHandle;
-import com.join.template.core.expression.ExprHandleBuilder;
+import com.join.template.core.expression.*;
 import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.factory.template.TemplateMapFactory;
 import com.join.template.core.factory.template.TemplateSingleFactory;
@@ -19,34 +16,54 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public abstract class AbstractJoinFactory implements JoinFactory {
+public abstract class AbstractJoinFactory implements JoinFactory, JoinFactoryBuilder {
+
     protected Configuration configuration;
     protected Map<String, TemplateFactory> templateFactorys = new HashMap();
     protected Map<Object, ExprHandle> exprHandles = new HashMap();
-    protected Reader reader;
+    protected ExprHandleBuilder exprHandleBuilder;
+    protected Parser parser;
     protected ExprActuator exprActuator;
+    protected ExprAttr exprAttr;
     protected GrammarGenerate grammarGenerate;
-
 
 
     public AbstractJoinFactory(Configuration configuration) {
         this.configuration = configuration;
         this.addFactory(Constant.TYPE_MAP, new TemplateMapFactory(this));
         this.addFactory(Constant.TYPE_SINGLE, new TemplateSingleFactory(this));
+        this.setExprAttr(new TemplateExprAttr(this.configuration));
         this.setExprActuator(new DefaultExpression());
         this.setGrammarGenerate(new EntityGenerate(this));
+        this.init();
     }
 
+    /**
+     * 初始化
+     */
+    protected abstract void init();
 
     /**
-     * 设置读取器
+     * 设置解析器
      *
-     * @param reader
+     * @param parser
      * @return
      */
     @Override
-    public JoinFactory setReader(Reader reader) {
-        this.reader = reader;
+    public JoinFactoryBuilder setParser(Parser parser) {
+        this.parser = parser;
+        return this;
+    }
+
+    /**
+     * 设置表达式属性处理器
+     *
+     * @param exprAttr 表达式属性处理器
+     * @return
+     */
+    @Override
+    public JoinFactoryBuilder setExprAttr(ExprAttr exprAttr) {
+        this.exprAttr = exprAttr;
         return this;
     }
 
@@ -57,7 +74,7 @@ public abstract class AbstractJoinFactory implements JoinFactory {
      * @return
      */
     @Override
-    public JoinFactory setExprActuator(ExprActuator exprActuator) {
+    public JoinFactoryBuilder setExprActuator(ExprActuator exprActuator) {
         this.exprActuator = exprActuator;
         return this;
     }
@@ -69,7 +86,7 @@ public abstract class AbstractJoinFactory implements JoinFactory {
      * @return
      */
     @Override
-    public JoinFactory setGrammarGenerate(GrammarGenerate grammarGenerate) {
+    public JoinFactoryBuilder setGrammarGenerate(GrammarGenerate grammarGenerate) {
         this.grammarGenerate = grammarGenerate;
         return this;
     }
@@ -82,18 +99,66 @@ public abstract class AbstractJoinFactory implements JoinFactory {
      * @return
      */
     @Override
-    public JoinFactory addFactory(String nodeType, TemplateFactory templateFactory) {
+    public JoinFactoryBuilder addFactory(String nodeType, TemplateFactory templateFactory) {
         this.templateFactorys.put(nodeType, templateFactory);
         return this;
     }
 
+    /**
+     * 新增表达式处理器
+     *
+     * @param exprHandle 表达式配置
+     * @return
+     */
     @Override
-    public JoinFactory addExprHandle(ExprHandle exprHandle) {
+    public JoinFactoryBuilder addExprHandle(ExprHandle exprHandle) {
         this.exprHandles.put(exprHandle.getNodeType(), exprHandle);
         this.exprHandles.put(exprHandle.getTag(), exprHandle);
         return this;
     }
 
+    /**
+     * 获取表达式处理建造器
+     *
+     * @return
+     */
+    @Override
+    public ExprHandleBuilder builderExprHandle() {
+        return this.exprHandleBuilder = new TemplateExprHandle(this);
+    }
+
+    /**
+     * 建造表达式处理器
+     *
+     * @return
+     */
+    @Override
+    public JoinFactoryBuilder buildExprHandle() {
+        return this.exprHandleBuilder.addIn(this);
+    }
+
+    /**
+     * 添加模版
+     *
+     * @param name
+     * @param text
+     * @return
+     */
+    @Override
+    public JoinFactoryBuilder addTemplate(String name, String text) {
+        this.putTemplate(name, text);
+        return this;
+    }
+
+    /**
+     * 建造模版总工厂
+     *
+     * @return
+     */
+    @Override
+    public JoinFactory build() {
+        return this;
+    }
 
     /**
      * 获取配置
@@ -171,15 +236,24 @@ public abstract class AbstractJoinFactory implements JoinFactory {
     }
 
     /**
+     * 表达式属性处理器
+     *
+     * @return
+     */
+    @Override
+    public ExprAttr getExprAttr() {
+        return exprAttr;
+    }
+
+    /**
      * 获取解析器
      *
      * @return
      */
     @Override
-    public Reader getReader() {
-        return reader;
+    public Parser getParser() {
+        return parser;
     }
-
 
     /**
      * 获取实体类语法生成器

@@ -36,7 +36,7 @@ public class IfExplain extends AbstractExplain implements Explain {
 
         Map<String, String> attr = new HashMap<>();
         attr.put(configuration.getAttrText(), MarkedWords.Attr_Judgement_Conditions);
-        String attribute = expressionHandle.getExprAttr().genAttribute(attr);
+        String attribute = joinFactory.getExprAttr().genAttribute(attr);
 
         StringBuilder grammar = new StringBuilder();
         grammar.append(configuration.getExprFirstBegin()).append(expressionHandle.getTag()).append(" ");

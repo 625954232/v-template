@@ -1,8 +1,10 @@
 package com.join.template.core.expression;
 
+import com.join.template.core.Parser;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.explain.Explain;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.factory.JoinFactoryBuilder;
 import com.join.template.core.process.Process;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
@@ -10,7 +12,7 @@ import com.join.template.core.listener.ProcessListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractExprHandle implements ExprHandle, ExprHandleBuilder {
+public class TemplateExprHandle implements ExprHandle, ExprHandleBuilder {
     protected final JoinFactory joinFactory;
     protected final Configuration configuration;
 
@@ -46,7 +48,7 @@ public abstract class AbstractExprHandle implements ExprHandle, ExprHandleBuilde
      */
     protected List<ProcessListener> processListeners = new ArrayList<>();
 
-    public AbstractExprHandle(JoinFactory joinFactory) {
+    public TemplateExprHandle(JoinFactory joinFactory) {
         this.joinFactory = joinFactory;
         this.configuration = joinFactory.getConfiguration();
     }
@@ -75,11 +77,6 @@ public abstract class AbstractExprHandle implements ExprHandle, ExprHandleBuilde
         return this;
     }
 
-    @Override
-    public ExprHandleBuilder exprAttr(ExprAttr exprAttr) {
-        this.exprAttr = exprAttr;
-        return this;
-    }
 
     @Override
     public ExprHandleBuilder addParserListeners(ParserListener parserListener) {
@@ -94,8 +91,8 @@ public abstract class AbstractExprHandle implements ExprHandle, ExprHandleBuilde
     }
 
     @Override
-    public JoinFactory addIn() {
-        return joinFactory.addExprHandle(this);
+    public JoinFactoryBuilder addIn(JoinFactoryBuilder joinFactoryBuilder) {
+        return joinFactoryBuilder.addExprHandle(this);
     }
 
     @Override
@@ -118,10 +115,6 @@ public abstract class AbstractExprHandle implements ExprHandle, ExprHandleBuilde
         return explain;
     }
 
-    @Override
-    public ExprAttr getExprAttr() {
-        return exprAttr;
-    }
 
     @Override
     public List<ParserListener> getParserListeners() {

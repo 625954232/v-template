@@ -2,12 +2,23 @@ package com.join.template.core;
 
 import com.join.template.core.constant.TemplateType;
 import com.join.template.core.context.Content;
+import com.join.template.core.element.ElementBuilder;
 import com.join.template.core.factory.JoinFactory;
 
 import java.io.Writer;
 import java.util.List;
 
 public interface Template {
+
+    /**
+     * 节点建造器
+     *
+     * @param
+     * @return com.join.template.core.element.ElementBuilder
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/9/9 11:21
+     */
+    ElementBuilder elementBuilder();
 
     /**
      * 写入模版所需的参数

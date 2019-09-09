@@ -1,12 +1,13 @@
 package com.join.template.text.word;
 
 import com.join.template.core.Element;
-import com.join.template.core.Reader;
+import com.join.template.core.Parser;
 import com.join.template.core.Template;
 import com.join.template.core.Word;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.element.ElementBuilder;
 import com.join.template.text.node.Node;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 public abstract class AbstractWord implements Word {
     protected Template template;
     protected Configuration configuration;
-    protected Reader reader;
+    protected Parser parser;
     protected List<Element> elementss = new ArrayList<>();
     protected Element root = null;
     protected Element current = null;
@@ -29,13 +30,17 @@ public abstract class AbstractWord implements Word {
 
 
     public AbstractWord(Template template, JoinFactory joinFactory) {
-        this.configuration = joinFactory.getConfiguration();
-        this.reader = joinFactory.getReader();
-        this.root = new Node(template);
-        this.root.setNodeType(Constant.EXPR_ROOT);
-        this.current = this.root;
-        this.parent = this.root;
         this.template = template;
+        this.configuration = joinFactory.getConfiguration();
+        this.parser = joinFactory.getParser();
+
+        ElementBuilder elementBuilder = new Node(template);
+        elementBuilder.nodeType(Constant.EXPR_ROOT);
+        Element element = elementBuilder.build();
+        this.root = element;
+        this.current = element;
+        this.parent = element;
+
     }
 
 
@@ -45,11 +50,11 @@ public abstract class AbstractWord implements Word {
         this.length = text.length();
         while (index < length) {
             if (text.startsWith(configuration.getVarTagStart(), index)) {
-                this.match(configuration.getVarTagStart(), configuration.getVarTagEnd(), false);
+                this.match(configuration.getVarTagStart(), configuration.getVarTagEnd(), true, false);
             } else if (text.startsWith(configuration.getExprLastBegin(), index)) {
-                this.match(configuration.getExprLastBegin(), configuration.getExprEndSupport(), true);
+                this.match(configuration.getExprLastBegin(), configuration.getExprEndSupport(), false, true);
             } else if (text.startsWith(configuration.getExprFirstBegin(), index)) {
-                this.match(configuration.getExprFirstBegin(), configuration.getExprEndSupport(), false);
+                this.match(configuration.getExprFirstBegin(), configuration.getExprEndSupport(), false, false);
             } else {
                 if (text.charAt(index) == '\n') {
                     lineSize++;
@@ -57,7 +62,7 @@ public abstract class AbstractWord implements Word {
                 this.index++;
             }
         }
-        this.match(null, null, true);
+        this.match(null, null, false, true);
     }
 
     /**
@@ -65,33 +70,40 @@ public abstract class AbstractWord implements Word {
      *
      * @param matchBeginTag
      * @param matchEndTag
+     * @param isVarTag
      * @param isEndElement
      */
-    private void match(String matchBeginTag, String matchEndTag, Boolean isEndElement) {
+    private void match(String matchBeginTag, String matchEndTag, Boolean isVarTag, Boolean isEndElement) {
+        ElementBuilder elementBuilder = template.elementBuilder();
         if (this.start < this.index) {
             String token = this.text.substring(this.start, this.index);
-            Element element = new Node(template, Constant.EXPR_TEXT, token, this.parent);
-            element.setEndElement(isEndElement);
-            this.arrange(element);
-            elementss.add(element);
+            this.parser.parser(elementBuilder, Constant.EXPR_TEXT, matchBeginTag, matchEndTag, token, false);
+            this.arrange(elementBuilder);
+            elementss.add(elementBuilder.build());
         }
         if (matchBeginTag == null || matchEndTag == null) {
             return;
         }
         int index = this.text.indexOf(matchEndTag, this.index);
         String token = this.text.substring(this.index + matchBeginTag.length(), index);
-        Element element = this.reader.reader(template, matchBeginTag, matchEndTag, token, isEndElement);
-        this.arrange(element);
-        elementss.add(element);
+        if (isVarTag) {
+            this.parser.parser(elementBuilder, Constant.EXPR_VAR, matchBeginTag, matchEndTag, token, isEndElement);
+        } else {
+            this.parser.parser(elementBuilder, null, matchBeginTag, matchEndTag, token, isEndElement);
+        }
+        this.arrange(elementBuilder);
+        elementss.add(elementBuilder.build());
         this.start = this.index = index + matchEndTag.length();
+
+
     }
 
     /**
      * 标签排列
      *
-     * @param element
+     * @param elementBuilder
      */
-    protected abstract void arrange(Element element);
+    protected abstract void arrange(ElementBuilder elementBuilder);
 
 
     @Override

@@ -4,6 +4,7 @@ import com.join.template.core.Element;
 import com.join.template.core.Template;
 import com.join.template.core.Word;
 import com.join.template.core.constant.Constant;
+import com.join.template.core.element.ElementBuilder;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.verify.TemplateException;
 
@@ -39,13 +40,14 @@ public class TreeWord extends AbstractWord implements Word {
     /**
      * 标签排列
      *
-     * @param element
+     * @param elementBuilder
      */
-    protected void arrange(Element element) {
-        if (element == null) {
+    protected void arrange(ElementBuilder elementBuilder) {
+        if (elementBuilder == null) {
             return;
         }
-        element.setParent(this.parent);
+        elementBuilder.parent(this.parent);
+        Element element = elementBuilder.build();
         if (element.getNodeType() == Constant.EXPR_LIST || element.getNodeType() == Constant.EXPR_IF) {
             if (element.getOriginal().startsWith(this.configuration.getExprFirstBegin())) {
                 this.parent = element;
@@ -56,7 +58,7 @@ public class TreeWord extends AbstractWord implements Word {
                     listBeginSize++;
             } else if (element.getOriginal().startsWith(this.configuration.getExprLastBegin())) {
                 this.parent = this.current.getParent();
-                this.parent.addChilds(this.current);
+                this.parent.getChilds().add(this.current);
                 this.current = this.parent;
                 if (element.getNodeType() == Constant.EXPR_IF)
                     ifEndSize++;
@@ -64,7 +66,7 @@ public class TreeWord extends AbstractWord implements Word {
                     listEndSize++;
             }
         } else {
-            this.current.addChilds(element);
+            this.current.getChilds().add(element);
         }
     }
 
