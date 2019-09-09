@@ -30,57 +30,5 @@ public abstract class AbstractProcess implements Process {
     }
 
 
-    protected void insertText(Element element, StringBuilder stringBuilder) {
-        if (element.getOriginal().startsWith("\r\n")) {
-            stringBuilder.delete(0, 2);
-        }
-    }
 
-    protected void insertOpen(Element element, StringBuilder stringBuilder, String open) {
-        int length = stringBuilder.length();
-        int start = 0;
-        while (start < length) {
-            if (stringBuilder.charAt(0) != '<') {
-                break;
-            } else if (stringBuilder.charAt(start) == '>') {
-                if ((start + 1) < length) {
-                    if (stringBuilder.charAt(start + 1) == '<') {
-                        start += 2;
-                    } else {
-                        start += 1;
-                        break;
-                    }
-                } else {
-                    start += 1;
-                    break;
-                }
-
-            } else {
-                start++;
-            }
-        }
-        stringBuilder.insert(start, open);
-    }
-
-    public void insertClose(Element element, StringBuilder stringBuilder, String close) {
-        int length = stringBuilder.length();
-        int end = stringBuilder.length();
-        while (end > 0) {
-            if (stringBuilder.charAt(length - 1) != '>') {
-                break;
-            } else if ((end - 1) < length && (end - 1) > 0) {
-                if (stringBuilder.charAt(end - 1) == '<' && stringBuilder.charAt(end) == '/') {
-                    end -= 1;
-                    break;
-                } else {
-                    end -= 1;
-                }
-            } else {
-                if (end == 0)
-                    break;
-                end--;
-            }
-        }
-        stringBuilder.insert(end, close);
-    }
 }

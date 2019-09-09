@@ -37,7 +37,7 @@ public class ListProcess extends AbstractProcess implements Process {
             if (valid) {
                 this.writerValidElement(element, validElement, context, list, writer);
             } else {
-                this.writerInvalidElement(element, validElement, context, writer);
+                this.writerInvalidElement(validElement, context, writer);
             }
 
         } catch (IOException e) {
@@ -70,18 +70,18 @@ public class ListProcess extends AbstractProcess implements Process {
                 StringBuilder stringBuilder = new StringBuilder(child.getOriginal());
                 if (i == 0 && j == 0) {
                     if (Constant.EXPR_TEXT == child.getNodeType()) {
-                        this.insertOpen(child, stringBuilder, open);
+                        this.insertOpen(stringBuilder, open);
                     } else {
                         stringBuilder.append(open);
                     }
                 } else if (i == (list.value.size() - 1) && j == (validElement.size() - 1)) {
                     if (Constant.EXPR_TEXT == child.getNodeType()) {
-                        this.insertClose(child, stringBuilder, close);
+                        this.insertClose(stringBuilder, close);
                     } else {
                         stringBuilder.append(close);
                     }
                 } else {
-                    this.insertText(child, stringBuilder);
+                    this.insertText(stringBuilder);
                 }
                 if (Constant.EXPR_TEXT == child.getNodeType()) {
                     writer.write(stringBuilder.toString());
@@ -94,7 +94,7 @@ public class ListProcess extends AbstractProcess implements Process {
     }
 
 
-    private void writerInvalidElement(Element element, List<Element> validElement, Content context, Writer
+    private void writerInvalidElement(List<Element> validElement, Content context, Writer
             writer) {
         for (int j = 0; j < validElement.size(); j++) {
             Element child = validElement.get(j);
@@ -136,5 +136,58 @@ public class ListProcess extends AbstractProcess implements Process {
         return isValid;
     }
 
+    protected void insertText(StringBuilder stringBuilder) {
+        if (stringBuilder.indexOf("\r\n", 0) > -1) {
+            stringBuilder.delete(0, 2);
+        }
+    }
+
+    private void insertOpen(StringBuilder stringBuilder, String open) {
+        int length = stringBuilder.length();
+        int start = 0;
+        while (start < length) {
+            if (stringBuilder.charAt(0) != '<') {
+                break;
+            } else if (stringBuilder.charAt(start) == '>') {
+                if ((start + 1) < length) {
+                    if (stringBuilder.charAt(start + 1) == '<') {
+                        start += 2;
+                    } else {
+                        start += 1;
+                        break;
+                    }
+                } else {
+                    start += 1;
+                    break;
+                }
+
+            } else {
+                start++;
+            }
+        }
+        stringBuilder.insert(start, open);
+    }
+
+    private void insertClose(StringBuilder stringBuilder, String close) {
+        int length = stringBuilder.length();
+        int end = stringBuilder.length();
+        while (end > 0) {
+            if (stringBuilder.charAt(length - 1) != '>') {
+                break;
+            } else if ((end - 1) < length && (end - 1) > 0) {
+                if (stringBuilder.charAt(end - 1) == '<' && stringBuilder.charAt(end) == '/') {
+                    end -= 1;
+                    break;
+                } else {
+                    end -= 1;
+                }
+            } else {
+                if (end == 0)
+                    break;
+                end--;
+            }
+        }
+        stringBuilder.insert(end, close);
+    }
 
 }
