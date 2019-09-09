@@ -2,6 +2,8 @@ package com.join.template.core.process;
 
 import com.join.template.core.Element;
 import com.join.template.core.context.Content;
+import com.join.template.core.expression.ExprHandle;
+import com.join.template.core.expression.TemplateExprHandle;
 
 import java.io.Writer;
 
@@ -25,4 +27,5 @@ public interface Process {
     void process(Element element, Content context, Writer writer);
 
 
+    void setExprHandle(ExprHandle exprHandle);
 }

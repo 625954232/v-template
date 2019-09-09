@@ -67,12 +67,14 @@ public class TemplateExprHandle implements ExprHandle, ExprHandleBuilder {
 
     @Override
     public ExprHandleBuilder process(Process process) {
+        process.setExprHandle(this);
         this.process = process;
         return this;
     }
 
     @Override
     public ExprHandleBuilder explain(Explain explain) {
+        explain.setExprHandle(this);
         this.explain = explain;
         return this;
     }
@@ -80,12 +82,14 @@ public class TemplateExprHandle implements ExprHandle, ExprHandleBuilder {
 
     @Override
     public ExprHandleBuilder addParserListeners(ParserListener parserListener) {
+        parserListener.setExprHandle(this);
         this.parserListeners.add(parserListener);
         return this;
     }
 
     @Override
     public ExprHandleBuilder addProcessListeners(ProcessListener parserListener) {
+        parserListener.setExprHandle(this);
         this.processListeners.add(parserListener);
         return this;
     }
@@ -126,5 +130,9 @@ public class TemplateExprHandle implements ExprHandle, ExprHandleBuilder {
         return processListeners;
     }
 
+    @Override
+    public JoinFactory getJoinFactory() {
+        return joinFactory;
+    }
 
 }

@@ -22,6 +22,11 @@ public abstract class AbstractProcess implements Process {
     }
 
     @Override
+    public void setExprHandle(ExprHandle exprHandle) {
+        this.exprHandle = exprHandle;
+    }
+
+    @Override
     public void process(Element element, Content context, Writer writer) {
 
     }

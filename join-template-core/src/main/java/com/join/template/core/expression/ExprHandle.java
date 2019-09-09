@@ -79,5 +79,13 @@ public interface ExprHandle {
      */
     List<ProcessListener> getProcessListeners();
 
-
+    /**
+     * 获取总工厂
+     *
+     * @param
+     * @return com.join.template.core.factory.JoinFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/9/9 14:13
+     */
+    JoinFactory getJoinFactory();
 }
