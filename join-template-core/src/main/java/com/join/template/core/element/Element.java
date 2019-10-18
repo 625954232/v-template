@@ -1,5 +1,6 @@
-package com.join.template.core;
+package com.join.template.core.element;
 
+import com.join.template.core.Template;
 import com.join.template.core.expression.ExprHandle;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public interface Element {
      * 获取父节点
      *
      * @param
-     * @return com.join.template.core.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:14
      */
@@ -62,7 +63,7 @@ public interface Element {
      * 获取全部子节点
      *
      * @param
-     * @return java.util.List<com.join.template.core.Element>
+     * @return java.util.List<com.join.template.core.element.Element>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:14
      */

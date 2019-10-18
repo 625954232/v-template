@@ -1,9 +1,12 @@
 package com.join.template.core.expression;
 
 import com.join.template.core.context.Content;
+import com.join.template.core.factory.JoinFactory;
 
 public interface ExprActuator {
-    
+
+    void setJoinFactory(JoinFactory joinFactory);
+
     /**
      * 设置表达式
      *
@@ -32,4 +35,6 @@ public interface ExprActuator {
      * @return
      */
     Object evaluate();
+
+
 }

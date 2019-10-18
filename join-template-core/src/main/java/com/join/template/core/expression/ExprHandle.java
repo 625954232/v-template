@@ -1,10 +1,10 @@
 package com.join.template.core.expression;
 
 
+import com.join.template.core.Template;
+import com.join.template.core.element.ElementBuilder;
 import com.join.template.core.explain.Explain;
-import com.join.template.core.Parser;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.factory.JoinFactoryBuilder;
 import com.join.template.core.listener.ParserListener;
 import com.join.template.core.listener.ProcessListener;
 import com.join.template.core.process.Process;
@@ -17,7 +17,15 @@ import java.util.List;
  * @date 2019/8/19 11:41
  */
 public interface ExprHandle {
-
+    /**
+     * 获取总工厂
+     *
+     * @param
+     * @return com.join.template.core.factory.JoinFactory
+     * @author CAOYOU/625954232@qq.com
+     * @date 2019/9/9 14:13
+     */
+    JoinFactory getJoinFactory();
 
     /**
      * 获取标记
@@ -80,12 +88,12 @@ public interface ExprHandle {
     List<ProcessListener> getProcessListeners();
 
     /**
-     * 获取总工厂
+     * 获取节点建造器
      *
-     * @param
-     * @return com.join.template.core.factory.JoinFactory
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/9/9 14:13
+     * @return
+     * @param template
      */
-    JoinFactory getJoinFactory();
+    ElementBuilder getElementBuilder(Template template);
+
+
 }

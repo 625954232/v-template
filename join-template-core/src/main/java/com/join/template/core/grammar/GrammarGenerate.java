@@ -17,6 +17,9 @@ import java.util.Map;
  * @date 2019/8/1915:49
  */
 public interface GrammarGenerate<T extends GrammarInfo> {
+
+    GrammarGenerate setJoinFactory(JoinFactory joinFactory);
+
     /**
      * 设置模版类型
      *
@@ -104,7 +107,7 @@ public interface GrammarGenerate<T extends GrammarInfo> {
      * 生成语法解释
      *
      * @param
-     * @return java.util.Map<java.lang.Integer , java.lang.String>
+     * @return java.util.Map<java.lang.Integer                               ,                               java.lang.String>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/9/6 15:33
      */
@@ -131,4 +134,5 @@ public interface GrammarGenerate<T extends GrammarInfo> {
      * @date 2019/8/22 10:01
      */
     String preview(String text, int previewSize);
+
 }

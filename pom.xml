@@ -12,6 +12,7 @@
     <modules>
         <module>join-template-core</module>
         <module>join-template-text</module>
+        <module>join-template-html</module>
     </modules>
 
     <build>

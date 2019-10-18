@@ -27,5 +27,7 @@ public interface ExprHandleBuilder {
 
     ExprHandleBuilder addProcessListeners(ProcessListener parserListener);
 
+    ExprHandle build();
+
     JoinFactoryBuilder addIn(JoinFactoryBuilder joinFactoryBuilder);
 }

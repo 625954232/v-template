@@ -1,6 +1,6 @@
 package com.join.template.text.node;
 
-import com.join.template.core.Element;
+import com.join.template.core.element.Element;
 import com.join.template.core.Template;
 import com.join.template.core.element.ElementBuilder;
 import com.join.template.core.expression.ExprHandle;
@@ -76,7 +76,7 @@ public class Node implements ElementBuilder {
     }
 
     @Override
-    public Element build() {
+    public Element build(Template template) {
         return new Element() {
             @Override
             public String getAttribute(String name, String defaultValue) {
@@ -125,7 +125,7 @@ public class Node implements ElementBuilder {
 
             @Override
             public Template getTemplate() {
-                return template;
+                return Node.this.template;
             }
         };
     }

@@ -1,6 +1,7 @@
 package com.join.template.core.factory;
 
 import com.join.template.core.Parser;
+import com.join.template.core.Template;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.expression.*;
@@ -10,31 +11,32 @@ import com.join.template.core.factory.template.TemplateSingleFactory;
 import com.join.template.core.grammar.GrammarGenerate;
 import com.join.template.core.grammar.generate.EntityGenerate;
 import com.join.template.core.verify.Assert;
+import com.join.template.core.verify.TemplateException;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public abstract class AbstractJoinFactory implements JoinFactory, JoinFactoryBuilder {
+public abstract class AbstractJoinFactory implements JoinFactoryBuilder {
 
     protected Configuration configuration;
     protected Map<String, TemplateFactory> templateFactorys = new HashMap();
     protected Map<Object, ExprHandle> exprHandles = new HashMap();
     protected ExprHandleBuilder exprHandleBuilder;
-    protected Parser parser;
-    protected ExprActuator exprActuator;
-    protected ExprAttr exprAttr;
-    protected GrammarGenerate grammarGenerate;
+    protected Class<? extends Parser> parser;
+    protected Class<? extends ExprActuator> exprActuator;
+    protected Class<? extends ExprAttr> exprAttr;
+    protected Class<? extends GrammarGenerate> grammarGenerate;
 
 
     public AbstractJoinFactory(Configuration configuration) {
         this.configuration = configuration;
-        this.addFactory(Constant.TYPE_MAP, new TemplateMapFactory(this));
-        this.addFactory(Constant.TYPE_SINGLE, new TemplateSingleFactory(this));
-        this.setExprAttr(new TemplateExprAttr(this.configuration));
-        this.setExprActuator(new DefaultExpression());
-        this.setGrammarGenerate(new EntityGenerate(this));
+        this.addFactory(Constant.TYPE_MAP, new TemplateMapFactory(this.build()));
+        this.addFactory(Constant.TYPE_SINGLE, new TemplateSingleFactory(this.build()));
+        this.setExprAttr(TemplateExprAttr.class);
+        this.setExprActuator(DefaultExpression.class);
+        this.setGrammarGenerate(EntityGenerate.class);
         this.init();
     }
 
@@ -50,7 +52,7 @@ public abstract class AbstractJoinFactory implements JoinFactory, JoinFactoryBui
      * @return
      */
     @Override
-    public JoinFactoryBuilder setParser(Parser parser) {
+    public JoinFactoryBuilder setParser(Class<? extends Parser> parser) {
         this.parser = parser;
         return this;
     }
@@ -62,7 +64,7 @@ public abstract class AbstractJoinFactory implements JoinFactory, JoinFactoryBui
      * @return
      */
     @Override
-    public JoinFactoryBuilder setExprAttr(ExprAttr exprAttr) {
+    public JoinFactoryBuilder setExprAttr(Class<? extends ExprAttr> exprAttr) {
         this.exprAttr = exprAttr;
         return this;
     }
@@ -74,7 +76,7 @@ public abstract class AbstractJoinFactory implements JoinFactory, JoinFactoryBui
      * @return
      */
     @Override
-    public JoinFactoryBuilder setExprActuator(ExprActuator exprActuator) {
+    public JoinFactoryBuilder setExprActuator(Class<? extends ExprActuator> exprActuator) {
         this.exprActuator = exprActuator;
         return this;
     }
@@ -86,7 +88,7 @@ public abstract class AbstractJoinFactory implements JoinFactory, JoinFactoryBui
      * @return
      */
     @Override
-    public JoinFactoryBuilder setGrammarGenerate(GrammarGenerate grammarGenerate) {
+    public JoinFactoryBuilder setGrammarGenerate(Class<? extends GrammarGenerate> grammarGenerate) {
         this.grammarGenerate = grammarGenerate;
         return this;
     }
@@ -124,7 +126,7 @@ public abstract class AbstractJoinFactory implements JoinFactory, JoinFactoryBui
      */
     @Override
     public ExprHandleBuilder builderExprHandle() {
-        return this.exprHandleBuilder = new TemplateExprHandle(this);
+        return this.exprHandleBuilder = new TemplateExprHandle(this.build());
     }
 
     /**
@@ -150,6 +152,10 @@ public abstract class AbstractJoinFactory implements JoinFactory, JoinFactoryBui
         return this;
     }
 
+    protected abstract Template putTemplate(String name, String text);
+
+    protected abstract Template getTemplate(String name);
+
     /**
      * 建造模版总工厂
      *
@@ -157,113 +163,97 @@ public abstract class AbstractJoinFactory implements JoinFactory, JoinFactoryBui
      */
     @Override
     public JoinFactory build() {
-        return this;
+        return joinFactory;
     }
 
-    /**
-     * 获取配置
-     *
-     * @return
-     */
-    @Override
-    public Configuration getConfiguration() {
-        return configuration;
-    }
+    protected JoinFactory joinFactory = new JoinFactory() {
 
-    /**
-     * 获取模版工厂
-     *
-     * @param type
-     * @return
-     */
-    @Override
-    public TemplateFactory getTemplateFactorys(String type) {
-        TemplateFactory templateFactory = templateFactorys.get(type);
-        Assert.isNull(templateFactory, "没该" + configuration.getType() + "类型模版工厂");
-        return templateFactory;
-    }
+        @Override
+        public Template putTemplate(String name, String text) {
+            return AbstractJoinFactory.this.putTemplate(name, text);
+        }
 
-    /**
-     * 根据标记获取表达式配置
-     *
-     * @param tag
-     * @return
-     */
-    @Override
-    public ExprHandle getExprHandle(String tag) {
-        return exprHandles.get(tag);
-    }
+        @Override
+        public Template getTemplate(String name) {
+            return AbstractJoinFactory.this.getTemplate(name);
+        }
 
-    /**
-     * 根据节点类型获取表达式配置
-     *
-     * @param nodeType
-     * @return
-     */
-    @Override
-    public ExprHandle getExprHandle(Integer nodeType) {
-        return exprHandles.get(nodeType);
-    }
+        @Override
+        public Configuration getConfiguration() {
+            return configuration;
+        }
 
-    /**
-     * 获取全部表达式配置
-     *
-     * @return
-     */
-    @Override
-    public Map<Object, ExprHandle> getExprHandles() {
-        return exprHandles;
-    }
+        @Override
+        public TemplateFactory getTemplateFactorys(String type) {
+            TemplateFactory templateFactory = templateFactorys.get(type);
+            Assert.isNull(templateFactory, "没该" + configuration.getType() + "类型模版工厂");
+            return templateFactory;
+        }
 
-    /**
-     * 获取全部模版工厂
-     *
-     * @return
-     */
-    @Override
-    public Map<String, TemplateFactory> getTemplateFactorys() {
-        return templateFactorys;
-    }
+        @Override
+        public ExprHandle getExprHandle(String tag) {
+            return exprHandles.get(tag);
+        }
 
-    /**
-     * 获取表达式执行器
-     *
-     * @return
-     */
-    @Override
-    public ExprActuator getExprActuator() {
-        return exprActuator;
-    }
+        @Override
+        public ExprHandle getExprHandle(Integer nodeType) {
+            return exprHandles.get(nodeType);
+        }
 
-    /**
-     * 表达式属性处理器
-     *
-     * @return
-     */
-    @Override
-    public ExprAttr getExprAttr() {
-        return exprAttr;
-    }
+        @Override
+        public Map<Object, ExprHandle> getExprHandles() {
+            return exprHandles;
+        }
 
-    /**
-     * 获取解析器
-     *
-     * @return
-     */
-    @Override
-    public Parser getParser() {
-        return parser;
-    }
+        @Override
+        public Map<String, TemplateFactory> getTemplateFactorys() {
+            return templateFactorys;
+        }
 
-    /**
-     * 获取实体类语法生成器
-     *
-     * @return
-     */
-    @Override
-    public GrammarGenerate getGrammarGenerate() {
-        return grammarGenerate;
-    }
+        @Override
+        public ExprActuator createExprActuator() {
+            try {
+                ExprActuator exprActuator = AbstractJoinFactory.this.exprActuator.newInstance();
+                exprActuator.setJoinFactory(this);
+                return exprActuator;
+            } catch (Exception e) {
+                throw new TemplateException("创建失败", e);
+            }
+        }
 
+        @Override
+        public ExprAttr createExprAttr() {
+            try {
+                ExprAttr exprAttr = AbstractJoinFactory.this.exprAttr.newInstance();
+                exprAttr.setJoinFactory(this);
+                return exprAttr;
+            } catch (Exception e) {
+                throw new TemplateException("创建失败", e);
+            }
+        }
+
+        @Override
+        public Parser createParser() {
+            try {
+                Parser parser = AbstractJoinFactory.this.parser.newInstance();
+                parser.setJoinFactory(this);
+                return parser;
+            } catch (Exception e) {
+                throw new TemplateException("创建失败", e);
+            }
+        }
+
+        @Override
+        public GrammarGenerate createGrammarGenerate() {
+            try {
+                GrammarGenerate grammarGenerate = AbstractJoinFactory.this.grammarGenerate.newInstance();
+                grammarGenerate.setJoinFactory(this);
+                return grammarGenerate;
+            } catch (Exception e) {
+                throw new TemplateException("创建失败", e);
+            }
+        }
+
+    };
 
 }

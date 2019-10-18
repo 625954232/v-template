@@ -24,7 +24,7 @@ public interface JoinFactoryBuilder {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/9/9 9:54
      */
-    JoinFactoryBuilder setParser(Parser parser);
+    JoinFactoryBuilder setParser(Class<? extends Parser> parser);
 
     /**
      * 设置表达式属性处理器
@@ -34,7 +34,7 @@ public interface JoinFactoryBuilder {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/9/9 10:36
      */
-    JoinFactoryBuilder setExprAttr(ExprAttr exprAttr);
+    JoinFactoryBuilder setExprAttr(Class<? extends ExprAttr> exprAttr);
 
     /**
      * 设置值表达式执行器
@@ -44,7 +44,7 @@ public interface JoinFactoryBuilder {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 15:12
      */
-    JoinFactoryBuilder setExprActuator(ExprActuator expression);
+    JoinFactoryBuilder setExprActuator(Class<? extends ExprActuator> expression);
 
     /**
      * 设置语法生成器
@@ -54,7 +54,7 @@ public interface JoinFactoryBuilder {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 15:12
      */
-    JoinFactoryBuilder setGrammarGenerate(GrammarGenerate grammarGenerate);
+    JoinFactoryBuilder setGrammarGenerate(Class<? extends GrammarGenerate> grammarGenerate);
 
     /**
      * 新增模版工厂

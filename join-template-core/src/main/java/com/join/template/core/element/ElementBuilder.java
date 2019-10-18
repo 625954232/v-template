@@ -1,9 +1,7 @@
 package com.join.template.core.element;
 
-import com.join.template.core.Element;
+import com.join.template.core.Template;
 import com.join.template.core.expression.ExprHandle;
-
-import java.util.Map;
 
 /**
  * @author CAOYOU
@@ -11,11 +9,14 @@ import java.util.Map;
  * @date 2019/9/910:56
  */
 public interface ElementBuilder {
+
+
+
     /**
      * 设置节点类型
      *
      * @param nodeType
-     * @return com.join.template.core.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:08
      */
@@ -25,7 +26,7 @@ public interface ElementBuilder {
      * 设置原文
      *
      * @param original
-     * @return com.join.template.core.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:09
      */
@@ -35,7 +36,7 @@ public interface ElementBuilder {
      * 设置父节点
      *
      * @param parent
-     * @return com.join.template.core.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:09
      */
@@ -46,27 +47,17 @@ public interface ElementBuilder {
      *
      * @param name
      * @param value
-     * @return com.join.template.core.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:09
      */
     ElementBuilder attribute(String name, String value);
 
     /**
-     * 新增属性
-     *
-     * @param attributes
-     * @return com.join.template.core.Element
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/27 14:09
-     */
-    ElementBuilder attributes(Map<String, String> attributes);
-
-    /**
      * 设置是不是结束节点
      *
      * @param endElement
-     * @return com.join.template.core.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:09
      */
@@ -76,7 +67,7 @@ public interface ElementBuilder {
      * 新增子节点
      *
      * @param child
-     * @return com.join.template.core.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:15
      */
@@ -86,11 +77,11 @@ public interface ElementBuilder {
      * 设置表达式处理器
      *
      * @param exprHandle
-     * @return com.join.template.core.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:16
      */
     ElementBuilder exprHandle(ExprHandle exprHandle);
 
-    Element build();
+    Element build(Template template);
 }

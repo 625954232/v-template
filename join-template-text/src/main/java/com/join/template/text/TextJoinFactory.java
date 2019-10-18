@@ -22,7 +22,7 @@ public class TextJoinFactory extends AbstractJoinFactory implements JoinFactory 
 
     @Override
     public void init() {
-        this.setParser(new TextParser(this));
+        this.setParser(TextParser.class);
         this.builderExprHandle()
                 .nodeType(Constant.EXPR_ROOT)
                 .process(new Processs())

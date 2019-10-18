@@ -2,6 +2,7 @@ package com.join.template.core;
 
 import com.join.template.core.constant.TemplateType;
 import com.join.template.core.context.Content;
+import com.join.template.core.element.Element;
 import com.join.template.core.element.ElementBuilder;
 import com.join.template.core.factory.JoinFactory;
 
@@ -85,7 +86,7 @@ public interface Template {
      * 获取全部节点
      *
      * @param
-     * @return java.util.List<com.join.template.core.Element>
+     * @return java.util.List<com.join.template.core.element.Element>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 12:16
      */
@@ -95,7 +96,7 @@ public interface Template {
      * 获取父节点
      *
      * @param
-     * @return com.join.template.core.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 12:16
      */

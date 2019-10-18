@@ -86,7 +86,7 @@ public interface JoinFactory extends TemplateFactory {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:49
      */
-    ExprActuator getExprActuator();
+    ExprActuator createExprActuator();
 
     /**
      * 获取解析器
@@ -96,7 +96,7 @@ public interface JoinFactory extends TemplateFactory {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/9/9 10:06
      */
-    Parser getParser();
+    Parser createParser();
 
 
     /**
@@ -107,7 +107,7 @@ public interface JoinFactory extends TemplateFactory {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/26 12:12
      */
-    ExprAttr getExprAttr();
+    ExprAttr createExprAttr();
 
     /**
      * 获取实体类语法生成器
@@ -117,7 +117,7 @@ public interface JoinFactory extends TemplateFactory {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 17:57
      */
-    GrammarGenerate getGrammarGenerate();
+    GrammarGenerate createGrammarGenerate();
 
     ;
 }
