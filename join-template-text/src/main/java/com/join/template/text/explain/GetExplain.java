@@ -1,4 +1,4 @@
-package com.join.template.text.explain;
+package com.join.template.html.explain;
 
 
 import com.join.template.core.constant.Constant;

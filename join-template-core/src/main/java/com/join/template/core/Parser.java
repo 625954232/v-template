@@ -1,7 +1,6 @@
 package com.join.template.core;
 
-import com.join.template.core.element.ElementBuilder;
-import com.join.template.core.expression.ExprAttr;
+import com.join.template.core.element.Element;
 import com.join.template.core.factory.JoinFactory;
 
 /**
@@ -33,16 +32,6 @@ public interface Parser {
 
 
     /**
-     * 设置表达式类型
-     *
-     * @param exprType
-     * @return com.join.template.core.Parser
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/10/18 17:51
-     */
-    Parser setExprType(Integer exprType);
-
-    /**
      * 设置匹配节点的开始标记
      *
      * @param matchBeginTag
@@ -62,15 +51,19 @@ public interface Parser {
      */
     Parser setMatchEndTag(String matchEndTag);
 
+    Parser setGrammar(Boolean grammar);
+
+    Parser setVarExpr(Boolean varExpr);
+
     /**
      * 设置文本内容
      *
-     * @param text
+     * @param content
      * @return com.join.template.core.Parser
      * @author CAOYOU/625954232@qq.com
      * @date 2019/10/18 17:51
      */
-    Parser setText(String text);
+    Parser setContent(String content);
 
     /**
      * 设置是否是结束节点
@@ -86,11 +79,11 @@ public interface Parser {
      * 解析
      *
      * @param
-     * @return com.join.template.core.element.ElementBuilder
+     * @return com.join.template.core.elementClass.ElementBuilder
      * @author CAOYOU/625954232@qq.com
      * @date 2019/10/18 17:52
      */
-    ElementBuilder parser();
+    Element parser();
 
 
 }

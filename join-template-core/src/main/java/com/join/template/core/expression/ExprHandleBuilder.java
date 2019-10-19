@@ -1,6 +1,8 @@
 package com.join.template.core.expression;
 
 
+import com.join.template.core.element.AbstractElement;
+import com.join.template.core.element.Element;
 import com.join.template.core.explain.Explain;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.factory.JoinFactoryBuilder;
@@ -28,6 +30,8 @@ public interface ExprHandleBuilder {
     ExprHandleBuilder addProcessListeners(ProcessListener parserListener);
 
     ExprHandle build();
+
+    ExprHandleBuilder elementClass(Class<? extends Element> elementClass);
 
     JoinFactoryBuilder addIn(JoinFactoryBuilder joinFactoryBuilder);
 }

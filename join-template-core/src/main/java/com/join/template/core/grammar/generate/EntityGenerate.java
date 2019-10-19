@@ -24,11 +24,10 @@ import java.util.*;
 public class EntityGenerate extends AbstractGrammarGenerate<GrammarInfo> implements GrammarGenerate<GrammarInfo> {
 
 
-    public EntityGenerate(JoinFactory joinFactory) {
-        super(joinFactory);
+    public EntityGenerate() {
         super.setGrammarInfo(EntityGrammarInfo.class);
     }
-
+    
     @Override
     public EntityGenerate generateGrammarRoot(String name, Class clazz) {
         try {

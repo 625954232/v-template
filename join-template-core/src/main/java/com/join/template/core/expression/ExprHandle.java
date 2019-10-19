@@ -2,7 +2,8 @@ package com.join.template.core.expression;
 
 
 import com.join.template.core.Template;
-import com.join.template.core.element.ElementBuilder;
+import com.join.template.core.element.AbstractElement;
+import com.join.template.core.element.Element;
 import com.join.template.core.explain.Explain;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.listener.ParserListener;
@@ -90,10 +91,10 @@ public interface ExprHandle {
     /**
      * 获取节点建造器
      *
-     * @return
      * @param template
+     * @return
      */
-    ElementBuilder getElementBuilder(Template template);
+    Element createElement(Template template);
 
 
 }

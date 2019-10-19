@@ -1,4 +1,4 @@
-package com.join.template.text.node;
+package com.join.template.html.node;
 
 import com.join.template.core.element.Element;
 import com.join.template.core.Template;

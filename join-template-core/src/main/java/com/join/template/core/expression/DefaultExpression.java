@@ -2,6 +2,7 @@ package com.join.template.core.expression;
 
 import com.join.template.core.expression.ExprActuator;
 import com.join.template.core.context.Content;
+import com.join.template.core.factory.JoinFactory;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 
@@ -10,6 +11,12 @@ public class DefaultExpression implements ExprActuator {
     private Content context;
     private String expression;
     protected final static JexlEngine jexlEngine = new JexlEngine();
+    private JoinFactory joinFactory;
+    
+    @Override
+    public void setJoinFactory(JoinFactory joinFactory) {
+        this.joinFactory = joinFactory;
+    }
 
     @Override
     public void setExpression(String expression) {

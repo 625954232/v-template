@@ -1,10 +1,9 @@
-package com.join.template.text.explain;
+package com.join.template.html.explain;
 
 
 import com.join.template.core.constant.MarkedWords;
 import com.join.template.core.constant.TemplateType;
 import com.join.template.core.explain.AbstractExplain;
-import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.grammar.generate.GrammarField;
 import com.join.template.core.explain.Explain;
 import com.join.template.core.grammar.GrammarInfo;

@@ -23,10 +23,5 @@ public abstract class AbstractExplain implements Explain {
         this.configuration = exprHandle.getJoinFactory().getConfiguration();
     }
 
-    @Override
-    public void verifyElement(Element element) {
-        verifyElement(element.getOriginal(), element.getAttributes());
-    }
-
 
 }

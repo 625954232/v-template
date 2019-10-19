@@ -28,7 +28,7 @@ public abstract class AbstractJoinFactory implements JoinFactoryBuilder {
     protected Class<? extends ExprActuator> exprActuator;
     protected Class<? extends ExprAttr> exprAttr;
     protected Class<? extends GrammarGenerate> grammarGenerate;
-
+    protected JoinFactory joinFactory;
 
     public AbstractJoinFactory(Configuration configuration) {
         this.configuration = configuration;
@@ -126,7 +126,7 @@ public abstract class AbstractJoinFactory implements JoinFactoryBuilder {
      */
     @Override
     public ExprHandleBuilder builderExprHandle() {
-        return this.exprHandleBuilder = new TemplateExprHandle(this.build());
+        return this.exprHandleBuilder = new TemplateExprHandleBuilder(this.build());
     }
 
     /**
@@ -163,57 +163,64 @@ public abstract class AbstractJoinFactory implements JoinFactoryBuilder {
      */
     @Override
     public JoinFactory build() {
-        return joinFactory;
+
+
+        return new TemplateJoinFactory(this);
     }
 
-    protected JoinFactory joinFactory = new JoinFactory() {
+    public class TemplateJoinFactory implements JoinFactory {
+        private final AbstractJoinFactory base;
+
+        public TemplateJoinFactory(AbstractJoinFactory abstractJoinFactory) {
+            this.base = abstractJoinFactory;
+        }
 
         @Override
         public Template putTemplate(String name, String text) {
-            return AbstractJoinFactory.this.putTemplate(name, text);
+            return base.putTemplate(name, text);
         }
 
         @Override
         public Template getTemplate(String name) {
-            return AbstractJoinFactory.this.getTemplate(name);
+            return base.getTemplate(name);
         }
 
         @Override
         public Configuration getConfiguration() {
-            return configuration;
+            return base.configuration;
         }
 
         @Override
         public TemplateFactory getTemplateFactorys(String type) {
-            TemplateFactory templateFactory = templateFactorys.get(type);
-            Assert.isNull(templateFactory, "没该" + configuration.getType() + "类型模版工厂");
+            TemplateFactory templateFactory = base.templateFactorys.get(type);
+            Assert.isNull(templateFactory, "没该" + base.configuration.getType() + "类型模版工厂");
             return templateFactory;
         }
 
         @Override
         public ExprHandle getExprHandle(String tag) {
-            return exprHandles.get(tag);
+            return base.exprHandles.get(tag);
         }
 
         @Override
         public ExprHandle getExprHandle(Integer nodeType) {
-            return exprHandles.get(nodeType);
+            return base.exprHandles.get(nodeType);
         }
 
         @Override
         public Map<Object, ExprHandle> getExprHandles() {
-            return exprHandles;
+            return base.exprHandles;
         }
 
         @Override
         public Map<String, TemplateFactory> getTemplateFactorys() {
-            return templateFactorys;
+            return base.templateFactorys;
         }
 
         @Override
         public ExprActuator createExprActuator() {
             try {
-                ExprActuator exprActuator = AbstractJoinFactory.this.exprActuator.newInstance();
+                ExprActuator exprActuator = base.exprActuator.newInstance();
                 exprActuator.setJoinFactory(this);
                 return exprActuator;
             } catch (Exception e) {
@@ -224,7 +231,7 @@ public abstract class AbstractJoinFactory implements JoinFactoryBuilder {
         @Override
         public ExprAttr createExprAttr() {
             try {
-                ExprAttr exprAttr = AbstractJoinFactory.this.exprAttr.newInstance();
+                ExprAttr exprAttr = base.exprAttr.newInstance();
                 exprAttr.setJoinFactory(this);
                 return exprAttr;
             } catch (Exception e) {
@@ -233,10 +240,11 @@ public abstract class AbstractJoinFactory implements JoinFactoryBuilder {
         }
 
         @Override
-        public Parser createParser() {
+        public Parser createParser(Template template) {
             try {
-                Parser parser = AbstractJoinFactory.this.parser.newInstance();
+                Parser parser = base.parser.newInstance();
                 parser.setJoinFactory(this);
+                parser.setTemplate(template);
                 return parser;
             } catch (Exception e) {
                 throw new TemplateException("创建失败", e);
@@ -246,7 +254,7 @@ public abstract class AbstractJoinFactory implements JoinFactoryBuilder {
         @Override
         public GrammarGenerate createGrammarGenerate() {
             try {
-                GrammarGenerate grammarGenerate = AbstractJoinFactory.this.grammarGenerate.newInstance();
+                GrammarGenerate grammarGenerate = base.grammarGenerate.newInstance();
                 grammarGenerate.setJoinFactory(this);
                 return grammarGenerate;
             } catch (Exception e) {
@@ -254,6 +262,5 @@ public abstract class AbstractJoinFactory implements JoinFactoryBuilder {
             }
         }
 
-    };
-
+    }
 }

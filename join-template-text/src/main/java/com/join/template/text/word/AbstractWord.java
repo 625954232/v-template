@@ -1,4 +1,4 @@
-package com.join.template.text.word;
+package com.join.template.html.word;
 
 import com.join.template.core.element.Element;
 import com.join.template.core.Parser;
@@ -8,7 +8,7 @@ import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.element.ElementBuilder;
-import com.join.template.text.node.Node;
+import com.join.template.html.node.Node;
 
 import java.util.ArrayList;
 import java.util.List;

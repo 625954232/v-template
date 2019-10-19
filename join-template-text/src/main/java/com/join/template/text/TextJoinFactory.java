@@ -1,17 +1,15 @@
-package com.join.template.text;
+package com.join.template.html;
 
 import com.join.template.core.*;
-import com.join.template.core.expression.*;
 import com.join.template.core.factory.AbstractJoinFactory;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.core.factory.JoinFactoryBuilder;
 import com.join.template.core.resource.ResourceInfo;
 import com.join.template.core.util.IOUtil;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.text.explain.*;
-import com.join.template.text.process.*;
-import com.join.template.text.reader.TextParser;
+import com.join.template.html.explain.*;
+import com.join.template.html.process.*;
+import com.join.template.html.reader.TextParser;
 
 
 public class TextJoinFactory extends AbstractJoinFactory implements JoinFactory {

@@ -1,4 +1,4 @@
-package com.join.template.text;
+package com.join.template.html;
 
 import com.join.template.core.element.Element;
 import com.join.template.core.constant.TemplateType;
@@ -11,8 +11,8 @@ import com.join.template.core.context.Content;
 import com.join.template.core.context.HashContext;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.element.ElementBuilder;
-import com.join.template.text.node.Node;
-import com.join.template.text.word.TreeWord;
+import com.join.template.html.node.Node;
+import com.join.template.html.word.TreeWord;
 
 import java.io.StringWriter;
 import java.io.Writer;

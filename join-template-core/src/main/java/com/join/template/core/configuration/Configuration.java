@@ -46,7 +46,7 @@ public class Configuration {
     //引用文件属性
     private String attFile = "file";
     //判断条件属性
-    private String attrText = "text";
+    private String attrText = "html";
     //格式化属性
     private String attrFormat = "format";
     //编码

@@ -1,4 +1,4 @@
-package com.join.template.text;
+package com.join.template.html;
 
 import com.join.template.core.Parser;
 import com.join.template.core.configuration.Configuration;

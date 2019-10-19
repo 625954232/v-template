@@ -17,9 +17,9 @@ import java.util.Map;
 
 public abstract class AbstractGrammarGenerate<T extends GrammarInfo> implements GrammarGenerate<T> {
 
-    protected final JoinFactory joinFactory;
+    protected JoinFactory joinFactory;
 
-    protected final Configuration configuration;
+    protected Configuration configuration;
 
     protected GrammarGenListener grammarGenListener;
 
@@ -32,10 +32,15 @@ public abstract class AbstractGrammarGenerate<T extends GrammarInfo> implements 
     protected TemplateType templateType = TemplateType.Text;
 
 
-    public AbstractGrammarGenerate(JoinFactory joinFactory) {
+    public AbstractGrammarGenerate() {
+        this.grammarInfos = new ArrayList<>();
+    }
+
+    @Override
+    public GrammarGenerate setJoinFactory(JoinFactory joinFactory) {
         this.joinFactory = joinFactory;
         this.configuration = joinFactory.getConfiguration();
-        this.grammarInfos = new ArrayList<>();
+        return this;
     }
 
     @Override

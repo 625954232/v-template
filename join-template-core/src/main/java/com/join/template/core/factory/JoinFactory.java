@@ -5,7 +5,6 @@ import com.join.template.core.expression.*;
 import com.join.template.core.grammar.GrammarGenerate;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.factory.template.TemplateFactory;
-import sun.security.provider.MD2;
 
 import java.util.Map;
 
@@ -92,11 +91,12 @@ public interface JoinFactory extends TemplateFactory {
      * 获取解析器
      *
      * @param
+     * @param template
      * @return com.join.template.core.Parser
      * @author CAOYOU/625954232@qq.com
      * @date 2019/9/9 10:06
      */
-    Parser createParser();
+    Parser createParser(Template template);
 
 
     /**

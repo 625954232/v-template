@@ -1,6 +1,7 @@
 package com.join.template.core.expression;
 
 import com.join.template.core.configuration.Configuration;
+import com.join.template.core.factory.JoinFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +15,14 @@ import java.util.regex.Pattern;
  */
 public class TemplateExprAttr implements ExprAttr {
 
-    private final Configuration configuration;
+    private Configuration configuration;
+    private JoinFactory joinFactory;
 
-
-    public TemplateExprAttr(Configuration configuration) {
-        this.configuration = configuration;
+    @Override
+    public ExprAttr setJoinFactory(JoinFactory joinFactory) {
+        this.joinFactory = joinFactory;
+        this.configuration = joinFactory.getConfiguration();
+        return null;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.join.template.text.reader;
+package com.join.template.html.reader;
 
 import com.join.template.core.element.Element;
 import com.join.template.core.Parser;

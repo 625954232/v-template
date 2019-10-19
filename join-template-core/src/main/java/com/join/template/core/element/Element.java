@@ -7,6 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface Element {
+    Element setTemplate(Template template);
+
+    Element setNodeType(Integer nodeType);
+
+    Element setParent(Element parent);
+
+    Element read(String original, Boolean isEndElement);
 
     /**
      * 获取节点类型
@@ -38,6 +45,7 @@ public interface Element {
      */
     String getAttribute(String name);
 
+
     /**
      * 获取节点属性
      *
@@ -53,7 +61,7 @@ public interface Element {
      * 获取父节点
      *
      * @param
-     * @return com.join.template.core.element.Element
+     * @return com.join.template.core.elementClass.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:14
      */
@@ -63,27 +71,17 @@ public interface Element {
      * 获取全部子节点
      *
      * @param
-     * @return java.util.List<com.join.template.core.element.Element>
+     * @return java.util.List<com.join.template.core.elementClass.Element>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:14
      */
     List<Element> getChilds();
 
     /**
-     * 获取表达式处理器
-     *
-     * @param
-     * @return com.join.template.core.expression.ExprHandle
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/27 14:14
-     */
-    ExprHandle getExprHandle();
-
-    /**
      * 获取全部属性
      *
      * @param
-     * @return java.util.Map<java.lang.String       ,       java.lang.String>
+     * @return
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:14
      */
@@ -99,13 +97,5 @@ public interface Element {
      */
     Boolean isEndElement();
 
-    /**
-     * 获取模版
-     *
-     * @param
-     * @return com.join.template.core.Template
-     * @author CAOYOU/625954232@qq.com
-     * @date 2019/8/27 14:13
-     */
-    Template getTemplate();
+
 }
