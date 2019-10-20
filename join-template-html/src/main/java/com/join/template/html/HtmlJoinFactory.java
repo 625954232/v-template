@@ -9,7 +9,7 @@ import com.join.template.core.factory.JoinFactoryBuilder;
 import com.join.template.core.util.IOUtil;
 import com.join.template.core.util.resource.ResourceInfo;
 import com.join.template.html.expression.JexlExpression;
-import com.join.template.html.grammar.EntityGenerate;
+import com.join.template.html.grammar.FieldGenerate;
 import com.join.template.html.grammar.TemplateExprAttr;
 import com.join.template.html.node.*;
 import com.join.template.html.process.*;
@@ -26,7 +26,7 @@ public class HtmlJoinFactory extends AbstractJoinFactory implements JoinFactoryB
     public void init() {
         this.setExprAttr(TemplateExprAttr.class);
         this.setExprActuator(JexlExpression.class);
-        this.setGrammarGenerate(EntityGenerate.class);
+        this.setGrammarGenerate(FieldGenerate.class);
         this.setParser(HtmlParser.class);
         this.builderExprHandle()
                 .nodeType(Constant.EXPR_ROOT)

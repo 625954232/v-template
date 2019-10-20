@@ -9,7 +9,7 @@ import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.grammar.generate.GenerateConfig;
 import com.join.template.core.grammar.generate.GrammarGenerate;
 import com.join.template.core.grammar.GrammarInfo;
-import com.join.template.core.listener.GrammarGenListener;
+import com.join.template.core.listener.GenerateListener;
 import com.join.template.core.util.type.TypeInfo;
 import com.join.template.core.util.IOUtil;
 
@@ -66,14 +66,8 @@ public class Main {
 
 
         GrammarGenerate grammarGenerate = joinFactory.createGrammarGenerate();
-        grammarGenerate.setGrammarGenListener(grammarGenListener);
-
-        GenerateConfig grammarField = new GenerateConfig();
-        grammarField.setNameField("filedKey");
-        grammarField.setTypeField("type");
-        grammarField.setDescribeField("filedValue");
-        grammarField.setChildField("addChild");
-        grammarGenerate.setGrammarField(grammarField);
+        grammarGenerate.setGenerateListener(exampleListener);
+        grammarGenerate.setGenerateConfig(generateConfig);
 
         URL resource = Main.class.getResource("/gramma.json");
         String string = IOUtil.toString(resource);
@@ -86,14 +80,16 @@ public class Main {
         System.out.println(JSON.toJSONString(list));
     }
 
+    public GenerateConfig generateConfig = new GenerateConfig("filedKey", "filedValue", "filedValue", "addChild");
+
     @Test
     public void generateGrammarPreview() {
         HtmlJoinFactoryBuilder joinFactoryBuilder = new HtmlJoinFactoryBuilder();
         JoinFactory joinFactory = joinFactoryBuilder.build();
 
         GrammarGenerate grammarGenerate = joinFactory.createGrammarGenerate();
-        grammarGenerate.setGrammarGenListener(grammarGenListener);
-        grammarGenerate.setGrammarField(grammarField);
+        grammarGenerate.setGenerateListener(exampleListener);
+        grammarGenerate.setGenerateConfig(generateConfig);
 
         URL gramma = Main.class.getResource("/gramma.json");
         URL preview = Main.class.getResource("/preview.html");
@@ -108,14 +104,7 @@ public class Main {
     }
 
 
-    private GenerateConfig grammarField = new GenerateConfig() {{
-        this.setNameField("filedKey");
-        this.setTypeField("type");
-        this.setDescribeField("filedValue");
-        this.setChildField("addChild");
-    }};
-
-    private GrammarGenListener grammarGenListener = new GrammarGenListener() {
+    private GenerateListener exampleListener = new GenerateListener() {
 
         @Override
         public void onCreate(Map map, GrammarInfo grammarInfo) {

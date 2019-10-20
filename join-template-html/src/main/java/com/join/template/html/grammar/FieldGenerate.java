@@ -22,15 +22,15 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 
-public class EntityGenerate extends AbstractGenerate<GrammarInfo> implements GrammarGenerate<GrammarInfo> {
+public class FieldGenerate extends AbstractGenerate<GrammarInfo> implements GrammarGenerate<GrammarInfo> {
 
 
-    public EntityGenerate() {
+    public FieldGenerate() {
         super.setGrammarInfo(FieldGrammarInfo.class);
     }
 
     @Override
-    public EntityGenerate generateGrammarRoot(String name, Class clazz) {
+    public FieldGenerate generateGrammarRoot(String name, Class clazz) {
         try {
             GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
             this.createGrammarInfo(grammarInfo, clazz);
@@ -44,12 +44,12 @@ public class EntityGenerate extends AbstractGenerate<GrammarInfo> implements Gra
     }
 
     @Override
-    public EntityGenerate generateGrammarRoot(String name, List<Map> map) {
+    public FieldGenerate generateGrammarRoot(String name, List<Map> map) {
         try {
             Map<String, Object> root = new HashMap<>();
-            root.put(this.grammarField.getNameField(), name);
-            root.put(this.grammarField.getTypeField(), EntityType.Object.name());
-            root.put(this.grammarField.getChildField(), map);
+            root.put(this.generateConfig.getNameField(), name);
+            root.put(this.generateConfig.getTypeField(), EntityType.Object.name());
+            root.put(this.generateConfig.getChildField(), map);
             GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
             this.createGrammarInfo(grammarInfo, root);
             this.getGrammarInfos().add(grammarInfo);
@@ -63,7 +63,7 @@ public class EntityGenerate extends AbstractGenerate<GrammarInfo> implements Gra
 
 
     @Override
-    public EntityGenerate generateGrammar(Class clazz) {
+    public FieldGenerate generateGrammar(Class clazz) {
         try {
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
@@ -85,7 +85,7 @@ public class EntityGenerate extends AbstractGenerate<GrammarInfo> implements Gra
     }
 
     @Override
-    public EntityGenerate generateGrammar(List<Map> maps) {
+    public FieldGenerate generateGrammar(List<Map> maps) {
         try {
             for (Map map : maps) {
                 GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
@@ -129,8 +129,8 @@ public class EntityGenerate extends AbstractGenerate<GrammarInfo> implements Gra
         TypeInfo typeInfo = TypeInfo.get(clazzOrField);
         current.name(typeInfo.getName());
         current.type(EntityType.of(typeInfo.getType()));
-        if (this.grammarGenListener != null) {
-            this.grammarGenListener.onCreate(typeInfo, current);
+        if (this.generateListener != null) {
+            this.generateListener.onCreate(typeInfo, current);
         }
         if (EntityType.Array == current.getType()) {
             current.grammarType(Constant.EXPR_LIST);
@@ -138,8 +138,8 @@ public class EntityGenerate extends AbstractGenerate<GrammarInfo> implements Gra
             current.grammarType(Constant.EXPR_VAR);
         }
         Grammar expressionHandle = joinFactory.getGrammar(current.getGrammarType());
-        if (expressionHandle != null && expressionHandle.getExplain() != null && EntityType.Entity != current.getType()) {
-            String grammar = expressionHandle.getExplain().genExample(this.templateType, current, typeInfo, this.grammarField);
+        if (expressionHandle != null && expressionHandle.getExample() != null && EntityType.Entity != current.getType()) {
+            String grammar = expressionHandle.getExample().genExample(this.templateType, current, typeInfo, this.generateConfig);
             current.grammar(grammar);
         }
         this.createGrammarChild(current, typeInfo);
@@ -192,33 +192,33 @@ public class EntityGenerate extends AbstractGenerate<GrammarInfo> implements Gra
      * @date 2019/8/21 16:18
      */
     private void createGrammarInfo(GrammarInfo current, Map map) throws IllegalAccessException, InstantiationException {
-        String fieldName = String.valueOf(map.get(this.grammarField.getNameField()));
+        String fieldName = String.valueOf(map.get(this.generateConfig.getNameField()));
         if (fieldName == null) {
             throw new TemplateException("缺少名称的对应字段名称");
         }
 
-        String fieldType = String.valueOf(map.get(this.grammarField.getTypeField()));
-        String fieldDescribe = String.valueOf(map.get(this.grammarField.getDescribeField()));
+        String fieldType = String.valueOf(map.get(this.generateConfig.getTypeField()));
+        String fieldDescribe = String.valueOf(map.get(this.generateConfig.getDescribeField()));
 
-        fieldType = Utils.returnOrDefault(fieldType, this.grammarField.getTypeField());
+        fieldType = Utils.returnOrDefault(fieldType, this.generateConfig.getTypeField());
         fieldDescribe = Utils.returnOrDefault(fieldDescribe, fieldName);
 
         current.name(fieldName);
         current.type(EntityType.of(fieldType));
         current.describe(fieldDescribe);
 
-        if (this.grammarGenListener != null) {
-            this.grammarGenListener.onCreate(map, current);
+        if (this.generateListener != null) {
+            this.generateListener.onCreate(map, current);
         }
         if (EntityType.Array == current.getType()) {
             current.grammarType(Constant.EXPR_LIST);
         } else {
             current.grammarType(Constant.EXPR_VAR);
         }
-        Grammar expressionHandle = joinFactory.getGrammar(current.getGrammarType());
-        if (expressionHandle != null && expressionHandle.getExplain() != null) {
-            String grammar = expressionHandle.getExplain().genExample(this.templateType, current, map, this.grammarField);
-            current.grammar(grammar);
+        Grammar grammar = joinFactory.getGrammar(current.getGrammarType());
+        if (grammar != null && grammar.getExample() != null) {
+            String example = grammar.getExample().genExample(this.templateType, current, map, this.generateConfig);
+            current.grammar(example);
         }
         this.createGrammarChild(current, map);
     }
@@ -234,7 +234,7 @@ public class EntityGenerate extends AbstractGenerate<GrammarInfo> implements Gra
      */
     private void createGrammarChild(GrammarInfo current, Map map) throws InstantiationException, IllegalAccessException {
         if (EntityType.Array == current.getType() || EntityType.Entity == current.getType()) {
-            Object obj = map.get(this.grammarField.getChildField());
+            Object obj = map.get(this.generateConfig.getChildField());
             if (obj == null) {
                 return;
             }
@@ -304,8 +304,8 @@ public class EntityGenerate extends AbstractGenerate<GrammarInfo> implements Gra
         }
         if (value != null) {
             map.put(grammarInfo.getName(), value);
-            if (this.grammarGenListener != null) {
-                this.grammarGenListener.onPreview(grammarInfo, value, map);
+            if (this.generateListener != null) {
+                this.generateListener.onPreview(grammarInfo, value, map);
             }
 
         }
@@ -322,11 +322,11 @@ public class EntityGenerate extends AbstractGenerate<GrammarInfo> implements Gra
         index.grammarType(Constant.EXPR_VAR);
 
         Grammar expressionHandle = joinFactory.getGrammar(index.getGrammarType());
-        if (expressionHandle != null && expressionHandle.getExplain() != null) {
+        if (expressionHandle != null && expressionHandle.getExample() != null) {
             Map<String, Object> root = new HashMap<>();
-            root.put(this.grammarField.getNameField(), index.getName());
-            root.put(this.grammarField.getTypeField(), EntityType.Integer.name());
-            String grammar = expressionHandle.getExplain().genExample(this.templateType, index, root, this.grammarField);
+            root.put(this.generateConfig.getNameField(), index.getName());
+            root.put(this.generateConfig.getTypeField(), EntityType.Integer.name());
+            String grammar = expressionHandle.getExample().genExample(this.templateType, index, root, this.generateConfig);
             index.grammar(grammar);
         }
         current.addChild(index);

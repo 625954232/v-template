@@ -139,7 +139,7 @@ public class TemplateGrammarBuilder implements GrammarBuilder {
         }
 
         @Override
-        public Example getExplain() {
+        public Example getExample() {
             return TemplateGrammarBuilder.this.explain;
         }
 

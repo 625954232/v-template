@@ -6,7 +6,7 @@ import com.join.template.core.example.Example;
 import com.join.template.core.grammar.handle.Grammar;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.grammar.GrammarInfo;
-import com.join.template.core.listener.GrammarGenListener;
+import com.join.template.core.listener.GenerateListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,9 +20,9 @@ public abstract class AbstractGenerate<T extends GrammarInfo> implements Grammar
 
     protected Configuration configuration;
 
-    protected GrammarGenListener grammarGenListener;
+    protected GenerateListener generateListener;
 
-    protected GenerateConfig grammarField = new GenerateConfig();
+    protected GenerateConfig generateConfig;
 
     protected Class<T> grammarInfoClass = null;
 
@@ -55,14 +55,14 @@ public abstract class AbstractGenerate<T extends GrammarInfo> implements Grammar
     }
 
     @Override
-    public AbstractGenerate setGrammarGenListener(GrammarGenListener grammarGenListener) {
-        this.grammarGenListener = grammarGenListener;
+    public AbstractGenerate setGenerateListener(GenerateListener generateListener) {
+        this.generateListener = generateListener;
         return this;
     }
 
     @Override
-    public AbstractGenerate setGrammarField(GenerateConfig grammarField) {
-        this.grammarField = grammarField;
+    public AbstractGenerate setGenerateConfig(GenerateConfig generateConfig) {
+        this.generateConfig = generateConfig;
         return this;
     }
 
@@ -71,7 +71,7 @@ public abstract class AbstractGenerate<T extends GrammarInfo> implements Grammar
         Map<Integer, String> grammars = new HashMap();
         Map<Object, Grammar> exprHandles = joinFactory.getExprHandles();
         for (Grammar expressionHandle : exprHandles.values()) {
-            Example grammarExpl = expressionHandle.getExplain();
+            Example grammarExpl = expressionHandle.getExample();
             if (grammarExpl != null) {
                 grammars.put(expressionHandle.getNodeType(), grammarExpl.getExample());
             }

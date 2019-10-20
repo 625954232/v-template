@@ -3,7 +3,7 @@ package com.join.template.core.grammar.generate;
 import com.join.template.core.constant.TemplateType;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.grammar.GrammarInfo;
-import com.join.template.core.listener.GrammarGenListener;
+import com.join.template.core.listener.GenerateListener;
 
 import java.util.List;
 import java.util.Map;
@@ -40,22 +40,22 @@ public interface GrammarGenerate<T extends GrammarInfo> {
     /**
      * 生成语法生成监听
      *
-     * @param grammarGenListener 语法生成监听
+     * @param generateListener 语法生成监听
      * @return com.join.template.core.grammar.generate.GrammarGenerate
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/21 10:48
      */
-    GrammarGenerate setGrammarGenListener(GrammarGenListener grammarGenListener);
+    GrammarGenerate setGenerateListener(GenerateListener generateListener);
 
     /**
      * 设置语法字段对应信息
      *
-     * @param grammarField 语法字段对应信息
+     * @param generateConfig 语法字段对应信息
      * @return com.join.template.core.grammar.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/21 10:48
      */
-    GrammarGenerate setGrammarField(GenerateConfig grammarField);
+    GrammarGenerate setGenerateConfig(GenerateConfig generateConfig);
 
     /**
      * 根据实体类生成语法（带根节点信息）

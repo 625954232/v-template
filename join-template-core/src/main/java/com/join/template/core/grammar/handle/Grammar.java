@@ -65,7 +65,7 @@ public interface Grammar {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:39
      */
-    Example getExplain();
+    Example getExample();
 
     /**
      * 获取解析监听

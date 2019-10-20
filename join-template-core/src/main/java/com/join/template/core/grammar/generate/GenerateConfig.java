@@ -23,33 +23,12 @@ public class GenerateConfig {
      */
     private String childField = "child_field";
 
-    public GenerateConfig() {
-    }
 
-    public GenerateConfig(String nameFieldName, String describeFieldName, String typeFieldName) {
+    public GenerateConfig(String nameFieldName, String describeFieldName, String typeFieldName, String childField) {
         this.nameField = nameFieldName;
         this.describeField = describeFieldName;
         this.typeField = typeFieldName;
-    }
-
-    public GenerateConfig setNameField(String nameField) {
-        this.nameField = nameField;
-        return this;
-    }
-
-    public GenerateConfig setDescribeField(String describeField) {
-        this.describeField = describeField;
-        return this;
-    }
-
-    public GenerateConfig setTypeField(String typeField) {
-        this.typeField = typeField;
-        return this;
-    }
-
-    public GenerateConfig setChildField(String childField) {
         this.childField = childField;
-        return this;
     }
 
     public String getNameField() {

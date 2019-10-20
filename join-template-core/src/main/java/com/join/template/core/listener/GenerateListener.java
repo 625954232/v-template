@@ -10,7 +10,7 @@ import java.util.Map;
  * @Title: GrammarGenListener
  * @date 2019/8/1916:51
  */
-public interface GrammarGenListener {
+public interface GenerateListener {
 
     void onCreate(Map map, GrammarInfo grammarInfo);
 
