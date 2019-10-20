@@ -1,13 +1,16 @@
 package com.join.template.html;
 
-import com.join.template.core.*;
-import com.join.template.core.factory.AbstractJoinFactory;
+
+import com.join.template.core.Template;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.core.factory.JoinFactoryBuilder;
-import com.join.template.core.resource.ResourceInfo;
-import com.join.template.core.util.IOUtil;
 import com.join.template.core.constant.Constant;
-import com.join.template.html.explain.*;
+import com.join.template.core.factory.AbstractJoinFactory;
+import com.join.template.core.factory.JoinFactoryBuilder;
+import com.join.template.core.util.IOUtil;
+import com.join.template.core.util.resource.ResourceInfo;
+import com.join.template.html.expression.JexlExpression;
+import com.join.template.html.grammar.EntityGenerate;
+import com.join.template.html.grammar.TemplateExprAttr;
 import com.join.template.html.node.*;
 import com.join.template.html.process.*;
 import com.join.template.html.reader.HtmlParser;
@@ -21,72 +24,75 @@ public class HtmlJoinFactory extends AbstractJoinFactory implements JoinFactoryB
 
     @Override
     public void init() {
+        this.setExprAttr(TemplateExprAttr.class);
+        this.setExprActuator(JexlExpression.class);
+        this.setGrammarGenerate(EntityGenerate.class);
         this.setParser(HtmlParser.class);
         this.builderExprHandle()
                 .nodeType(Constant.EXPR_ROOT)
                 .process(new Processs())
-                .elementClass(RootNode.class)
+                .element(RootNodeExample.class)
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_TEXT)
                 .process(new TextProcess())
-                .elementClass(TextNode.class)
+                .element(TextNodeExample.class)
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_VAR)
-                .elementClass(VarNode.class)
+                .element(VarNodeExample.class)
                 .process(new VarcharProcess())
-                .explain(new VarcharExplain())
+                .explain(new VarNodeExample())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_LIST).tag("list")
-                .elementClass(ListNode.class)
+                .element(ListNodeExample.class)
                 .process(new ListProcess())
-                .explain(new ListExplain())
+                .explain(new ListNodeExample())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_IF).tag("if")
-                .elementClass(IFNode.class)
+                .element(IFNodeExample.class)
                 .process(new IfProcess())
-                .explain(new IfExplain())
+                .explain(new IFNodeExample())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_ELSE).tag("else")
-                .elementClass(ElseNode.class)
+                .element(ElseNodeExample.class)
                 .process(new IfElseProcess())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_IF_ELSE_IF).tag("elseif")
-                .elementClass(IFNode.class)
+                .element(IFNodeExample.class)
                 .process(new ElseIfProcess())
-                .explain(new ElseIfExplain())
+                .explain(new IFNodeExample())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_INCLUDE).tag("include")
-                .elementClass(IncludeNode.class)
+                .element(IncludeNodeExample.class)
                 .process(new IncludeProcess())
-                .explain(new IncludeExplain())
+                .explain(new IncludeNodeExample())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_SET).tag("set")
-                .elementClass(SetNode.class)
+                .element(SetNodeExample.class)
                 .process(new SetProcess())
-                .explain(new SetExplain())
+                .explain(new SetNodeExample())
                 .addIn(this)
 
                 .builderExprHandle()
                 .nodeType(Constant.EXPR_GET).tag("get")
-                .elementClass(GetNode.class)
+                .element(GetNodeExample.class)
                 .process(new GetProcess())
-                .explain(new GetExplain())
+                .explain(new GetNodeExample())
                 .addIn(this);
     }
 

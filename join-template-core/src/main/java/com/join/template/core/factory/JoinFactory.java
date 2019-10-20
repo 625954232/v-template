@@ -2,9 +2,11 @@ package com.join.template.core.factory;
 
 import com.join.template.core.*;
 import com.join.template.core.expression.*;
-import com.join.template.core.grammar.GrammarGenerate;
+import com.join.template.core.grammar.GrammarAttr;
+import com.join.template.core.grammar.generate.GrammarGenerate;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.factory.template.TemplateFactory;
+import com.join.template.core.grammar.handle.Grammar;
 
 import java.util.Map;
 
@@ -45,7 +47,7 @@ public interface JoinFactory extends TemplateFactory {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:48
      */
-    ExprHandle getExprHandle(String tag);
+    Grammar getGrammar(String tag);
 
     /**
      * 根据节点类型获取表达式配置
@@ -55,7 +57,7 @@ public interface JoinFactory extends TemplateFactory {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:49
      */
-    ExprHandle getExprHandle(Integer nodeType);
+    Grammar getGrammar(Integer nodeType);
 
     /**
      * 获取全部表达式配置
@@ -65,7 +67,7 @@ public interface JoinFactory extends TemplateFactory {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 16:11
      */
-    Map<Object, ExprHandle> getExprHandles();
+    Map<Object, Grammar> getExprHandles();
 
     /**
      * 获取全部模版工厂
@@ -85,7 +87,7 @@ public interface JoinFactory extends TemplateFactory {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:49
      */
-    ExprActuator createExprActuator();
+    Expression createExprActuator();
 
     /**
      * 获取解析器
@@ -103,17 +105,17 @@ public interface JoinFactory extends TemplateFactory {
      * 获取表达式属性处理器
      *
      * @param
-     * @return com.join.template.core.expression.ExprAttr
+     * @return com.join.template.core.grammar.GrammarAttr
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/26 12:12
      */
-    ExprAttr createExprAttr();
+    GrammarAttr createExprAttr();
 
     /**
      * 获取实体类语法生成器
      *
      * @param
-     * @return com.join.template.core.explain.EntityGrammar
+     * @return com.join.template.core.example.EntityGrammar
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 17:57
      */

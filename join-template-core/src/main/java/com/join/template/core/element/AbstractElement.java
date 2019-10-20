@@ -1,10 +1,8 @@
 package com.join.template.core.element;
 
-import com.join.template.core.Template;
 import com.join.template.core.configuration.Configuration;
-import com.join.template.core.expression.ExprAttr;
-import com.join.template.core.expression.ExprHandle;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.grammar.handle.Grammar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,13 +12,16 @@ import java.util.Map;
 public abstract class AbstractElement implements Element {
 
     protected Configuration configuration;
-    protected Template template;
+    protected JoinFactory joinFactory;
+    protected Grammar grammar;
+
     protected Integer nodeType;
     protected String original;
     protected Element parent;
     protected Boolean isEndElement;
     protected Map<String, String> attributes;
     protected List<Element> childs;
+
 
     public AbstractElement() {
         this.childs = new ArrayList<>();
@@ -29,9 +30,9 @@ public abstract class AbstractElement implements Element {
     }
 
     @Override
-    public Element setTemplate(Template template) {
-        JoinFactory joinFactory = template.getJoinFactory();
-        this.template = template;
+    public Element setGrammar(Grammar grammar) {
+        this.grammar = grammar;
+        this.joinFactory = grammar.getJoinFactory();
         this.configuration = joinFactory.getConfiguration();
         return this;
     }
@@ -88,8 +89,7 @@ public abstract class AbstractElement implements Element {
         this.original = original;
         this.parent = parent;
         this.isEndElement = isEndElement;
-        ExprAttr exprAttr = template.getExprAttr();
-        this.attributes = exprAttr.findAttribute(original);
+        this.attributes = joinFactory.createExprAttr().findAttribute(original);
         this.readAttributes();
         return this;
     }

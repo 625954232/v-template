@@ -1,7 +1,7 @@
 package com.join.template.core.util;
 
 
-import com.join.template.core.resource.ResourceFind;
+import com.join.template.core.util.resource.ResourceFind;
 
 import java.io.File;
 import java.io.FileFilter;

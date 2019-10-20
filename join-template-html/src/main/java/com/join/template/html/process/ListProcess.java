@@ -2,13 +2,12 @@ package com.join.template.html.process;
 
 import com.join.template.core.element.Element;
 import com.join.template.core.constant.Constant;
-import com.join.template.core.constant.MarkedWords;
-import com.join.template.core.expression.ExprHandle;
+import com.join.template.core.grammar.handle.Grammar;
 import com.join.template.core.process.AbstractProcess;
 import com.join.template.core.process.Process;
 import com.join.template.core.context.Content;
-import com.join.template.core.verify.TemplateException;
-import com.join.template.html.node.ListNode;
+import com.join.template.core.util.TemplateException;
+import com.join.template.html.node.ListNodeExample;
 import org.apache.commons.lang.StringUtils;
 
 import javax.xml.ws.Holder;
@@ -18,10 +17,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ListProcess extends AbstractProcess<ListNode> implements Process<ListNode> {
+public class ListProcess extends AbstractProcess<ListNodeExample> implements Process<ListNodeExample> {
 
     @Override
-    public void process(ListNode element, Content context, Writer writer) {
+    public void process(ListNodeExample element, Content context, Writer writer) {
         try {
             super.process(element, context, writer);
 
@@ -45,7 +44,7 @@ public class ListProcess extends AbstractProcess<ListNode> implements Process<Li
     }
 
 
-    private void writerValidElement(ListNode element, List<Element> validElement, Content context, Holder<List> list, Writer writer) throws IOException {
+    private void writerValidElement(ListNodeExample element, List<Element> validElement, Content context, Holder<List> list, Writer writer) throws IOException {
         for (int i = 0; i < list.value.size(); i++) {
             if (i > 0 && StringUtils.isNotBlank(element.getSeparator())) {
                 writer.write(element.getSeparator());
@@ -59,7 +58,7 @@ public class ListProcess extends AbstractProcess<ListNode> implements Process<Li
                     if (Constant.EXPR_TEXT == child.getNodeType()) {
                         this.insertOpen(stringBuilder, element.getOpen());
                     } else {
-                        stringBuilder.append(element.getOpen());
+                        writer.write(element.getOpen());
                     }
                 } else if (i == (list.value.size() - 1) && j == (validElement.size() - 1)) {
                     if (Constant.EXPR_TEXT == child.getNodeType()) {
@@ -67,13 +66,11 @@ public class ListProcess extends AbstractProcess<ListNode> implements Process<Li
                     } else {
                         stringBuilder.append(element.getClose());
                     }
-                } else {
-                    this.insertText(stringBuilder);
                 }
                 if (Constant.EXPR_TEXT == child.getNodeType()) {
                     writer.write(stringBuilder.toString());
                 } else {
-                    ExprHandle exprConfig = joinFactory.getExprHandle(child.getNodeType());
+                    Grammar exprConfig = joinFactory.getGrammar(child.getNodeType());
                     exprConfig.getProcess().process(child, context, writer);
                 }
             }
@@ -85,7 +82,7 @@ public class ListProcess extends AbstractProcess<ListNode> implements Process<Li
             writer) {
         for (int j = 0; j < validElement.size(); j++) {
             Element child = validElement.get(j);
-            ExprHandle exprConfig = joinFactory.getExprHandle(child.getNodeType());
+            Grammar exprConfig = joinFactory.getGrammar(child.getNodeType());
             exprConfig.getProcess().process(child, context, writer);
         }
     }
@@ -123,35 +120,34 @@ public class ListProcess extends AbstractProcess<ListNode> implements Process<Li
         return isValid;
     }
 
-    protected void insertText(StringBuilder stringBuilder) {
-        if (stringBuilder.indexOf("\r\n", 0) > -1) {
-            stringBuilder.delete(0, 2);
-        }
-    }
 
     private void insertOpen(StringBuilder stringBuilder, String open) {
         int length = stringBuilder.length();
         int start = 0;
+        boolean special = false;
+        boolean backBrace = false;
         while (start < length) {
             if (stringBuilder.charAt(0) != '<') {
                 break;
-            } else if (stringBuilder.charAt(start) == '>') {
-                if ((start + 1) < length) {
-                    if (stringBuilder.charAt(start + 1) == '<') {
-                        start += 2;
-                    } else {
-                        start += 1;
-                        break;
-                    }
-                } else {
-                    start += 1;
-                    break;
-                }
+            } else if (stringBuilder.charAt(start) != '\t'
+                    || stringBuilder.charAt(start) != '\n'
+                    || stringBuilder.charAt(start) != '\r'
+                    || stringBuilder.charAt(start) != ' ') {
+                special = true;
+                start += 1;
+            } else if (special && stringBuilder.charAt(start) != '<') {
+                backBrace = true;
+                special = false;
+                start += 1;
+            } else if (backBrace && stringBuilder.charAt(start) == '>') {
+                start += 1;
+                break;
             } else {
                 start++;
             }
         }
         stringBuilder.insert(start, open);
+        System.out.println(stringBuilder);
     }
 
     private void insertClose(StringBuilder stringBuilder, String close) {

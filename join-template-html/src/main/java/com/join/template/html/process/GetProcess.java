@@ -1,12 +1,11 @@
 package com.join.template.html.process;
 
-import com.join.template.core.element.Element;
 import com.join.template.core.process.AbstractProcess;
 import com.join.template.core.process.Process;
 import com.join.template.core.context.Content;
-import com.join.template.core.verify.Assert;
-import com.join.template.core.verify.TemplateException;
-import com.join.template.html.node.GetNode;
+import com.join.template.core.util.Assert;
+import com.join.template.core.util.TemplateException;
+import com.join.template.html.node.GetNodeExample;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
@@ -16,10 +15,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class GetProcess extends AbstractProcess<GetNode> implements Process<GetNode> {
+public class GetProcess extends AbstractProcess<GetNodeExample> implements Process<GetNodeExample> {
 
     @Override
-    public void process(GetNode element, Content context, Writer writer) {
+    public void process(GetNodeExample element, Content context, Writer writer) {
         super.process(element, context, writer);
         try {
             if (context == null) {

@@ -38,7 +38,7 @@ public interface Word {
      * 获取最顶层节点
      *
      * @param
-     * @return com.join.template.core.elementClass.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 12:21
      */
@@ -48,7 +48,7 @@ public interface Word {
      * 获取全部节点
      *
      * @param
-     * @return java.util.List<com.join.template.core.elementClass.Element>
+     * @return java.util.List<com.join.template.core.element.Element>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 12:21
      */

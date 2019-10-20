@@ -2,7 +2,7 @@ package com.join.template.core.process;
 
 import com.join.template.core.element.Element;
 import com.join.template.core.context.Content;
-import com.join.template.core.expression.ExprHandle;
+import com.join.template.core.grammar.handle.Grammar;
 
 import java.io.Writer;
 
@@ -14,7 +14,7 @@ import java.io.Writer;
 public interface Process<T extends Element> {
 
 
-    void setExprHandle(ExprHandle exprHandle);
+    void setGrammar(Grammar grammar);
 
     /**
      * 处理监听

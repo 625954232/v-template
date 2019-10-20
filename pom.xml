@@ -8,10 +8,19 @@
     <artifactId>join-template</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
+    <properties>
+        <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <velocity>1.7</velocity>
+        <junit>4.11</junit>
+        <lombok>1.18.4</lombok>
+        <jexl>2.0</jexl>
+        <fastjson>1.2.47</fastjson>
+    </properties>
     <modules>
         <module>join-template-core</module>
-        <module>join-template-text</module>
         <module>join-template-html</module>
     </modules>
 

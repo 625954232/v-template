@@ -79,7 +79,7 @@ public interface Parser {
      * 解析
      *
      * @param
-     * @return com.join.template.core.elementClass.ElementBuilder
+     * @return com.join.template.core.element.ElementBuilder
      * @author CAOYOU/625954232@qq.com
      * @date 2019/10/18 17:52
      */

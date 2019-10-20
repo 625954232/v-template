@@ -6,7 +6,7 @@ import com.join.template.core.Template;
 import com.join.template.core.Word;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
-import com.join.template.core.expression.ExprHandle;
+import com.join.template.core.grammar.handle.Grammar;
 import com.join.template.core.factory.JoinFactory;
 
 import java.util.ArrayList;
@@ -34,8 +34,8 @@ public abstract class AbstractWord implements Word {
         this.joinFactory = joinFactory;
         this.configuration = joinFactory.getConfiguration();
 
-        ExprHandle exprHandle = joinFactory.getExprHandle(Constant.EXPR_ROOT);
-        Element element = exprHandle.createElement(template);
+        Grammar grammar = joinFactory.getGrammar(Constant.EXPR_ROOT);
+        Element element = grammar.createElement(template);
         this.root = element;
         this.current = element;
         this.parent = element;

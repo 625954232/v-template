@@ -1,9 +1,9 @@
 package com.join.template.core.configuration;
 
 import com.join.template.core.constant.Constant;
-import com.join.template.core.resource.ResourceFind;
-import com.join.template.core.resource.ResourceInfo;
-import com.join.template.core.verify.TemplateException;
+import com.join.template.core.util.resource.ResourceFind;
+import com.join.template.core.util.resource.ResourceInfo;
+import com.join.template.core.util.TemplateException;
 import lombok.Data;
 
 import java.io.IOException;

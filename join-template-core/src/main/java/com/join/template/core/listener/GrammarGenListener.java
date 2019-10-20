@@ -1,7 +1,7 @@
 package com.join.template.core.listener;
 
 import com.join.template.core.grammar.GrammarInfo;
-import com.join.template.core.type.TypeInfo;
+import com.join.template.core.util.type.TypeInfo;
 
 import java.util.Map;
 

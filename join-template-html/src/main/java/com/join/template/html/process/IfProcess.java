@@ -1,20 +1,20 @@
 package com.join.template.html.process;
 
 import com.join.template.core.element.Element;
-import com.join.template.core.expression.ExprActuator;
-import com.join.template.core.expression.ExprHandle;
+import com.join.template.core.expression.Expression;
+import com.join.template.core.grammar.handle.Grammar;
 import com.join.template.core.process.AbstractProcess;
 import com.join.template.core.process.Process;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
-import com.join.template.html.node.IFNode;
+import com.join.template.html.node.IFNodeExample;
 
 import java.io.Writer;
 
-public class IfProcess extends AbstractProcess<IFNode> implements Process<IFNode> {
+public class IfProcess extends AbstractProcess<IFNodeExample> implements Process<IFNodeExample> {
 
     @Override
-    public void process(IFNode element, Content content, Writer writer) {
+    public void process(IFNodeExample element, Content content, Writer writer) {
         super.process(element, content, writer);
         if (content == null) {
             return;
@@ -31,18 +31,18 @@ public class IfProcess extends AbstractProcess<IFNode> implements Process<IFNode
                 if (condition) {
                     return;
                 }
-                condition = evaluate((IFNode) child, content);
+                condition = evaluate((IFNodeExample) child, content);
             } else {
                 if (condition) {
-                    ExprHandle exprConfig = joinFactory.getExprHandle(child.getNodeType());
+                    Grammar exprConfig = joinFactory.getGrammar(child.getNodeType());
                     exprConfig.getProcess().process(child, content, writer);
                 }
             }
         }
     }
 
-    private boolean evaluate(IFNode element, Content content) {
-        ExprActuator expression = joinFactory.createExprActuator();
+    private boolean evaluate(IFNodeExample element, Content content) {
+        Expression expression = joinFactory.createExprActuator();
         expression.setExpression(element.getText());
         expression.setContext(content);
         Object evaluate = expression.evaluate();

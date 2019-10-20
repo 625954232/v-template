@@ -1,13 +1,16 @@
 package com.join.template.core.element;
 
 import com.join.template.core.Template;
-import com.join.template.core.expression.ExprHandle;
+import com.join.template.core.grammar.TemplateGrammarBuilder;
+import com.join.template.core.grammar.handle.Grammar;
 
 import java.util.List;
 import java.util.Map;
 
 public interface Element {
-    Element setTemplate(Template template);
+
+
+    Element setGrammar(Grammar grammar);
 
     Element setNodeType(Integer nodeType);
 
@@ -61,7 +64,7 @@ public interface Element {
      * 获取父节点
      *
      * @param
-     * @return com.join.template.core.elementClass.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:14
      */
@@ -71,7 +74,7 @@ public interface Element {
      * 获取全部子节点
      *
      * @param
-     * @return java.util.List<com.join.template.core.elementClass.Element>
+     * @return java.util.List<com.join.template.core.element.Element>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/27 14:14
      */
@@ -96,6 +99,5 @@ public interface Element {
      * @date 2019/8/27 14:13
      */
     Boolean isEndElement();
-
 
 }

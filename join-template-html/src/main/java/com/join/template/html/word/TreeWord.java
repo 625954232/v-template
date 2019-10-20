@@ -5,7 +5,7 @@ import com.join.template.core.Template;
 import com.join.template.core.Word;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.verify.TemplateException;
+import com.join.template.core.util.TemplateException;
 
 
 public class TreeWord extends AbstractWord implements Word {

@@ -3,7 +3,7 @@ package com.join.template.core;
 import com.join.template.core.constant.TemplateType;
 import com.join.template.core.context.Content;
 import com.join.template.core.element.Element;
-import com.join.template.core.expression.ExprAttr;
+import com.join.template.core.grammar.GrammarAttr;
 import com.join.template.core.factory.JoinFactory;
 
 import java.io.Writer;
@@ -78,13 +78,13 @@ public interface Template {
      *
      * @return
      */
-    ExprAttr getExprAttr();
+    GrammarAttr getExprAttr();
 
     /**
      * 获取全部节点
      *
      * @param
-     * @return java.util.List<com.join.template.core.elementClass.Element>
+     * @return java.util.List<com.join.template.core.element.Element>
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 12:16
      */
@@ -94,7 +94,7 @@ public interface Template {
      * 获取父节点
      *
      * @param
-     * @return com.join.template.core.elementClass.Element
+     * @return com.join.template.core.element.Element
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 12:16
      */

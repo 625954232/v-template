@@ -1,13 +1,12 @@
 package com.join.template.core.factory;
 
 import com.join.template.core.Parser;
-import com.join.template.core.Template;
-import com.join.template.core.expression.ExprActuator;
-import com.join.template.core.expression.ExprAttr;
-import com.join.template.core.expression.ExprHandle;
-import com.join.template.core.expression.ExprHandleBuilder;
+import com.join.template.core.expression.Expression;
+import com.join.template.core.grammar.GrammarAttr;
+import com.join.template.core.grammar.handle.Grammar;
+import com.join.template.core.grammar.handle.GrammarBuilder;
 import com.join.template.core.factory.template.TemplateFactory;
-import com.join.template.core.grammar.GrammarGenerate;
+import com.join.template.core.grammar.generate.GrammarGenerate;
 
 /**
  * @author CAOYOU
@@ -34,7 +33,7 @@ public interface JoinFactoryBuilder {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/9/9 10:36
      */
-    JoinFactoryBuilder setExprAttr(Class<? extends ExprAttr> exprAttr);
+    JoinFactoryBuilder setExprAttr(Class<? extends GrammarAttr> exprAttr);
 
     /**
      * 设置值表达式执行器
@@ -44,7 +43,7 @@ public interface JoinFactoryBuilder {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/20 15:12
      */
-    JoinFactoryBuilder setExprActuator(Class<? extends ExprActuator> expression);
+    JoinFactoryBuilder setExprActuator(Class<? extends Expression> expression);
 
     /**
      * 设置语法生成器
@@ -70,12 +69,12 @@ public interface JoinFactoryBuilder {
     /**
      * 新增表达式配置
      *
-     * @param exprHandle 表达式配置
+     * @param grammar 表达式配置
      * @return com.join.template.core.factory.JoinFactory
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:46
      */
-    JoinFactoryBuilder addExprHandle(ExprHandle exprHandle);
+    JoinFactoryBuilder addExprHandle(Grammar grammar);
 
 
     /**
@@ -86,7 +85,7 @@ public interface JoinFactoryBuilder {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/9/6 15:29
      */
-    ExprHandleBuilder builderExprHandle();
+    GrammarBuilder builderExprHandle();
 
 
     /**

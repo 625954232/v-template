@@ -2,8 +2,8 @@ package com.join.template.html;
 
 import com.join.template.core.element.Element;
 import com.join.template.core.constant.TemplateType;
-import com.join.template.core.expression.ExprAttr;
-import com.join.template.core.expression.ExprHandle;
+import com.join.template.core.grammar.GrammarAttr;
+import com.join.template.core.grammar.handle.Grammar;
 import com.join.template.core.Template;
 import com.join.template.core.Word;
 import com.join.template.core.configuration.Configuration;
@@ -19,7 +19,7 @@ import java.util.List;
 
 
 public class HtmlTemplate implements Template {
-    protected ExprAttr exprAttr;
+    protected GrammarAttr exprAttr;
     protected JoinFactory joinFactory;
     protected Configuration configuration;
     protected Content context;
@@ -31,7 +31,7 @@ public class HtmlTemplate implements Template {
     public HtmlTemplate(JoinFactory joinFactory, String name, String text) {
         this.name = name;
         this.text = text;
-        this.templateType = TemplateType.of(name);
+        this.templateType = TemplateType.Html;
         this.joinFactory = joinFactory;
         this.configuration = joinFactory.getConfiguration();
         this.exprAttr = joinFactory.createExprAttr();
@@ -55,7 +55,7 @@ public class HtmlTemplate implements Template {
 
     @Override
     public Template process(Writer writer) {
-        ExprHandle expressionHandle = joinFactory.getExprHandle(Constant.EXPR_ROOT);
+        Grammar expressionHandle = joinFactory.getGrammar(Constant.EXPR_ROOT);
         expressionHandle.getProcess().process(this.getRootElement(), context, writer);
         return this;
     }
@@ -98,7 +98,7 @@ public class HtmlTemplate implements Template {
     }
 
     @Override
-    public ExprAttr getExprAttr() {
+    public GrammarAttr getExprAttr() {
         return exprAttr;
     }
 

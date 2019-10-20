@@ -1,7 +1,7 @@
 package com.join.template.core.listener;
 
 import com.join.template.core.element.Element;
-import com.join.template.core.expression.ExprHandle;
+import com.join.template.core.grammar.handle.Grammar;
 
 /**
  * @author CAOYOU/625954232@qq.com
@@ -12,12 +12,12 @@ public interface ParserListener {
     /**
      * 设置表达式处理器
      *
-     * @param exprHandle
+     * @param grammar
      * @return void
      * @author CAOYOU/625954232@qq.com
      * @date 2019/9/9 14:07
      */
-    void setExprHandle(ExprHandle exprHandle);
+    void setGrammar(Grammar grammar);
 
     /**
      * 解析监听

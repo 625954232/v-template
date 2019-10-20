@@ -1,18 +1,17 @@
 package com.join.template.html.process;
 
-import com.join.template.core.element.Element;
 import com.join.template.core.process.AbstractProcess;
 import com.join.template.core.process.Process;
 import com.join.template.core.context.Content;
-import com.join.template.html.node.SetNode;
+import com.join.template.html.node.SetNodeExample;
 
 import java.io.Writer;
 
-public class SetProcess extends AbstractProcess<SetNode> implements Process<SetNode> {
+public class SetProcess extends AbstractProcess<SetNodeExample> implements Process<SetNodeExample> {
 
 
     @Override
-    public void process(SetNode element, Content context, Writer writer) {
+    public void process(SetNodeExample element, Content context, Writer writer) {
         super.process(element, context, writer);
         if (context == null) {
             return;

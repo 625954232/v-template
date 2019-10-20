@@ -39,11 +39,7 @@
             <artifactId>lombok</artifactId>
             <version>${lombok}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-jexl</artifactId>
-            <version>${jexl}</version>
-        </dependency>
+
     </dependencies>
 
 </project>

@@ -6,11 +6,11 @@ import com.join.template.core.element.Element;
 import com.join.template.core.Template;
 import com.join.template.core.constant.EntityType;
 import com.join.template.core.factory.JoinFactory;
-import com.join.template.core.grammar.generate.GrammarField;
-import com.join.template.core.grammar.GrammarGenerate;
+import com.join.template.core.grammar.generate.GenerateConfig;
+import com.join.template.core.grammar.generate.GrammarGenerate;
 import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.listener.GrammarGenListener;
-import com.join.template.core.type.TypeInfo;
+import com.join.template.core.util.type.TypeInfo;
 import com.join.template.core.util.IOUtil;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,7 +28,7 @@ public class Main {
     public void process() {
         long start = System.currentTimeMillis();
 
-        TextJoinFactoryBuilder joinFactoryBuilder = new TextJoinFactoryBuilder();
+        HtmlJoinFactoryBuilder joinFactoryBuilder = new HtmlJoinFactoryBuilder();
         JoinFactory joinFactory = joinFactoryBuilder.build();
 
         Map<Integer, String> grammars = joinFactory.createGrammarGenerate().generateGrammarExplain();
@@ -61,14 +61,14 @@ public class Main {
 
     @Test
     public void grammarGenerate() {
-        TextJoinFactoryBuilder joinFactoryBuilder = new TextJoinFactoryBuilder();
+        HtmlJoinFactoryBuilder joinFactoryBuilder = new HtmlJoinFactoryBuilder();
         JoinFactory joinFactory = joinFactoryBuilder.build();
 
 
         GrammarGenerate grammarGenerate = joinFactory.createGrammarGenerate();
         grammarGenerate.setGrammarGenListener(grammarGenListener);
 
-        GrammarField grammarField = new GrammarField();
+        GenerateConfig grammarField = new GenerateConfig();
         grammarField.setNameField("filedKey");
         grammarField.setTypeField("type");
         grammarField.setDescribeField("filedValue");
@@ -88,7 +88,7 @@ public class Main {
 
     @Test
     public void generateGrammarPreview() {
-        TextJoinFactoryBuilder joinFactoryBuilder = new TextJoinFactoryBuilder();
+        HtmlJoinFactoryBuilder joinFactoryBuilder = new HtmlJoinFactoryBuilder();
         JoinFactory joinFactory = joinFactoryBuilder.build();
 
         GrammarGenerate grammarGenerate = joinFactory.createGrammarGenerate();
@@ -108,7 +108,7 @@ public class Main {
     }
 
 
-    private GrammarField grammarField = new GrammarField() {{
+    private GenerateConfig grammarField = new GenerateConfig() {{
         this.setNameField("filedKey");
         this.setTypeField("type");
         this.setDescribeField("filedValue");

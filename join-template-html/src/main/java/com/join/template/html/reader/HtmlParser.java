@@ -5,13 +5,12 @@ import com.join.template.core.Parser;
 import com.join.template.core.Template;
 import com.join.template.core.configuration.Configuration;
 import com.join.template.core.constant.Constant;
-import com.join.template.core.expression.ExprAttr;
-import com.join.template.core.expression.ExprHandle;
+import com.join.template.core.grammar.handle.Grammar;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.listener.ParserListener;
-import com.join.template.core.verify.Assert;
-import com.join.template.core.verify.NodeVerify;
-import com.join.template.core.verify.TemplateException;
+import com.join.template.core.util.Assert;
+import com.join.template.core.element.verify.NodeVerify;
+import com.join.template.core.util.TemplateException;
 
 public class HtmlParser implements Parser {
 
@@ -79,22 +78,22 @@ public class HtmlParser implements Parser {
     @Override
     public Element parser() {
         String original = this.matchBeginTag + this.content + this.matchEndTag;
-        ExprHandle exprHandle = null;
+        Grammar grammar = null;
         if (isGrammar) {
             String[] split = this.content.split(" ");
             if (split == null || split.length == 0) {
                 throw new TemplateException("错误的节点：" + this.content);
             }
-            exprHandle = joinFactory.getExprHandle(split[0]);
-            Assert.isNull(exprHandle, "未找到对应的语法处理方式：" + this.content);
+            grammar = joinFactory.getGrammar(split[0]);
+            Assert.isNull(grammar, "未找到对应的语法处理方式：" + this.content);
         } else {
             if (isVarExpr) {
-                exprHandle = joinFactory.getExprHandle(Constant.EXPR_VAR);
-                Assert.isNull(exprHandle, "未找到参数对应的语法处理方式：" + this.content);
+                grammar = joinFactory.getGrammar(Constant.EXPR_VAR);
+                Assert.isNull(grammar, "未找到参数对应的语法处理方式：" + this.content);
             } else {
-                exprHandle = joinFactory.getExprHandle(Constant.EXPR_TEXT);
-                Assert.isNull(exprHandle, "未找到Html对应的语法处理方式：" + this.content);
-                if (exprHandle == null) {
+                grammar = joinFactory.getGrammar(Constant.EXPR_TEXT);
+                Assert.isNull(grammar, "未找到Html对应的语法处理方式：" + this.content);
+                if (grammar == null) {
                     throw new TemplateException("未找到对应的语法处理方式：" + this.content);
                 }
                 if (this.content.contains(this.configuration.getExprFirstBegin())
@@ -106,13 +105,13 @@ public class HtmlParser implements Parser {
                 }
             }
         }
-        Element element = exprHandle.createElement(template);
+        Element element = grammar.createElement(template);
         element.read(original, isEndElement);
         if (!element.isEndElement() && element instanceof NodeVerify) {
             NodeVerify nodeVerify = (NodeVerify) element;
             nodeVerify.verify();
         }
-        for (ParserListener parserListener : exprHandle.getParserListeners()) {
+        for (ParserListener parserListener : grammar.getParserListeners()) {
             parserListener.onParser(element);
         }
         return element;
