@@ -6,6 +6,7 @@ import com.join.template.core.process.Process;
 import com.join.template.core.context.Content;
 import com.join.template.core.verify.Assert;
 import com.join.template.core.verify.TemplateException;
+import com.join.template.html.node.GetNode;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
@@ -15,29 +16,27 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class GetProcess extends AbstractProcess implements Process {
+public class GetProcess extends AbstractProcess<GetNode> implements Process<GetNode> {
 
     @Override
-    public void process(Element element, Content context, Writer writer) {
+    public void process(GetNode element, Content context, Writer writer) {
         super.process(element, context, writer);
         try {
             if (context == null) {
                 return;
             }
-            String var = element.getAttribute(configuration.getAttVar());
-            Assert.isBlank(var, "%s标签%s属性不可为空", element.getOriginal(), configuration.getAttVar());
-            String format = element.getAttribute(configuration.getAttrFormat());
-            Object object = context.get(var);
+            Assert.isBlank(element.getVar(), "%s标签%s属性不可为空", element.getOriginal(), configuration.getAttVar());
+            Object object = context.get(element.getVar());
             if (object == null) {
                 return;
             }
-            if (!StringUtils.isBlank(format)) {
+            if (!StringUtils.isBlank(element.getFormat())) {
                 if (object instanceof Number || object instanceof Date) {
-                    String date = new SimpleDateFormat(format).format(object);
+                    String date = new SimpleDateFormat(element.getFormat()).format(object);
                     writer.write(date);
                 } else if (object instanceof LocalDateTime) {
                     LocalDateTime dateTime = (LocalDateTime) object;
-                    String date = dateTime.format(DateTimeFormatter.ofPattern(format));
+                    String date = dateTime.format(DateTimeFormatter.ofPattern(element.getFormat()));
                     writer.write(date);
                 } else {
                     throw new TemplateException("%s不是时间格式不可格式化", object.toString());

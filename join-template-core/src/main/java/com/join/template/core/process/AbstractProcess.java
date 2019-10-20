@@ -8,7 +8,7 @@ import com.join.template.core.factory.JoinFactory;
 
 import java.io.Writer;
 
-public abstract class AbstractProcess implements Process {
+public abstract class AbstractProcess<T extends Element> implements Process<T> {
 
     protected Configuration configuration;
     protected JoinFactory joinFactory;
@@ -23,10 +23,7 @@ public abstract class AbstractProcess implements Process {
     }
 
     @Override
-    public void process(Element element, Content context, Writer writer) {
+    public void process(T element, Content context, Writer writer) {
 
     }
-
-
-
 }

@@ -18,34 +18,23 @@ public class SetNode extends AbstractElement implements NodeVerify, Element {
     private String var;
     //别名属性
     private String name;
-    //单项别名属性
-    private String item;
-    //语句开始属性
-    private String open;
-    //索引属性
-    private String index;
-    //语句结束属性
-    private String close;
+
 
 
     @Override
     public void readAttributes() {
         this.var = this.getAttribute(configuration.getAttVar());
         this.name = this.getAttribute(configuration.getAttName());
-        this.item = this.getAttribute(configuration.getAttItem());
-        this.open = this.getAttribute(configuration.getAttOpen());
-        this.index = this.getAttribute(configuration.getAttIndex());
-        this.close = this.getAttribute(configuration.getAttClose());
     }
 
 
     @Override
     public void verify() {
         if (!attributes.containsKey(configuration.getAttVar())) {
-            throw new TemplateException("请求设置循环条件-数据来源别名（" + configuration.getAttVar() + "）：" + original);
+            throw new TemplateException("请求设置你要存放的值（" + configuration.getAttVar() + "）：" + original);
         }
-        if (!attributes.containsKey(configuration.getAttItem())) {
-            throw new TemplateException("请求设置循环条件-单项定义别名（" + configuration.getAttItem() + "）：" + original);
+        if (!attributes.containsKey(configuration.getAttName())) {
+            throw new TemplateException("请求设置你要存放值的别名（" + configuration.getAttItem() + "）：" + original);
         }
     }
 

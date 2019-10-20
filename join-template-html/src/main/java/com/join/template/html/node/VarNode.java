@@ -16,11 +16,13 @@ import lombok.Getter;
 public class VarNode extends AbstractElement implements NodeVerify, Element {
 
 
+    private String var;
+
     @Override
     public void readAttributes() {
         String replace = this.original.replace(this.configuration.getVarTagStart(), "");
-        replace = replace.replaceFirst(this.configuration.getVarTagEnd(), "");
-        this.attributes.put(this.configuration.getAttVar(), replace);
+        this.var = replace.replaceFirst(this.configuration.getVarTagEnd(), "");
+        this.attributes.put(this.configuration.getAttVar(), this.var);
     }
 
 

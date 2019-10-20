@@ -19,23 +19,14 @@ public class GetNode extends AbstractElement implements NodeVerify, Element {
     //别名属性
     private String name;
     //单项别名属性
-    private String item;
-    //语句开始属性
-    private String open;
-    //索引属性
-    private String index;
-    //语句结束属性
-    private String close;
+    private String format;
 
 
     @Override
     public void readAttributes() {
         this.var = this.getAttribute(configuration.getAttVar());
         this.name = this.getAttribute(configuration.getAttName());
-        this.item = this.getAttribute(configuration.getAttItem());
-        this.open = this.getAttribute(configuration.getAttOpen());
-        this.index = this.getAttribute(configuration.getAttIndex());
-        this.close = this.getAttribute(configuration.getAttClose());
+        this.format = this.getAttribute(configuration.getAttrFormat());
     }
 
 

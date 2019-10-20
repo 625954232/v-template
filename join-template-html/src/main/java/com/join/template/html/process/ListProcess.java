@@ -8,6 +8,7 @@ import com.join.template.core.process.AbstractProcess;
 import com.join.template.core.process.Process;
 import com.join.template.core.context.Content;
 import com.join.template.core.verify.TemplateException;
+import com.join.template.html.node.ListNode;
 import org.apache.commons.lang.StringUtils;
 
 import javax.xml.ws.Holder;
@@ -17,10 +18,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ListProcess extends AbstractProcess implements Process {
+public class ListProcess extends AbstractProcess<ListNode> implements Process<ListNode> {
 
     @Override
-    public void process(Element element, Content context, Writer writer) {
+    public void process(ListNode element, Content context, Writer writer) {
         try {
             super.process(element, context, writer);
 
@@ -29,8 +30,7 @@ public class ListProcess extends AbstractProcess implements Process {
             boolean valid = false;
 
             if (context != null) {
-                String var = element.getAttribute(configuration.getAttVar());
-                Object value = context.get(var);
+                Object value = context.get(element.getVar());
                 valid = this.validElement(element, value, validElement, list);
             }
             if (valid) {
@@ -45,39 +45,27 @@ public class ListProcess extends AbstractProcess implements Process {
     }
 
 
-    private void writerValidElement(Element element, List<Element> validElement, Content context, Holder<List> list, Writer writer) throws IOException {
-        String item = element.getAttribute(configuration.getAttItem(), "");
-        String separator = element.getAttribute(configuration.getAttSseparator(), "");
-        String open = element.getAttribute(configuration.getAttOpen(), "");
-        String close = element.getAttribute(configuration.getAttClose(), "");
-
-        if (StringUtils.isNotBlank(separator))
-            separator = separator.replaceAll(MarkedWords.Attr_Separator, "");
-        if (StringUtils.isNotBlank(open))
-            open = open.replaceAll(MarkedWords.Attr_Statement_Opener, "");
-        if (StringUtils.isNotBlank(close))
-            close = close.replaceAll(MarkedWords.Attr_Statement_Terminator, "");
-
+    private void writerValidElement(ListNode element, List<Element> validElement, Content context, Holder<List> list, Writer writer) throws IOException {
         for (int i = 0; i < list.value.size(); i++) {
-            if (i > 0 && StringUtils.isNotBlank(separator)) {
-                writer.write(separator);
+            if (i > 0 && StringUtils.isNotBlank(element.getSeparator())) {
+                writer.write(element.getSeparator());
             }
-            context.put(item.concat("_").concat(configuration.getAttIndex()), (i + 1));
-            context.put(item, list.value.get(i));
+            context.put(element.getItem().concat("_").concat(configuration.getAttIndex()), (i + 1));
+            context.put(element.getItem(), list.value.get(i));
             for (int j = 0; j < validElement.size(); j++) {
                 Element child = validElement.get(j);
                 StringBuilder stringBuilder = new StringBuilder(child.getOriginal());
                 if (i == 0 && j == 0) {
                     if (Constant.EXPR_TEXT == child.getNodeType()) {
-                        this.insertOpen(stringBuilder, open);
+                        this.insertOpen(stringBuilder, element.getOpen());
                     } else {
-                        stringBuilder.append(open);
+                        stringBuilder.append(element.getOpen());
                     }
                 } else if (i == (list.value.size() - 1) && j == (validElement.size() - 1)) {
                     if (Constant.EXPR_TEXT == child.getNodeType()) {
-                        this.insertClose(stringBuilder, close);
+                        this.insertClose(stringBuilder, element.getClose());
                     } else {
-                        stringBuilder.append(close);
+                        stringBuilder.append(element.getClose());
                     }
                 } else {
                     this.insertText(stringBuilder);
@@ -159,7 +147,6 @@ public class ListProcess extends AbstractProcess implements Process {
                     start += 1;
                     break;
                 }
-
             } else {
                 start++;
             }

@@ -11,7 +11,10 @@ import java.io.Writer;
  * @Title: 处理器
  * @date 2019/8/19 12:18
  */
-public interface Process {
+public interface Process<T extends Element> {
+
+
+    void setExprHandle(ExprHandle exprHandle);
 
     /**
      * 处理监听
@@ -23,8 +26,6 @@ public interface Process {
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 11:51
      */
-    void process(Element element, Content context, Writer writer);
+    void process(T element, Content context, Writer writer);
 
-
-    void setExprHandle(ExprHandle exprHandle);
 }

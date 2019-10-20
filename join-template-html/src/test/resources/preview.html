@@ -1,21 +1,3 @@
-<#list var="agent" item="agent" index="index" open="语句开始符" close="语句结束符" separator="分隔符" #>
-
-${agent.agentAttribute}
-${agent.agentName}
-${agent.agentIdentityType}
-${agent.agentIdentityNumber}
-${agent.agentAuthority}
-${agent.agentAuthorization}
-${agent.agentCertificatePositive}
-${agent.agentCertificateOpposite}
-${agent.agentPhone}
-${agent.agentEmail}
-${agent.agentAddress}
-${agent.agentStaffCertification}
-${agent.agentLawyerLetter}
-${agent.agentSex}
-${agent.agentNation}
-<#else#>
-wqeqweqweqweqwewqe
-</#list#>
-
+<p><#list var='list' item='item' open='(' close=')' #></p>
+<p>${item_index}、${item}fdddddddddddddddd</p>
+<p></#list#></p>

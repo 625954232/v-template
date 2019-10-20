@@ -5,13 +5,16 @@ import com.join.template.core.element.AbstractElement;
 import com.join.template.core.element.Element;
 import com.join.template.core.verify.NodeVerify;
 import com.join.template.core.verify.TemplateException;
+import lombok.Data;
 
+@Data
 public class IncludeNode extends AbstractElement implements NodeVerify, Element {
 
+    private String file;
 
     @Override
     public void readAttributes() {
-
+        file = attributes.get(configuration.getAttFile());
     }
 
     @Override

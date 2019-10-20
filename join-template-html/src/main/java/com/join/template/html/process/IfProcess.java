@@ -7,13 +7,14 @@ import com.join.template.core.process.AbstractProcess;
 import com.join.template.core.process.Process;
 import com.join.template.core.constant.Constant;
 import com.join.template.core.context.Content;
+import com.join.template.html.node.IFNode;
 
 import java.io.Writer;
 
-public class IfProcess extends AbstractProcess implements Process {
+public class IfProcess extends AbstractProcess<IFNode> implements Process<IFNode> {
 
     @Override
-    public void process(Element element, Content content, Writer writer) {
+    public void process(IFNode element, Content content, Writer writer) {
         super.process(element, content, writer);
         if (content == null) {
             return;
@@ -30,7 +31,7 @@ public class IfProcess extends AbstractProcess implements Process {
                 if (condition) {
                     return;
                 }
-                condition = evaluate(child, content);
+                condition = evaluate((IFNode) child, content);
             } else {
                 if (condition) {
                     ExprHandle exprConfig = joinFactory.getExprHandle(child.getNodeType());
@@ -40,10 +41,9 @@ public class IfProcess extends AbstractProcess implements Process {
         }
     }
 
-    private boolean evaluate(Element element, Content content) {
-        String text = element.getAttribute(configuration.getAttrText());
+    private boolean evaluate(IFNode element, Content content) {
         ExprActuator expression = joinFactory.createExprActuator();
-        expression.setExpression(text);
+        expression.setExpression(element.getText());
         expression.setContext(content);
         Object evaluate = expression.evaluate();
         return evaluate instanceof Boolean ? (boolean) evaluate : false;

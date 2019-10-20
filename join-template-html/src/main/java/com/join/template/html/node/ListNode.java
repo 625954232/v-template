@@ -21,7 +21,7 @@ public class ListNode extends AbstractElement implements NodeVerify, Element {
     //值属性
     private String var;
     //别名属性
-    private String name;
+    private String separator;
     //单项别名属性
     private String item;
     //语句开始属性
@@ -35,7 +35,7 @@ public class ListNode extends AbstractElement implements NodeVerify, Element {
     @Override
     public void readAttributes() {
         this.var = this.getAttribute(configuration.getAttVar());
-        this.name = this.getAttribute(configuration.getAttName());
+        this.separator = this.getAttribute(configuration.getAttSseparator());
         this.item = this.getAttribute(configuration.getAttItem());
         this.open = this.getAttribute(configuration.getAttOpen());
         this.index = this.getAttribute(configuration.getAttIndex());

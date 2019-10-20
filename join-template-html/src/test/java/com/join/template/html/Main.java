@@ -34,7 +34,7 @@ public class Main {
         Map<Integer, String> grammars = joinFactory.createGrammarGenerate().generateGrammarExplain();
         System.out.println("语法解释：" + grammars.toString());
 
-        Template template = joinFactory.getTemplate("/process.txt");
+        Template template = joinFactory.getTemplate("/preview.html");
         System.out.println("语法解析耗时：" + (System.currentTimeMillis() - start));
 
         List<Element> elements = template.getAllElement();
