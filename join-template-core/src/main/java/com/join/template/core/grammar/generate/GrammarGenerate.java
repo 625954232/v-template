@@ -1,5 +1,6 @@
 package com.join.template.core.grammar.generate;
 
+import com.join.template.core.constant.EntityType;
 import com.join.template.core.constant.TemplateType;
 import com.join.template.core.factory.JoinFactory;
 import com.join.template.core.grammar.GrammarInfo;
@@ -61,23 +62,27 @@ public interface GrammarGenerate<T extends GrammarInfo> {
      * 根据实体类生成语法（带根节点信息）
      *
      * @param name  别名
+     * @param type
+     * @param describe
      * @param clazz 对象属性
      * @return com.join.template.core.example.generate.EntityGrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/19 16:25
      */
-    GrammarGenerate generateGrammarRoot(String name, Class clazz);
+    GrammarGenerate generateGrammarRoot(String name, EntityType type, String describe, Class clazz);
 
     /**
      * 根据Map结构生成语法（带根节点信息）
      *
      * @param name 别名
+     * @param type
+     * @param describe
      * @param map  Map结构的字段信息
      * @return com.join.template.core.grammar.GrammarInfo
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/21 10:47
      */
-    GrammarGenerate generateGrammarRoot(String name, List<Map> map);
+    GrammarGenerate generateGrammarRoot(String name, EntityType type, String describe, List<Map> map);
 
     /**
      * 根据实体类生成语法（不带根节点信息）

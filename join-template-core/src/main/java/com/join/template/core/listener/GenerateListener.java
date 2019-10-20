@@ -1,6 +1,8 @@
 package com.join.template.core.listener;
 
 import com.join.template.core.grammar.GrammarInfo;
+import com.join.template.core.grammar.generate.FieldGenerateInfo;
+import com.join.template.core.grammar.generate.GenerateConfig;
 import com.join.template.core.util.type.TypeInfo;
 
 import java.util.Map;
@@ -10,11 +12,11 @@ import java.util.Map;
  * @Title: GrammarGenListener
  * @date 2019/8/1916:51
  */
-public interface GenerateListener {
+public interface GenerateListener<T extends FieldGenerateInfo> {
 
-    void onCreate(Map map, GrammarInfo grammarInfo);
+    T onCreate(Map map, GenerateConfig generateConfig);
 
-    void onCreate(TypeInfo typeInfo, GrammarInfo grammarInfo);
+    T onCreate(TypeInfo typeInfo, GenerateConfig generateConfig);
 
-    void onPreview(GrammarInfo grammarInfo, Object value, Map<String, Object> map);
+    void onPreview(T grammarInfo, Object value, Map<String, Object> map);
 }

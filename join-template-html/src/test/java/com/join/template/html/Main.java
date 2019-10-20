@@ -6,6 +6,7 @@ import com.join.template.core.element.Element;
 import com.join.template.core.Template;
 import com.join.template.core.constant.EntityType;
 import com.join.template.core.factory.JoinFactory;
+import com.join.template.core.grammar.generate.FieldGenerateInfo;
 import com.join.template.core.grammar.generate.GenerateConfig;
 import com.join.template.core.grammar.generate.GrammarGenerate;
 import com.join.template.core.grammar.GrammarInfo;
@@ -73,7 +74,7 @@ public class Main {
         String string = IOUtil.toString(resource);
         Map<String, List<Map>> maps = JSON.parseObject(string, Map.class);
         for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
-            grammarGenerate.generateGrammarRoot(entry.getKey(), entry.getValue());
+            grammarGenerate.generateGrammarRoot(entry.getKey(), type, describe, entry.getValue());
 
         }
         List<GrammarInfo> list = grammarGenerate.getGrammarInfos();
@@ -97,7 +98,7 @@ public class Main {
         String previewStr = IOUtil.toString(preview);
         Map<String, List<Map>> maps = JSON.parseObject(grammaStr, Map.class);
         for (Map.Entry<String, List<Map>> entry : maps.entrySet()) {
-            grammarGenerate.generateGrammarRoot(entry.getKey(), entry.getValue());
+            grammarGenerate.generateGrammarRoot(entry.getKey(), type, describe, entry.getValue());
         }
         String preview1 = grammarGenerate.preview(previewStr, 4);
         System.out.println(preview1);
@@ -107,24 +108,26 @@ public class Main {
     private GenerateListener exampleListener = new GenerateListener() {
 
         @Override
-        public void onCreate(Map map, GrammarInfo grammarInfo) {
-            if ("agent".equals(grammarInfo.getName())) {
-                grammarInfo.describe("代理人信息");
-                grammarInfo.type(EntityType.Array);
-            } else if ("respondent".equals(grammarInfo.getName())) {
-                grammarInfo.describe("被申请人信息");
-                grammarInfo.type(EntityType.Array);
-            } else if ("applicant".equals(grammarInfo.getName())) {
-                grammarInfo.describe("申请人信息");
-                grammarInfo.type(EntityType.Array);
+        public GrammarInfo onCreate(Map map, GenerateConfig config) {
+            FieldGenerateInfo generateInfo = new FieldGenerateInfo();
+            if ("agent".equals(generateInfo.getName())) {
+                generateInfo.describe("代理人信息");
+                generateInfo.type(EntityType.Array);
+            } else if ("respondent".equals(generateInfo.getName())) {
+                generateInfo.describe("被申请人信息");
+                generateInfo.type(EntityType.Array);
+            } else if ("applicant".equals(generateInfo.getName())) {
+                generateInfo.describe("申请人信息");
+                generateInfo.type(EntityType.Array);
             } else {
-                grammarInfo.type(EntityType.String);
+                generateInfo.type(EntityType.String);
             }
+            return generateInfo;
         }
 
         @Override
-        public void onCreate(TypeInfo typeInfo, GrammarInfo grammarInfo) {
-
+        public GrammarInfo onCreate(TypeInfo typeInfo, GenerateConfig config) {
+            return null;
         }
 
         @Override

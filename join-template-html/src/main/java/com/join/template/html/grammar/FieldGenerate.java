@@ -10,7 +10,7 @@ import com.join.template.core.factory.template.TemplateFactory;
 import com.join.template.core.grammar.generate.GrammarGenerate;
 import com.join.template.core.grammar.GrammarInfo;
 import com.join.template.core.grammar.generate.AbstractGenerate;
-import com.join.template.core.grammar.generate.FieldGrammarInfo;
+import com.join.template.core.grammar.generate.FieldGenerateInfo;
 import com.join.template.core.util.type.TypeInfo;
 import com.join.template.core.util.ClassUtil;
 import com.join.template.core.util.RandomUtil;
@@ -22,17 +22,20 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 
-public class FieldGenerate extends AbstractGenerate<GrammarInfo> implements GrammarGenerate<GrammarInfo> {
+public class FieldGenerate extends AbstractGenerate<FieldGenerateInfo> implements GrammarGenerate<FieldGenerateInfo> {
 
 
     public FieldGenerate() {
-        super.setGrammarInfo(FieldGrammarInfo.class);
+        super.setGrammarInfo(FieldGenerateInfo.class);
     }
 
     @Override
-    public FieldGenerate generateGrammarRoot(String name, Class clazz) {
+    public FieldGenerate generateGrammarRoot(String name, EntityType type, String describe, Class clazz) {
         try {
-            GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
+            FieldGenerateInfo grammarInfo = this.grammarInfoClass.newInstance();
+            grammarInfo.setName(name);
+            grammarInfo.setType(type);
+            grammarInfo.setDescribe(describe);
             this.createGrammarInfo(grammarInfo, clazz);
             this.getGrammarInfos().add(grammarInfo);
             return this;
@@ -44,14 +47,13 @@ public class FieldGenerate extends AbstractGenerate<GrammarInfo> implements Gram
     }
 
     @Override
-    public FieldGenerate generateGrammarRoot(String name, List<Map> map) {
+    public FieldGenerate generateGrammarRoot(String name, EntityType type, String describe, List<Map> child) {
         try {
-            Map<String, Object> root = new HashMap<>();
-            root.put(this.generateConfig.getNameField(), name);
-            root.put(this.generateConfig.getTypeField(), EntityType.Object.name());
-            root.put(this.generateConfig.getChildField(), map);
-            GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
-            this.createGrammarInfo(grammarInfo, root);
+            FieldGenerateInfo grammarInfo = this.grammarInfoClass.newInstance();
+            grammarInfo.setName(name);
+            grammarInfo.setType(type);
+            grammarInfo.setDescribe(describe);
+            this.createGrammarInfo(grammarInfo, child);
             this.getGrammarInfos().add(grammarInfo);
             return this;
         } catch (InstantiationException e) {
@@ -72,7 +74,7 @@ public class FieldGenerate extends AbstractGenerate<GrammarInfo> implements Gram
                         || Modifier.isFinal(field.getModifiers())) {
                     continue;
                 }
-                GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
+                FieldGenerateInfo grammarInfo = this.grammarInfoClass.newInstance();
                 this.createGrammarInfo(grammarInfo, field);
                 this.getGrammarInfos().add(grammarInfo);
             }
@@ -88,7 +90,7 @@ public class FieldGenerate extends AbstractGenerate<GrammarInfo> implements Gram
     public FieldGenerate generateGrammar(List<Map> maps) {
         try {
             for (Map map : maps) {
-                GrammarInfo grammarInfo = this.grammarInfoClass.newInstance();
+                FieldGenerateInfo grammarInfo = this.grammarInfoClass.newInstance();
                 this.createGrammarInfo(grammarInfo, map);
                 this.getGrammarInfos().add(grammarInfo);
             }
@@ -103,7 +105,7 @@ public class FieldGenerate extends AbstractGenerate<GrammarInfo> implements Gram
     @Override
     public String preview(String text, int previewSize) {
         Map<String, Object> map = new HashMap<>();
-        List<GrammarInfo> grammarInfos = this.getGrammarInfos();
+        List<FieldGenerateInfo> grammarInfos = this.getGrammarInfos();
         for (int i = 0; i < grammarInfos.size(); i++) {
             GrammarInfo grammarInfo = grammarInfos.get(i);
             genContent(grammarInfo, map, previewSize);
@@ -125,13 +127,15 @@ public class FieldGenerate extends AbstractGenerate<GrammarInfo> implements Gram
      * @author CAOYOU/625954232@qq.com
      * @date 2019/8/21 16:16
      */
-    private GrammarInfo createGrammarInfo(GrammarInfo current, Object clazzOrField) throws IllegalAccessException, InstantiationException {
+    private void createGrammarInfo(GrammarInfo current, Object clazzOrField) throws IllegalAccessException, InstantiationException {
+
+        if (this.generateListener != null) {
+            this.generateListener.onCreate(typeInfo, this.generateConfig);
+        }
         TypeInfo typeInfo = TypeInfo.get(clazzOrField);
         current.name(typeInfo.getName());
         current.type(EntityType.of(typeInfo.getType()));
-        if (this.generateListener != null) {
-            this.generateListener.onCreate(typeInfo, current);
-        }
+
         if (EntityType.Array == current.getType()) {
             current.grammarType(Constant.EXPR_LIST);
         } else {
@@ -143,7 +147,7 @@ public class FieldGenerate extends AbstractGenerate<GrammarInfo> implements Gram
             current.grammar(grammar);
         }
         this.createGrammarChild(current, typeInfo);
-        return current;
+
     }
 
     /**
@@ -321,13 +325,13 @@ public class FieldGenerate extends AbstractGenerate<GrammarInfo> implements Gram
         index.describe(MarkedWords.Attr_Index_Name);
         index.grammarType(Constant.EXPR_VAR);
 
-        Grammar expressionHandle = joinFactory.getGrammar(index.getGrammarType());
-        if (expressionHandle != null && expressionHandle.getExample() != null) {
+        Grammar grammar = joinFactory.getGrammar(index.getGrammarType());
+        if (grammar != null && grammar.getExample() != null) {
             Map<String, Object> root = new HashMap<>();
             root.put(this.generateConfig.getNameField(), index.getName());
             root.put(this.generateConfig.getTypeField(), EntityType.Integer.name());
-            String grammar = expressionHandle.getExample().genExample(this.templateType, index, root, this.generateConfig);
-            index.grammar(grammar);
+            String example = grammar.getExample().genExample(this.templateType, index, root, this.generateConfig);
+            index.grammar(example);
         }
         current.addChild(index);
     }

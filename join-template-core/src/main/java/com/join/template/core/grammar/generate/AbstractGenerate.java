@@ -20,7 +20,7 @@ public abstract class AbstractGenerate<T extends GrammarInfo> implements Grammar
 
     protected Configuration configuration;
 
-    protected GenerateListener generateListener;
+    protected GenerateListener<FieldGenerateInfo> generateListener;
 
     protected GenerateConfig generateConfig;
 

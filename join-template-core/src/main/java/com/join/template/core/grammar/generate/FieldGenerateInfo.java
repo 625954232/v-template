@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2019/8/20 14:08
  */
 @Data
-public class FieldGrammarInfo implements GrammarInfo {
+public class FieldGenerateInfo implements GrammarInfo {
     /**
      * 字段名称
      */
